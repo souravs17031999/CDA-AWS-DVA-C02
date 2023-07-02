@@ -1,4 +1,4 @@
-![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8499d536-3a16-470f-b463-eafe8101d671)# CDA-AWS-DVA-C02
+# CDA-AWS-DVA-C02
 AWS Certified Developer - Associate
 
 # Development with AWS Services
