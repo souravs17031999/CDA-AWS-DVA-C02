@@ -7,6 +7,7 @@ AWS Certified Developer - Associate
 
 ## IAM 
 - 
+- IAM doesn't requires region selection (global)
 
 
 # Deployment
