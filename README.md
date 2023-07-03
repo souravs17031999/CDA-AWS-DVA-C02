@@ -26,15 +26,6 @@ AWS Certified Developer - Associate
 - Cross-account access between AWS accounts
 - Long-term credentials for designated IAM users in your AWS account
 
-**Identity-based and resource-based policies**
-- Identity-based policies are permissions policies that you attach to an IAM identity, such as an IAM user, group, or role.
-  - AWS Managed policies, Customer managed policies, Inline policies 
-- Resource-based policies are permissions policies that you attach to a resource such as an Amazon S3 bucket or an IAM role trust policy.
-  - Resource-based policies are inline policies, and there are no managed resource-based policies.
-  - The IAM service supports only one type of resource-based policy called a role trust policy, which is attached to an IAM role.
-  - Trust policies define which principal entities (accounts, users, roles, and federated users) can assume the role. 
-
-
 #######################
 TASKS REQUIRING ROOT USER CREDENTIALS   
 #######################  
@@ -75,6 +66,23 @@ We recommend that you create IAM users only if you need to enable programmatic a
 #######################
 IAM POLICIES 
 #######################
+
+**Identity-based and resource-based policies**
+- Identity-based policies are permissions policies that you attach to an IAM identity, such as an IAM user, group, or role.
+  - AWS Managed policies, Customer managed policies, Inline policies 
+- Resource-based policies are permissions policies that you attach to a resource such as an Amazon S3 bucket or an IAM role trust policy.
+  - Resource-based policies are inline policies, and there are no managed resource-based policies.
+  - The IAM service supports only one type of resource-based policy called a role trust policy, which is attached to an IAM role.
+  - Trust policies define which principal entities (accounts, users, roles, and federated users) can assume the role. 
+
+- For ex. in below, identity based policies given to users defines what actions can they perform on specific resources whereas resource based policies defines which principals (users) have access to them.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0386d74c-f8b0-49bb-acba-25eff9c5b4ed)   
+- For requests made from one account to another, the requester in Account A must have an identity-based policy that allows them to make a request to the resource in Account B. Also, the resource-based policy in Account B must allow the requester in Account A to access the resource. There must be policies in both accounts that allow the operation, otherwise the request fails.
+- In addition, Amazon S3 supports a permission mechanism known as an access control list (ACL) that is independent of IAM policies and permissions. You can use IAM policies in combination with Amazon S3 ACLs.
+
+**AWS MANAGED POLICY VS CUSTOMER MANAGED POLICY**
+- Managed policies that are created and managed by AWS (AWS MANAGED POLICIES)   
+- Managed policies that you create and manage in your AWS account. Customer managed policies provide more precise control over your policies than AWS managed policies. You can create, edit, and validate an IAM policy in the visual editor or by creating the JSON policy document directly.   
 
 - IAM Policy inheritance   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/99800cc5-9184-4095-8b2a-59fbc71f949a)   
@@ -142,6 +150,29 @@ IAM POLICY SIMULATOR
 - One can choose and evaluate the roles and policies attached in real time using this simulator.   
  
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/11dbc126-c328-4225-bf62-d2d25ff816e2)   
+
+
+#######################
+ABAC
+#######################
+- Attribute-based access control (ABAC) is an authorization strategy that defines permissions based on attributes. In AWS, these attributes are called tags. You can attach tags to IAM resources, including IAM entities (users or roles) and to AWS resources.
+- These ABAC policies can be designed to allow operations when the principal's tag matches the resource tag.
+- ABAC is helpful in environments that are growing rapidly and helps with situations where policy management becomes cumbersome.
+- The disadvantage to using the traditional RBAC model is that when employees add new resources, you must update policies to allow access to those resources.
+- RBAC
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6c593575-9a2e-4482-ae0f-34c1fc501c34)    
+- ABAC
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5e0c31ef-ddb0-49ad-a38e-d4dbf3e45751)  
+
+#######################
+SECURITY TOKEN SERVICE (STS) 
+#######################
+- You can use the AWS Security Token Service (AWS STS) to create and provide trusted users with temporary security credentials that can control access to your AWS resources.
+- Temporary security credentials are not stored with the user but are generated dynamically and provided to the user when requested.
+- By default, AWS STS is a global service with a single endpoint at https://sts.amazonaws.com. However, you can also choose to make AWS STS API calls to endpoints in any other supported Region.
+- This is used in Identity federation usecases, cross account accesses
+- The AWS STS API operations create a new session with temporary security credentials that include an access key pair and a session token. The access key pair consists of an access key ID and a secret key. Users (or an application that the user runs) can use these credentials to access your resources.
+
 
 #######################
 IAM SECURITY TOOLS 
