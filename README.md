@@ -27,7 +27,7 @@ AWS Certified Developer - Associate
 - Long-term credentials for designated IAM users in your AWS account
 
 #######################
-TASKS REQUIRING ROOT USER CREDENTIALS   
+```TASKS REQUIRING ROOT USER CREDENTIALS```  
 #######################  
 - Change your account settings. This includes the account name, email address, root user password, and root user access keys. 
 - Restore IAM user permissions. If the only IAM administrator accidentally revokes their own permissions, you can sign in as the root user to edit policies and restore those permissions.
