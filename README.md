@@ -184,7 +184,15 @@ SECURITY TOKEN SERVICE (STS)
 - Calls made from another account to access cross-account services which assumes a role : ```sts:SourceIdentity``` condition key in the role trust policy to require users to specify an identity when they assume a role. For ex. shown below :   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/14be993f-ac99-44ae-b237-9ee065e1fbd9)   
 Now, For this same request one entry will be there in the another account (assumed role account log).
-
+- When performing role chaining, tags are passed on from first assumed role as "transitive tags" as shown below:
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/50429340-5926-463b-9e80-607fd2813c05)
+- Web Identity provider - includes the tags passed through identity provider as shown below :
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3614606a-409c-4215-b014-8878362a6cc8)  
+- Sign-in events are logged as well except the incorrect username whose information is then masked with ```HIDDEN_DUE_TO_SECURITY_REASONS```    
+EXAMPLES OF STS API's :
+- AssumeRole, AssumeRoleWithSAML, AssumeRoleWithWebIdentity, GetFederationToken, GetSessionToken
+- The permissions policy of the role that is being assumed determines the permissions for the temporary security credentials that are returned by AssumeRole, AssumeRoleWithSAML, and AssumeRoleWithWebIdentity
+- Optionally, one can pass inline or managed session policies as parameters which filters only the passed permissions returned.  
     
 
 
