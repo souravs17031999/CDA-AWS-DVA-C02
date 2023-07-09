@@ -139,10 +139,13 @@ IAM ROLES
 - Few examples shown below:    
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fd2b5ed5-4f5e-4d72-a72d-4e43466e1969)
 - When you create a role, you create two policies:
-  - A role trust policy that specifies who can assume the role and a permissions policy that specifies what can be done with the role.
+  - A role ```trust policy``` that specifies who can assume the role and a ```permissions policy``` that specifies what can be done with the role.
   - You specify the trusted principal who is allowed to assume the role in the role trust policy.  
 - For ex. Role creation for EC2 instance   
-![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1234becc-443e-4fa5-a067-837e098ff897)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1234becc-443e-4fa5-a067-837e098ff897)
+- Role chaining:
+  - Role chaining is when you use a role to assume a second role through the AWS CLI
+  - AWS does not treat using roles to grant permissions to applications that run on EC2 instances as role chaining.
 
 #######################
 IAM POLICY SIMULATOR
@@ -172,6 +175,17 @@ SECURITY TOKEN SERVICE (STS)
 - By default, AWS STS is a global service with a single endpoint at https://sts.amazonaws.com. However, you can also choose to make AWS STS API calls to endpoints in any other supported Region.
 - This is used in Identity federation usecases, cross account accesses
 - The AWS STS API operations create a new session with temporary security credentials that include an access key pair and a session token. The access key pair consists of an access key ID and a secret key. Users (or an application that the user runs) can use these credentials to access your resources.
+- Bearer tokens:
+  - AWS STS can help in getting bearer tokens which are required for accessing some services programmatically. For ex. AWS CodeArtifact etc..
+  - The token's access key ID begins with the ABIA prefix (can help in cloudtrail logs)
+  - The bearer token can be used only for calls to the service that generates it and in the Region where it was generated.
+- All the STS calls can be traced by cloudtrail logs for ex. as shown below :  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e8e7e18e-1c0b-49a6-9434-2992c60c5f1d)   
+- Calls made from another account to access cross-account services which assumes a role : ```sts:SourceIdentity``` condition key in the role trust policy to require users to specify an identity when they assume a role. For ex. shown below :   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/14be993f-ac99-44ae-b237-9ee065e1fbd9)   
+Now, For this same request one entry will be there in the another account (assumed role account log).
+
+    
 
 
 #######################
