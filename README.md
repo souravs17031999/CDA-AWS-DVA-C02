@@ -26,9 +26,7 @@ AWS Certified Developer - Associate
 - Cross-account access between AWS accounts
 - Long-term credentials for designated IAM users in your AWS account
 
-#######################
-```TASKS REQUIRING ROOT USER CREDENTIALS```  
-#######################  
+#######################```TASKS REQUIRING ROOT USER CREDENTIALS```#######################   
 - Change your account settings. This includes the account name, email address, root user password, and root user access keys. 
 - Restore IAM user permissions. If the only IAM administrator accidentally revokes their own permissions, you can sign in as the root user to edit policies and restore those permissions.
 - Activate IAM access to the Billing and Cost Management console.
@@ -42,9 +40,7 @@ AWS Certified Developer - Associate
 - Request AWS GovCloud (US) account root user access keys from AWS Support.
 
 
-#######################
-IAM USER 
-#######################  
+#######################```IAM USER```#######################    
 
 - An IAM user is an identity within your AWS account that has specific permissions for a single person or application
 - An IAM group is an identity that specifies a collection of IAM users. You can't sign in as a group. You can use groups to specify permissions for multiple users at a time. 
@@ -63,9 +59,7 @@ We recommend that you create IAM users only if you need to enable programmatic a
 
 - Now, this user can also have its own alias set after which its own custom URL will be generated for Logon.
 
-#######################
-IAM POLICIES 
-#######################
+#######################```IAM POLICIES```#######################  
 
 **Identity-based and resource-based policies**
 - Identity-based policies are permissions policies that you attach to an IAM identity, such as an IAM user, group, or role.
@@ -98,18 +92,14 @@ IAM POLICIES
 - Overall for ex. Below shows User which has policies attached via different mechanisms   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6e7a6b17-7588-47f3-a35d-62036962c697)   
 
-#######################
-PASSWORD POLICY IAM 
-#######################
+#######################```PASSWORD POLICY IAM```#######################   
 - IAM password policy can be managed and user can be required to change their password at certain time or their first logon etc...   
 - Password policy can be either chosen as AWS default or it can be new custom policy as defined by admin user.    
 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9f082128-6eeb-4f96-9a0f-cce471281413)   
 
 
-#######################
-MFA
-#######################
+#######################```MFA```#######################   
 - Multi factor authentication
 - Types of MFA devices
   - Virtual MFA device (google authenticator, Authy)
@@ -121,17 +111,13 @@ MFA
  
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b91a99e8-877b-4efc-9e10-fcf5c34a2485)   
 
-#######################
-LOGON WITH ACCESS KEYS
-#######################
+#######################```LOGON WITH ACCESS KEYS```#######################  
 - ACCESS KEY ID (USERNAME)
 - SECRET ACCESS KEYS (PASSWORD)
 
 - According to purpose of access keys, AWS recommends multiple options like AWS CLI V2, CLOUDSHELL ETC...
 
-#######################
-IAM ROLES
-#######################
+#######################```IAM ROLES```#######################  
 
 - A role is an IAM identity that you can create in your account that has specific permissions.
 - However, instead of being uniquely associated with one person, a role can be assumed by anyone who needs it. A role does not have standard long-term credentials such as a password or access keys associated with it. Instead, when you assume a role, it provides you with temporary security credentials for your role session.
@@ -147,17 +133,26 @@ IAM ROLES
   - Role chaining is when you use a role to assume a second role through the AWS CLI
   - AWS does not treat using roles to grant permissions to applications that run on EC2 instances as role chaining.
 
-#######################
-IAM POLICY SIMULATOR
-#######################
+**SCENARIOS FOR ROLES**
+- Providing access to an IAM user in another AWS account that you own  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8e074f0b-8f9f-4608-abe9-2444c2861c72)
+- Providing access for non AWS workloads
+- Providing access to AWS accounts owned by third parties
+- Providing access to an AWS service
+- Providing access to externally authenticated users (identity federation)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0e8a366e-3b74-4e7d-a880-fd828d6e7b7d)   
+
+**The confused deputy problem**
+- The confused deputy problem is a security issue where an entity that doesn't have permission to perform an action can coerce a more-privileged entity to perform the action.
+- Prevention: ```aws:SourceArn``` and ```aws:SourceAccount``` global condition context keys in resource-based policies to limit the permissions that a service has to a specific resource.
+
+#######################```IAM POLICY SIMULATOR```#######################  
 - One can choose and evaluate the roles and policies attached in real time using this simulator.   
  
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/11dbc126-c328-4225-bf62-d2d25ff816e2)   
 
 
-#######################
-ABAC
-#######################
+#######################```ABAC```#######################   
 - Attribute-based access control (ABAC) is an authorization strategy that defines permissions based on attributes. In AWS, these attributes are called tags. You can attach tags to IAM resources, including IAM entities (users or roles) and to AWS resources.
 - These ABAC policies can be designed to allow operations when the principal's tag matches the resource tag.
 - ABAC is helpful in environments that are growing rapidly and helps with situations where policy management becomes cumbersome.
@@ -167,14 +162,16 @@ ABAC
 - ABAC
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5e0c31ef-ddb0-49ad-a38e-d4dbf3e45751)  
 
-#######################
-SECURITY TOKEN SERVICE (STS) 
-#######################
+#######################```SECURITY TOKEN SERVICE (STS)```#######################   
 - You can use the AWS Security Token Service (AWS STS) to create and provide trusted users with temporary security credentials that can control access to your AWS resources.
 - Temporary security credentials are not stored with the user but are generated dynamically and provided to the user when requested.
 - By default, AWS STS is a global service with a single endpoint at https://sts.amazonaws.com. However, you can also choose to make AWS STS API calls to endpoints in any other supported Region.
 - This is used in Identity federation usecases, cross account accesses
 - The AWS STS API operations create a new session with temporary security credentials that include an access key pair and a session token. The access key pair consists of an access key ID and a secret key. Users (or an application that the user runs) can use these credentials to access your resources.
+- TO Have user call STS, User should be assigned in-line policy with STS assumeRole (depending on usecase there are 3 options)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/868fa142-b2d2-4622-be23-8d488f888c20)    
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1f78aa93-d980-4860-9bf7-ebada1995d94)   
+
 - Bearer tokens:
   - AWS STS can help in getting bearer tokens which are required for accessing some services programmatically. For ex. AWS CodeArtifact etc..
   - The token's access key ID begins with the ABIA prefix (can help in cloudtrail logs)
@@ -192,13 +189,9 @@ Now, For this same request one entry will be there in the another account (assum
 EXAMPLES OF STS API's :
 - AssumeRole, AssumeRoleWithSAML, AssumeRoleWithWebIdentity, GetFederationToken, GetSessionToken
 - The permissions policy of the role that is being assumed determines the permissions for the temporary security credentials that are returned by AssumeRole, AssumeRoleWithSAML, and AssumeRoleWithWebIdentity
-- Optionally, one can pass inline or managed session policies as parameters which filters only the passed permissions returned.  
-    
+- Optionally, one can pass inline or managed session policies as parameters which filters only the passed permissions returned.
 
-
-#######################
-IAM SECURITY TOOLS 
-#######################
+#######################```IAM SECURITY TOOLS```#######################   
 - IAM CREDENTIALS REPORT (ACCOUNT LEVEL)
   - report that lists all your account users and the status of their various credentials
  
@@ -210,9 +203,7 @@ IAM SECURITY TOOLS
 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d79b24a5-b708-4890-96bf-2fc1596b97ba)     
 
-#######################
-IAM BEST PRACTICES
-#######################
+#######################```IAM BEST PRACTICES```#######################   
 - DONT'T user ever root user except for AWS account setup
 - One physical user = AWS IAM user  
 - Assign users to groups and assign permissions to groups
@@ -223,9 +214,7 @@ IAM BEST PRACTICES
 - Audit permission of your account using IAM creds report and access advisor   
 - Never share IAM user and access keys
 
-#######################
-AWS SHARED RESPONSIBILITY MODEL FOR IAM 
-#######################
+#######################```AWS SHARED RESPONSIBILITY MODEL FOR IAM```#######################    
 - AWS
   - INFRASTRUCTURE OF GLOBAL NETWORK SECURITY
   - CONFIGURATION AND VULN ANALYSIS
@@ -237,6 +226,31 @@ AWS SHARED RESPONSIBILITY MODEL FOR IAM
   - ROTATE ALL YOUR KEYS OFTEN
   - USE IAM ROOLS TO APPLY APPROPRIATE PERMISSIONS
   - ANALYZE ACCESS PATTERNS AND REVIEW PERMISSIONS
+
+## Identity providers and federation 
+- In case users are already managed outside of AWS like in corporate directory or any other identity providers, you can use IAM identity providers instead of creating IAM users in your AWS account. Ex. well-known IdP, such as Login with Amazon, Facebook, or Google.
+- IAM supports IdPs that are compatible with OpenID Connect (OIDC) or SAML 2.0 (Security Assertion Markup Language 2.0)   
+
+**OIDC**   
+- OpenID Connect is an interoperable authentication protocol based on the OAuth 2.0 framework of specifications (IETF RFC 6749 and 6750). It simplifies the way to verify the identity of users based on the authentication performed by an Authorization Server and to obtain user profile information in an interoperable and REST-like manner.
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a286a5c3-fdd3-40d0-8f9f-78a390feae8a)   
+
+**SAML**  
+- Security Assertion Markup Language is an open standard for exchanging authentication and authorization data between parties, in particular, between an identity provider and a service provider using SOAP over HTTP.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d5d4f3d3-acf4-4a65-a725-157c1590c42f)     
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/583d89be-6d08-4abe-9ad6-fe9580bf8251)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f1309a89-a805-4b6d-bab9-3f919236a144)     
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f639a8f3-3a0c-4d10-b7fe-0936e3776d82)
+- A SAML Request, also known as an authentication request, is generated by the Service Provider to "request" an authentication.
+- A SAML Response is generated by the Identity Provider. It contains the actual assertion of the authenticated user. In addition, a SAML Response may contain additional information, such as user profile information and group/role information, depending on what the Service Provider can support.
+- The Service Provider never directly interacts with the Identity Provider. A browser acts as the agent to carry out all the redirections.
+
+- The preferred way to use web identity federation is to use Amazon Cognito.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6c922032-fbad-4d27-be1f-17698bc16f4a)  
+- Using SAML-based federation for API access to AWS
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2119d497-dee5-4be7-9fc7-2d0e35e6b398)  
+
 
 # Deployment
 
