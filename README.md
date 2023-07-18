@@ -75,8 +75,14 @@ We recommend that you create IAM users only if you need to enable programmatic a
 - In addition, Amazon S3 supports a permission mechanism known as an access control list (ACL) that is independent of IAM policies and permissions. You can use IAM policies in combination with Amazon S3 ACLs.
 
 **AWS MANAGED POLICY VS CUSTOMER MANAGED POLICY**
-- Managed policies that are created and managed by AWS (AWS MANAGED POLICIES)   
-- Managed policies that you create and manage in your AWS account. Customer managed policies provide more precise control over your policies than AWS managed policies. You can create, edit, and validate an IAM policy in the visual editor or by creating the JSON policy document directly.   
+- Managed policies that are created and managed by AWS (AWS MANAGED POLICIES)
+- AWS managed policies make it convenient for you to assign appropriate permissions to users, groups, and roles. It is faster than writing the policies yourself
+- Managed policies that you create and manage in your AWS account.
+- You cannot change the permissions defined in AWS managed policies. AWS occasionally updates the permissions defined in an AWS managed policy.   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/baa8855f-4321-4b05-accf-cce7167c558e)   
+
+  
+- Customer managed policies provide more precise control over your policies than AWS managed policies. You can create, edit, and validate an IAM policy in the visual editor or by creating the JSON policy document directly.   
 
 - IAM Policy inheritance   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/99800cc5-9184-4095-8b2a-59fbc71f949a)   
@@ -141,6 +147,13 @@ We recommend that you create IAM users only if you need to enable programmatic a
 - Providing access to an AWS service
 - Providing access to externally authenticated users (identity federation)   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0e8a366e-3b74-4e7d-a880-fd828d6e7b7d)   
+
+**Using IAM Roles**
+- AWS Management Console (by switching roles)
+- assume-role CLI or AssumeRole API operation
+- assume-role-with-saml CLI or AssumeRoleWithSAML API operation
+- assume-role-with-web-identity CLI or AssumeRoleWithWebIdentity API operation
+- Console URL constructed with AssumeRole, AssumeRoleWithSAML, AssumeRoleWithWebIdentity (broker constructs the URL and calls STS for assuming the roles)
 
 **The confused deputy problem**
 - The confused deputy problem is a security issue where an entity that doesn't have permission to perform an action can coerce a more-privileged entity to perform the action.
@@ -227,7 +240,8 @@ EXAMPLES OF STS API's :
   - USE IAM ROOLS TO APPLY APPROPRIATE PERMISSIONS
   - ANALYZE ACCESS PATTERNS AND REVIEW PERMISSIONS
 
-## Identity providers and federation 
+#######################``` Identity providers and federation ```#######################      
+
 - In case users are already managed outside of AWS like in corporate directory or any other identity providers, you can use IAM identity providers instead of creating IAM users in your AWS account. Ex. well-known IdP, such as Login with Amazon, Facebook, or Google.
 - IAM supports IdPs that are compatible with OpenID Connect (OIDC) or SAML 2.0 (Security Assertion Markup Language 2.0)   
 
@@ -249,8 +263,32 @@ EXAMPLES OF STS API's :
 - The preferred way to use web identity federation is to use Amazon Cognito.
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6c922032-fbad-4d27-be1f-17698bc16f4a)  
 - Using SAML-based federation for API access to AWS
-![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2119d497-dee5-4be7-9fc7-2d0e35e6b398)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2119d497-dee5-4be7-9fc7-2d0e35e6b398)    
 
+-------------------------   
+- IAM OIDC identity providers are entities in IAM that describe an external identity provider (IdP) service that supports the OpenID Connect (OIDC) standard, such as Google or Salesforce. You use an IAM OIDC identity provider when you want to establish trust between an OIDC-compatible IdP and your AWS account.
+- If you are using an OIDC identity provider from either Google, Facebook, or Amazon Cognito, do not create a separate IAM identity provider using this procedure. These OIDC identity providers are already built-in to AWS and are available for your use.    
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9bec80a7-c6a4-46b5-84da-711d986aa372)
+
+- Assigning roles to federated identity :
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/86ae1fb5-a4b3-4bab-be80-e234341be7b9)     
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/780e6c3b-70c1-4317-86ea-950b5c1fac33)  
+
+Note: 
+- Github OIDC provider: Best practice is to limit the to a specific GitHub organization, repository, or branch using the conditions section defined in the permission policies.
+
+- For trusting the external IDP, you must supply a thumbprint. IAM requires the thumbprint for the top intermediate certificate authority (CA) that signed the certificate used by the external identity provider (IdP).   
+
+- SAML OIDC identity provider configuration requires metadata document to be uploaded. This document includes the issuer's name, expiration information, and keys that can be used to validate the SAML authentication response (assertions) that are received from the IdP.   
+- After you have verified a user's identity in your organization, the external identity provider (IdP) sends an authentication response to the AWS SAML endpoint at https://region-code.signin.aws.amazon.com/saml
+
+
+- Custom IDP broker: You can write and run code to create a URL that lets users who sign in to your organization's network securely access the AWS Management Console. The URL includes a sign-in token that you get from AWS and that authenticates the user to AWS.
+
+#######################``` Tagging IAM resources ```#######################      
+- A tag is a custom attribute label that you can assign to an AWS resource. Each tag has two parts: A tag key, An optional field known as a tag value
+- Names for AWS tags are case sensitive so ensure that they are used consistently. 
 
 # Deployment
 
