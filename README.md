@@ -52,7 +52,9 @@ We recommend that you use Identity Center to provide console access to a person.
 - I want to create an IAM user
 We recommend that you create IAM users only if you need to enable programmatic access through access keys, service-specific credentials for AWS CodeCommit or Amazon Keyspaces, or a backup credential for emergency account access.
 - Control maximum permissions using IAM boundary:
-  - 
+  - An entity's permissions boundary allows it to perform only the actions that are allowed by both its identity-based policies and its permissions boundaries.
+  - The permissions boundary for an IAM entity (user or role) sets the maximum permissions that the entity can have.
+  - If any one of these policy types explicitly denies access for an operation, then the request is denied. 
 
 - Administrative access to IAM user group (group name is admin here)
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3bb8415f-823f-4726-88ab-a28640aa1494)
@@ -73,6 +75,11 @@ We recommend that you create IAM users only if you need to enable programmatic a
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0386d74c-f8b0-49bb-acba-25eff9c5b4ed)   
 - For requests made from one account to another, the requester in Account A must have an identity-based policy that allows them to make a request to the resource in Account B. Also, the resource-based policy in Account B must allow the requester in Account A to access the resource. There must be policies in both accounts that allow the operation, otherwise the request fails.
 - In addition, Amazon S3 supports a permission mechanism known as an access control list (ACL) that is independent of IAM policies and permissions. You can use IAM policies in combination with Amazon S3 ACLs.
+- ACL(ACCESS CONTROL LIST):
+  - enable you to manage access to buckets and objects.
+  - When you create a bucket or an object, Amazon S3 creates a default ACL that grants the resource owner full control over the resource.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b71a231f-6e5c-42bf-94ea-9b97407af266)  
+
 
 **AWS MANAGED POLICY VS CUSTOMER MANAGED POLICY**
 - Managed policies that are created and managed by AWS (AWS MANAGED POLICIES)
@@ -289,6 +296,114 @@ Note:
 #######################``` Tagging IAM resources ```#######################      
 - A tag is a custom attribute label that you can assign to an AWS resource. Each tag has two parts: A tag key, An optional field known as a tag value
 - Names for AWS tags are case sensitive so ensure that they are used consistently. 
+
+**When to use IAM policies vs S3 policies**
+- If question is What can this user do in AWS? -> choose IAM policies 
+- If question is Who can access this S3 bucket?? -> choose S3 bucket policies
+
+#######################``` DIRECTORY SERVICES ```#######################      
+**LDAP**
+- Lightweight Directory Access Protocol (LDAP) is a vendor-neutral software protocol used to lookup information or devices within a network
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d56cb79e-f31f-4ab3-adad-fb3bafbc9563)
+- users will go through one of two possible user authentication methods: simple authentication, like SSO with login credentials, or SASL authentication, which binds the LDAP server to a program like Kerberos.
+
+
+**ACTIVE DIRECTORY, AWS DIRECTORY SERVICES**
+- LDAP is the core protocol used in–but not exclusive to–Microsoft’s Active Directory (AD) directory service, a large directory service database that contains information spanning every user account in a network
+- ADDS: Active Directory stores information about objects on the network and makes this information easy for administrators and users to find and use.
+- ADFS: Active Directory Federation Service (AD FS) enables Federated Identity and Access Management by securely sharing digital identity and entitlements rights across security and enterprise boundaries. AD FS extends the ability to use single sign-on functionality that is available within a single security or enterprise boundary to Internet-facing applications to enable customers, partners, and suppliers a streamlined user experience while accessing the web-based applications of an organization.
+- Four options in AWS:
+  - AWS MANAGED AD: AWS Directory Service for Microsoft Active Directory is powered by an actual Microsoft Windows Server Active Directory (AD), managed by AWS in the AWS Cloud.
+  - AD Connector: AD Connector is a proxy service that provides an easy way to connect compatible AWS applications. When you add users to AWS applications such as Amazon QuickSight, AD Connector reads your existing Active Directory to create lists of users and groups to select from
+  - Simple AD is a Microsoft Active Directory–compatible directory from AWS Directory Service that is powered by Samba 4.
+  - Amazon Cognito is a user directory that adds sign-up and sign-in to your mobile app or web application using Amazon Cognito User Pools.
+
+#######################``` IAM IDENTITY CENTER ```#######################    
+
+- IAM Identity Center provides one place where you can create or connect workforce users and centrally manage their access across all their AWS accounts and applications.
+- With application assignments, you can grant your workforce users in IAM Identity Center single sign-on access to SAML 2.0 applications, such as Salesforce and Microsoft 365
+- With multi-account permissions you can plan for and centrally implement IAM permissions across multiple AWS accounts at one time without needing to configure each of your accounts manually.
+
+* STEPS TO START USING IDENTITY CENTER:
+  - Enable identity center (also should be using AWS organizations otherwise it will create one in the process)
+  - Choose your identity source:
+    - Identity Center directory default
+    - Active Directory
+    - External identity provider
+  - After you enable IAM Identity Center, you must choose your identity source. The identity source that you choose determines where IAM Identity Center searches for users and groups that need single sign-on access.
+  - Create an administrative permission set: Permission sets are stored in IAM Identity Center and define the level of access that users and groups have to an AWS account.
+  - To set up AWS account access for an administrative user in IAM Identity Center, you must assign the user to the AdministratorAccess permission set.
+  - Similarly, for different other uses, least privelege sets can be created and accordingly assigned when new users/groups are synced from other directories.
+ 
+- When working in IAM Identity Center, users must be uniquely identifiable. IAM Identity Center implements a user name that is the primary identifier for your users. For most of SAML based integration, it's the user's email address. IAM Identity Center allows you to specify something other than an email address for user sign-in.
+- Identity Center enabled applications can work with users and groups for which IAM Identity Center is aware. Provisioning is the process of making user and group information available for use by IAM Identity Center and Identity Center enabled applications.
+- There are two types of authentication sessions maintained by IAM Identity Center: one to represent the users’ sign in to IAM Identity Center, and another to represent the users’ access to IAM Identity Center enabled applications, such as Amazon SageMaker Studio or Amazon Managed Grafana. Sessions are cached for 1 hr refreshable, so if user is disabled/deleted, then upto 1 hr, it can still perform or login or create another sessions.
+- A permission set is a template that you create and maintain that defines a collection of one or more IAM policies. One can use predefined permission sets or custom permission sets.
+- Although IAM Identity Center determines access from the Region in which you enable the service, AWS accounts are global. This means that after users sign in to IAM Identity Center, they can operate in any Region when they access AWS accounts through IAM Identity Center
+- IAM service-linked roles: A service-linked role is a unique type of IAM role that is linked directly to IAM Identity Center. It is predefined by IAM Identity Center and includes all the permissions that the service requires to call other AWS services on your behalf
+
+#######################``` AMAZON COGNITO ```#######################    
+
+- Amazon Cognito is an identity platform for web and mobile apps. It’s a user directory, an authentication server, and an authorization service for OAuth 2.0 access tokens and AWS credentials.
+- With Amazon Cognito, you can authenticate and authorize users from the built-in user directory, from your enterprise directory, and from consumer identity providers like Google and Facebook.
+
+**User pools**  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5456ba5e-d0ff-4c94-8d40-21d0ff939325)  
+- User pools are a user directory with both self-service and administrator-driven user creation, management, and authentication.
+- Your organization's SAML 2.0 and OIDC IdPs bring workforce identities into Cognito and your app. The public OAuth 2.0 identity stores Amazon, Google, Apple and Facebook bring customer identities.
+- From a user pool, you can issue authenticated JSON web tokens (JWTs) directly to an app, a web server, or an API.
+
+OIDC IdP |	Issue ID tokens to authenticate users
+Authorization server	| Issue access tokens to authorize user access to APIs
+SAML 2.0 SP	| Transform SAML assertions into ID and access tokens
+OIDC SP	| Transform OIDC tokens into ID and access tokens
+OAuth 2.0 SP	| Transform ID tokens from Apple, Facebook, Amazon, or Google to your own ID and access tokens
+Authentication frontend service	| Sign up, manage, and authenticate users with the hosted UI
+API support for your own UI	| Create, manage and authenticate users through API requests in supported AWS SDKs¹
+MFA	| Use SMS messages, TOTPs, or your user's device as an additional authentication factor¹
+Security monitoring & response	| Secure against malicious activity and insecure passwords¹
+Customize authentication flows	| Build your own authentication mechanism, or add custom steps to existing flows¹
+Groups	| Create logical groupings of users, and a hierarchy of IAM role claims when you pass tokens to identity pools
+Customize ID tokens	| Customize your ID tokens with new, modified, and suppressed claims
+Customize user | attributes	Assign values to user attributes and add your own custom attributes
+
+**Identity pools**  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9baf3149-1f11-45e6-b056-f8e01abeb8ee)   
+- Set up an Amazon Cognito identity pool when you want to authorize authenticated or anonymous users to access your AWS resources.
+- Identity pools use both role-based (RBAC) and attribute-based access control (ABAC) to manage your users’ authorization to access your AWS resources.
+- An identity pool can accept authenticated claims directly from both workforce and consumer identity providers.
+- The token that your identity pool creates for the identity can retrieve temporary session credentials from AWS Security Token Service (AWS STS).
+
+Amazon Cognito user pool SP	| Exchange an ID token from your user pool for web identity credentials from AWS STS
+SAML 2.0 SP	| Exchange SAML assertions for web identity credentials from AWS STS
+OIDC SP	| Exchange OIDC tokens for web identity credentials from AWS STS
+OAuth 2.0 SP	| Exchange OAuth tokens from Amazon, Facebook, Google, Apple, and Twitter for web identity credentials from AWS STS
+Custom SP	| With AWS credentials, exchange claims in any format for web identity credentials from AWS STS
+Unauthenticated access	| Issue limited-access web identity credentials from AWS STS without authentication
+Role-based access control	| Choose an IAM role for your authenticated user based on their claims, and configure your roles to only be assumed in the context of your identity pool
+Attribute-based access control	| Convert claims into principal tags for your AWS STS temporary session, and use IAM policies to filter resource access based on principal tags
+
+- An Amazon Cognito user pool can also fulfill a dual role as a service provider (SP) to your IdPs, and an IdP to your app.
+- When to choose what ?
+
+**Usecases**
+- Authenticate with a user pool   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f8657b51-ec3e-41b3-b844-a91181f45c67)   
+- Access your server-side resources with a user pool
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ebc22418-984a-4a8c-a503-feeca4a4d4bc)
+- Access resources with API Gateway and Lambda with a user pool
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6766c44a-b632-4410-9dfb-00bd0752f79c)
+- Access AWS services with a user pool and an identity pool
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7fd3590f-f86c-4555-ad79-0775c7693cee)
+- Authenticate with a third party and access AWS services with an identity pool
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/eefe922e-e753-4e5a-a078-045dc7dca4aa)   
+- Access AWS AppSync resources with Amazon Cognito
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9b3ba223-8652-46fb-88f5-b16136a0060b)   
+
+
+
+
+
 
 # Deployment
 
