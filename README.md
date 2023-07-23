@@ -401,9 +401,74 @@ Attribute-based access control	| Convert claims into principal tags for your AWS
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9b3ba223-8652-46fb-88f5-b16136a0060b)   
 
 
+* Configuring User pools in Cognito
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ab0b2cfb-8bbd-4b31-9893-899ccd56c05c)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fb5f69d4-344b-40e8-9c21-e9ae4a922d3e)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/90c96aa1-879d-4626-80d4-2e8ae5b99296)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c85878a3-185f-4345-a612-027cc4c9fdd6)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bc89fba9-60d1-46eb-a5f2-f22659b61e15)    
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f62e3f7e-8286-4023-82ff-6b530b95172e)
+
+* Configuring Identity pools in Cognito 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/09ada152-e41a-4168-b613-2059c10ac17c)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9ad67ec5-3aae-468c-b6d9-8f1d994831b0)    
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e948aa05-8ae4-4611-aa64-4545330df7bc)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/08e536da-388b-4b1f-b91b-2101f6fed754)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d29ae56a-8eb5-4600-92dc-fc58dac218d5)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bd248f73-76e9-4e31-b5cb-35fd6dec4c8c)  
 
 
+* Lambda Triggers
+- You can create a Lambda function and then activate that function during user pool operations such as user sign-up, confirmation, and sign-in (authentication) with a Lambda trigger. You can add authentication challenges, migrate users, and customize verification messages.
+- When you have a Lambda trigger assigned to your user pool, Amazon Cognito interrupts its default flow to request information from your function. Amazon Cognito generates a JSON event and passes it to your function. The event contains information about your user's request to create a user account, sign in, reset a password, or update an attribute. Your function then has an opportunity to take action, or to send the event back unmodified.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/81f90980-982d-4095-a19b-63a1dd888a7d)   
+- Except for Custom Sender Lambda triggers, Amazon Cognito invokes Lambda functions synchronously. When Amazon Cognito calls your Lambda function, it must respond within 5 seconds. If it doesn't and if the call can be retried, Amazon Cognito retries the call. After three unsuccessful attempts, the function times out. You can't change this five-second timeout value.
 
+* Cognito Hosted UI
+- Cognito has a hosted authentication UI that you can add to your app to handle sign-up and sign-in workflows
+- Using the hosted UI, you have a foundation for integration with social logins, OIDC or SAML
+- Can customize with a custom logo and custom CSS
+- The hosted UI sign-in webpage uses the following URL format. Note the response_type. In this case, response_type=code for the authorization code grant.
+- When you navigate to the /oauth2/authorize endpoint with your custom parameters, Amazon Cognito either redirects you to the /oauth2/login endpoint or, if you have an identity_provider or idp_identifier parameter, silently redirects you to your IdP sign-in page.  
+```https://<your_domain>/oauth2/authorize?response_type=code&client_id=<your_app_client_id>&redirect_uri=<your_call```  
+
+- You can view the hosted UI sign-in webpage with the following URL for the implicit code grant where response_type=token. After a successful sign-in, Amazon Cognito returns user pool tokens to your web browser's address bar.    
+```https://<your_domain>/login?response_type=token&client_id=<your_app_client_id>&redirect_uri=<your_callback_url>```   
+
+- You can find the JSON web token (JWT) identity token after the #idtoken= parameter in the response.   
+Here's a sample response from an implicit grant request. Your identity token string will be much longer.     
+```https://www.example.com/#id_token=123456789tokens123456789&expires_in=3600&token_type=Bearer```  
+
+- The Amazon Cognito hosted UI doesn't support custom cross-origin resource sharing (CORS) origin policies. A CORS policy in the hosted UI would prevent users from passing authentication parameters in their requests. Instead, implement a CORS policy in the web frontend of your app.
+
+* Tokens
+- After your app user successfully signs in, Amazon Cognito creates a session and returns an ID, access, and refresh token for the authenticated user.
+- The ID token is a JSON Web Token (JWT) that contains claims about the identity of the authenticated user, such as name, email, and phone_number
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5817e678-72ed-467f-9c36-40b4ba9f70e8)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/87228a79-ca34-4a62-a810-3c21e884cef5)  
+
+- The signature of the ID token is calculated based on the header and payload of the JWT token. Before you accept the claims in any ID token that your app receives, verify the signature of the token.
+- The user pool access token contains claims about the authenticated user, a list of the user's groups, and a list of scopes. The purpose of the access token is to authorize API operations.
+- You can use the refresh token to retrieve new ID and access tokens. By default, the refresh token expires 30 days after your application user signs into your user pool. When you create an application for your user pool, you can set the application's refresh token expiration to any value between 60 minutes and 10 years.
+- With refresh tokens, you can persist users' sessions in your app for a long time. Over time, your users might want to deauthorize some devices where they have signed in, continually refreshing their session. To sign your user out from a single device, revoke their refresh token.
+- ```GlobalSignOut``` accepts a user's valid–unaltered, unexpired, not-revoked–access token. Because this API is token-authorized, one user can't use it to initiate sign-out for another user.
+- You can, however, generate an ```AdminUserGlobalSignOut``` API request that you authorize with your AWS credentials to sign out any user from all of their devices.
+- Before you can revoke a token for an existing user pool client, you must enable token revocation.
+- For verification of JWT tokens: Verifying the Token signature (from JWK url, public, private key pair) and Verifying the token claims: exp, aud, client_id, iss etc...
+- You can cache the access tokens so that your app only requests a new access token if a cached token is expired. Otherwise, your caching endpoint returns a token from the cache. This prevents an additional call to an Amazon Cognito API endpoint.
+- caching proxy with API Gateway: The cache key is a combination of the OAuth scopes that you request in the scope URL parameter and the Authorization header in the request. The Authorization header contains your app client ID and client secret.   
+
+* ALB Flow with Cognito
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/65795aa9-a593-48f1-bff4-a25f17bf5e4c)  
+
+* ALB Flow with any OIDC ID provider 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3dcd424d-bd8b-4279-8bed-67717107c0d5)   
+
+* Cognito Identity pool with Social providers (user pool)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ff78356a-aa88-42d7-8355-bbd8b799899c)  
+
+* Authentication + Authorization 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/563fda90-37f0-4f2b-bfe4-9163c84f387e)   
 
 # Deployment
 
