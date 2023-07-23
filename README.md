@@ -105,6 +105,19 @@ We recommend that you create IAM users only if you need to enable programmatic a
 - Overall for ex. Below shows User which has policies attached via different mechanisms   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6e7a6b17-7588-47f3-a35d-62036962c697)   
 
+- Permission evaluation 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ad3f8995-1fc6-4ae5-8551-ada681ea12c8)   
+- When evaluating if an IAM Principal can perform an operation X on a
+bucket, the union of its assigned IAM Policies and S3 Bucket Policies will
+be evaluated
+- Few examples of how permission are evaluated
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b7bb2b82-25c3-4acf-8f22-d3194952d8c9)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a940fcf6-05e3-4ec0-bdf5-900c946d1751)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/553f6f1b-7e62-46fb-a61a-a4a866ac2541)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/53861e7a-c8db-43aa-ae9f-7227bdc4bb63)  
+
+
+
 #######################```PASSWORD POLICY IAM```#######################   
 - IAM password policy can be managed and user can be required to change their password at certain time or their first logon etc...   
 - Password policy can be either chosen as AWS default or it can be new custom policy as defined by admin user.    
@@ -210,6 +223,12 @@ EXAMPLES OF STS API's :
 - AssumeRole, AssumeRoleWithSAML, AssumeRoleWithWebIdentity, GetFederationToken, GetSessionToken
 - The permissions policy of the role that is being assumed determines the permissions for the temporary security credentials that are returned by AssumeRole, AssumeRoleWithSAML, and AssumeRoleWithWebIdentity
 - Optionally, one can pass inline or managed session policies as parameters which filters only the passed permissions returned.
+
+* AWS STS WITH MFA
+- aws:MultiFactorAuthPresent:true   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f9fdd359-12c3-475a-8bd8-bd6077140f94)
+- GetSessionToken returns: • Access ID • Secret Key • Session Token • Expiration date
+
 
 #######################```IAM SECURITY TOOLS```#######################   
 - IAM CREDENTIALS REPORT (ACCOUNT LEVEL)
@@ -472,6 +491,7 @@ Here's a sample response from an implicit grant request. Your identity token str
 
 **Cognito Sync/AppSync**
 - Amazon Cognito Sync is an AWS service and client library that makes it possible to sync application-related user data across devices. Amazon Cognito Sync can synchronize user profile data across mobile devices and the web without using your own backend.
+- 
 
 # Deployment
 
