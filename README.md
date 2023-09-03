@@ -497,12 +497,12 @@ Here's a sample response from an implicit grant request. Your identity token str
 ### How SSL/TLS works and why encryption ?
 
 * SSL/TLS
-- An SSL/TLS certificate is a digital object that allows systems to verify the identity & subsequently establish an encrypted network connection to another system using the Secure Sockets Layer/Transport Layer Security (SSL/TLS) protocol.
-- PKI provides a way for one party to establish the identity of another party using certificates if they both trust a third-party - known as a certificate authority.
-- A certificate authority (CA) is an organization that sells SSL/TLS certificates to web owners, web hosting companies, or businesses. The CA validates the domain and owner details before issuing the SSL/TLS certificate.  EX.  Amazon Trust Services
-- An SSL/TLS certificate has a maximum validity period of 13 months.
-- A session key maintains encrypted communication between the browser and web server after the initial SSL/TLS authentication is completed. The session key is a cipher key for symmetric cryptography. Symmetric cryptography uses the same key for both encryption and decryption.
-- Encryption in flight ensures no MITM (man in the middle attack) can happen
+  - An SSL/TLS certificate is a digital object that allows systems to verify the identity & subsequently establish an encrypted network connection to another system using the Secure Sockets Layer/Transport Layer Security (SSL/TLS) protocol.
+  - PKI provides a way for one party to establish the identity of another party using certificates if they both trust a third-party - known as a certificate authority.
+  - A certificate authority (CA) is an organization that sells SSL/TLS certificates to web owners, web hosting companies, or businesses. The CA validates the domain and owner details before issuing the SSL/TLS certificate.  EX.  Amazon Trust Services
+  - An SSL/TLS certificate has a maximum validity period of 13 months.
+  - A session key maintains encrypted communication between the browser and web server after the initial SSL/TLS authentication is completed. The session key is a cipher key for symmetric cryptography. Symmetric cryptography uses the same key for both encryption and decryption.
+  - Encryption in flight ensures no MITM (man in the middle attack) can happen
 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/241f559b-e0e4-4f69-bc16-0ef80fe7e17d)
 
