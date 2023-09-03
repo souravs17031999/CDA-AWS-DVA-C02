@@ -496,7 +496,7 @@ Here's a sample response from an implicit grant request. Your identity token str
 
 ### How SSL/TLS works and why encryption ?
 
-* SSL/TLS
+**SSL/TLS**
   - An SSL/TLS certificate is a digital object that allows systems to verify the identity & subsequently establish an encrypted network connection to another system using the Secure Sockets Layer/Transport Layer Security (SSL/TLS) protocol.
   - PKI provides a way for one party to establish the identity of another party using certificates if they both trust a third-party - known as a certificate authority.
   - A certificate authority (CA) is an organization that sells SSL/TLS certificates to web owners, web hosting companies, or businesses. The CA validates the domain and owner details before issuing the SSL/TLS certificate.  EX.  Amazon Trust Services
@@ -506,7 +506,7 @@ Here's a sample response from an implicit grant request. Your identity token str
 
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/241f559b-e0e4-4f69-bc16-0ef80fe7e17d)
 
-* Client-side encryption
+**Client-side encryption**
   - Data is encrypted by the client and never decrypted by the server
   - Data will be decrypted by a receiving client
   - The server should not be able to decrypt the data
@@ -514,7 +514,7 @@ Here's a sample response from an implicit grant request. Your identity token str
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bb3dc228-6983-4043-a5a9-a3e53146c57b)  
 
 
-* Server-side encryption
+**Server-side encryption**
   - Data is encrypted after being received by the server
   - Data is decrypted before being sent
   - It is stored in an encrypted form thanks to a key (usually a data key)
@@ -523,19 +523,19 @@ Here's a sample response from an implicit grant request. Your identity token str
   - Able to audit KMS Key usage using CloudTrail
   - Never ever store your secrets in plaintext, especially in your code!, Encrypted secrets can be stored in the code / environment variables
 
-* AWS KMS KEYS
+**AWS KMS KEYS**
 
   - An AWS KMS key is a logical representation of a cryptographic key. A KMS key contains metadata, such as the key ID, key spec, key usage, creation date, description, and key state. Most importantly, it contains a reference to the key material that is used when you perform cryptographic operations with the KMS key.
   - Key material is the string of bits used in a cryptographic algorithm. Secret key material must be kept secret to protect the cryptographic operations that use it. Public key material is designed to be shared.
   - AWS KEY MATERIAL TYPES: AWS_KMS (MANAGED BY AWS), EXTERNAL (IMPORTED KEY MATERIAL FROM OUTSIDE OF AWS), AWS_CLOUDHSM (MANAGED BY AWS IN AWSCLOUDHSM CLUSTER), EXTERNAL_KEY_STORE (EXTERNAL KEY MANAGED OUTSIDE OF AWS)
 
-* Customer Managed KMS   
+**Customer Managed KMS**
   
   - The KMS keys that you create are customer managed keys. Customer managed keys are KMS keys in your AWS account that you create, own, and manage. You have full control over these KMS keys, including establishing and maintaining their key policies, IAM policies, and grants, enabling and disabling them, rotating their cryptographic material, adding tags, creating aliases that refer to the KMS keys, and scheduling the KMS keys for deletion.
   - For customer managed keys, the value of the KeyManager field of the DescribeKey response is CUSTOMER.
   - Customer managed keys incur a monthly fee and a fee for use in excess of the free tier.
 
-* AWS Managed KMS   
+**AWS Managed KMS**
 
   - AWS managed keys are KMS keys in your account that are created, managed, and used on your behalf by an AWS service
   - You don't have to create or maintain the key or its key policy, and there's never a monthly fee for an AWS managed key.
@@ -544,28 +544,28 @@ Here's a sample response from an implicit grant request. Your identity token str
   - For AWS managed keys, the value of the KeyManager field of the DescribeKey response is AWS.
   - All AWS managed keys are automatically rotated every year. You cannot change this rotation schedule.
 
-* Identifying AWS KMS TYPES FROM AWS CONSOLE
+**Identifying AWS KMS TYPES FROM AWS CONSOLE**
 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5314df88-c880-442f-a50e-0df294b62ba2)
 
 
-* Symmetric encryption KMS keys   
+**Symmetric encryption KMS keys**
 
   - When you create an AWS KMS key, by default, you get a KMS key for symmetric encryption
   - a symmetric encryption KMS key represents a 256-bit AES-GCM encryption key, except in China Regions, where it represents a 128-bit SM4 encryption key.
   - Symmetric encryption keys are used in symmetric encryption, where the same key is used for encryption and decryption.
 
-* Asymmetric KMS keys  
+**Asymmetric KMS keys**
 
   - An asymmetric KMS key represents a mathematically related public key and private key pair.
   - The private key never leaves AWS KMS unencrypted. To use the private key, you must call AWS KMS. You can use the public key within AWS KMS by calling the AWS KMS API operations, or you can download the public key and use it outside of AWS KMS
   - You can create asymmetric KMS keys that represent RSA key pairs or SM2 key pairs (China Regions only) for public key encryption or signing and verification, or elliptic curve key pairs for signing and verification.
 
-* HMAC KMS key (symmetric)   
+**HMAC KMS key (symmetric)**
 
   - Represents a symmetric key of varying length that is used to generate and verify hash-based message authentication codes. The key material in an HMAC KMS key never leaves AWS KMS unencrypted. To use your HMAC KMS key, you must call AWS KMS.
 
-* Identifying types of keys from AWS console
+**Identifying types of keys from AWS console**
 
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f3f78c4e-3918-4906-af28-3648cacde925)    
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/dd1e112c-9b7b-451b-a0d7-c0a959dd0bda)  
@@ -582,7 +582,7 @@ Here's a sample response from an implicit grant request. Your identity token str
 
   - To determine whether a KMS key is symmetric or asymmetric, use the DescribeKey operation. The KeySpec field in the response contains the key spec of the KMS key. For a symmetric encryption KMS key, the value of KeySpec is SYMMETRIC_DEFAULT. Other values indicate an asymmetric KMS key or an HMAC KMS key.
 
-* Use Cases for choosing types of Keys   
+**Use Cases for choosing types of Keys** 
 
   - Encrypt and decrypt data: If your use case requires encryption outside of AWS by users who cannot call AWS KMS, asymmetric KMS keys are a good choice. Otherwise Symmetric keys are good (fast, efficient, and assures the confidentiality and authenticity of data).  
   - Sign messages and verify signatures: To sign messages and verify signatures, you must use an asymmetric KMS key.  
@@ -590,7 +590,7 @@ Here's a sample response from an implicit grant request. Your identity token str
   - Generate and verify HMAC codes: To generate and verify hash-based message authentication codes, use an HMAC KMS key.
   - Use with AWS services: AWS services that encrypt your data require a symmetric encryption KMS key..
 
-* Rotating Keys   
+**Rotating Keys**
 
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bba38650-bef0-45e0-b5f5-c3d42b9aeff0)
   - To create new cryptographic material for your customer managed keys, you can create new KMS keys, and then change your applications or aliases to use the new KMS keys. Or, you can enable automatic key rotation for an existing KMS key.
@@ -598,7 +598,7 @@ Here's a sample response from an implicit grant request. Your identity token str
   - AWS KMS supports automatic key rotation only for symmetric encryption KMS keys with key material that AWS KMS creates.
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/824d4f69-f11d-460d-9040-b427eae437a5)   
 
-* Authentication and access control for AWS KMS  
+**Authentication and access control for AWS KMS**
 
   - No AWS principal has any permissions to a KMS key unless that permission is provided explicitly and never denied.
   - AWS KMS resource policies for KMS keys are called key policies. All KMS keys have a key policy.
@@ -617,7 +617,11 @@ Here's a sample response from an implicit grant request. Your identity token str
   - IAM policies in the external account must delegate the key policy permissions to its users and roles. These policies are set in the external account and give permissions to users and roles in that account.
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e11ade5c-f04f-422d-b2fa-782f02e824ec)  
 
-* To generate an SSH key pair, run the command ssh-keygen.
+  - Use case example   
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cb4939d5-48c3-4136-85a8-e5b7fd3a1030)  
+
+
+**To generate an SSH key pair, run the command ssh-keygen.**
 ```ssh-keygen```
   - Generate a CSR: ```openssl req –out certificatesigningrequest.csr -new -newkey rsa:2048 -nodes -keyout privatekey.key```
   - Decode CSR: ```openssl req -in server.csr -noout –text```
@@ -625,13 +629,19 @@ Here's a sample response from an implicit grant request. Your identity token str
   - Generate a CSR for an Existing Certificate and Private Key: ```openssl x509 -x509toreq -in certificate.crt -out CSR.csr -signkey privateKey.key```
   - Generate Self signed certificate: ```openssl req -newkey rsa:2048 -nodes -keyout domain.key-x509 -days 365 -out domain.crt```
 
-* Using KMS with AWS services
+**Using KMS with AWS services**
 
   - Amazon S3 integrates with AWS Key Management Service (AWS KMS) to provide server-side encryption of Amazon S3 objects. Amazon S3 uses AWS KMS keys to encrypt your Amazon S3 objects.
   - Secrets Manager integrates with AWS Key Management Service (AWS KMS) to encrypt every version of every secret value with a unique data key that is protected by an AWS KMS key. This integration protects your secrets under encryption keys that never leave AWS KMS unencrypted.
   - With encryption at rest, DynamoDB transparently encrypts all customer data in a DynamoDB table, including its primary key and local and global secondary indexes, whenever the table is persisted to disk. 
 
-* AWS Certificate management
+**Region Snapshots in KMS**
+  - KMS Keys are region scoped, for ex. EBS volumes encrypted with KMS keys in a region if needs to be copied snapshots to another region, then following needs to be done
+    - Copy the EBS volume encrypted to another region which means AWS will re-encrypt the new snapshot with a different key as same key can't be used in two different regions.  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/30457b92-4c8f-45df-8008-761ecffdd7ae)   
+  
+
+**AWS Certificate management**
 
 # Deployment
 
