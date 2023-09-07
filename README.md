@@ -640,6 +640,17 @@ Here's a sample response from an implicit grant request. Your identity token str
     - Copy the EBS volume encrypted to another region which means AWS will re-encrypt the new snapshot with a different key as same key can't be used in two different regions.  
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/30457b92-4c8f-45df-8008-761ecffdd7ae)   
   
+**ENCRYPT AND DECRYPT API**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b50c31a4-ad61-46e2-a544-a38eb4173a15)   
+
+``aws kms encrypt --key-id alias/tutorial --plaintext fileb://ExampleSecretFile.txt --output text --query CiphertextBlob  --region eu-west-2 > ExampleSecretFileEncrypted.base64```  
+```cat ExampleSecretFileEncrypted.base64 | base64 --decode > ExampleSecretFileEncrypted```   
+```aws kms decrypt --ciphertext-blob fileb://ExampleSecretFileEncrypted   --output text --query Plaintext > ExampleFileDecrypted.base64  --region eu-west-2```  
+```cat ExampleFileDecrypted.base64 | base64 --decode > ExampleFileDecrypted.txt```   
+
+
+
+
 
 **AWS Certificate management**
 
