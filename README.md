@@ -1,4 +1,4 @@
-# CDA-AWS-DVA-C02
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d003f129-8bde-4d20-989d-c2a6ffb231fb)# CDA-AWS-DVA-C02
 AWS Certified Developer - Associate
 
 # Development with AWS Services
@@ -531,7 +531,7 @@ Here's a sample response from an implicit grant request. Your identity token str
 
 **Customer Managed KMS**
   
-  - The KMS keys that you create are customer managed keys. Customer managed keys are KMS keys in your AWS account that you create, own, and manage. You have full control over these KMS keys, including establishing and maintaining their key policies, IAM policies, and grants, enabling and disabling them, rotating their cryptographic material, adding tags, creating aliases that refer to the KMS keys, and scheduling the KMS keys for deletion.
+  - The KMS keys that you create are customer managed keys. Customer managed keys (CMK) are KMS keys in your AWS account that you create, own, and manage. You have full control over these KMS keys, including establishing and maintaining their key policies, IAM policies, and grants, enabling and disabling them, rotating their cryptographic material, adding tags, creating aliases that refer to the KMS keys, and scheduling the KMS keys for deletion.
   - For customer managed keys, the value of the KeyManager field of the DescribeKey response is CUSTOMER.
   - Customer managed keys incur a monthly fee and a fee for use in excess of the free tier.
 
@@ -598,7 +598,10 @@ Here's a sample response from an implicit grant request. Your identity token str
   - AWS KMS supports automatic key rotation only for symmetric encryption KMS keys with key material that AWS KMS creates.
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/824d4f69-f11d-460d-9040-b427eae437a5)   
 
-**Authentication and access control for AWS KMS**
+**Policies and Access control for AWS KMS**
+
+  - Default KMS Key Policy: Complete access to the key to the root user = entire AWS account  
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2fbb1b90-6ecb-4e00-8ff6-54e21cf998c5)   
 
   - No AWS principal has any permissions to a KMS key unless that permission is provided explicitly and never denied.
   - AWS KMS resource policies for KMS keys are called key policies. All KMS keys have a key policy.
@@ -649,9 +652,24 @@ Here's a sample response from an implicit grant request. Your identity token str
 ```cat ExampleFileDecrypted.base64 | base64 --decode > ExampleFileDecrypted.txt```   
 
 **ENVELOPE ENCRYPTION**
-- 
+- since KMS has upper limit of 4KB data for encrypt, anything over 4 KB of data that needs to be encrypted must use the Envelope Encryption
+- The key used to encrypt data itself is called a data encryption key (DEK).
+- The DEK is encrypted (also known as wrapped) by a key encryption key (KEK). The process of encrypting a key with another key is known as envelope encryption.
+- Encryption and Decryption is done on client side with help of DEK and KEK.
+- Flow of this encryption with new API
+- ```GenerateDataKey``` API: This operation returns a plaintext copy of the data key and a copy that is encrypted under a symmetric encryption KMS key that you specify.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8ba97d87-5bbc-4f4b-b556-cc49fa9a3da3)
+- ```Decrypt``` API: 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/63471ed4-5638-4922-bac7-6fc477e495e0)
+- ```GenerateDataKeyWithoutPlaintext``` API: GenerateDataKeyWithoutPlaintext is identical to the GenerateDataKey operation except that it does not return a plaintext copy of the data key. This operation is useful for systems that need to encrypt data at some point, but not immediately.
+- ```GenerateRandom``` API : Returns a random byte string that is cryptographically secure.
+You must use the NumberOfBytes parameter to specify the length of the random byte string. There is no default value for string length.
 
-
+**Encryption SDK**
+- The AWS Encryption SDK is a client-side encryption library designed to make it easy for everyone to encrypt and decrypt data
+- Data key caching stores data keys and related cryptographic material in a cache. When you encrypt or decrypt data, the AWS Encryption SDK looks for a matching data key in the cache. If it finds a match, it uses the cached data key rather than generating a new one. Data key caching can improve performance, reduce cost, and help you stay within service limits as your application scales.
+- TradeOff between security and cost/usage
+- Uses LocalCryptoMaterialsCache(max age, max bytes, max number of messages)
 
 **AWS Certificate management**
 
