@@ -648,7 +648,8 @@ Here's a sample response from an implicit grant request. Your identity token str
 ```aws kms decrypt --ciphertext-blob fileb://ExampleSecretFileEncrypted   --output text --query Plaintext > ExampleFileDecrypted.base64  --region eu-west-2```  
 ```cat ExampleFileDecrypted.base64 | base64 --decode > ExampleFileDecrypted.txt```   
 
-
+**ENVELOPE ENCRYPTION**
+- 
 
 
 
