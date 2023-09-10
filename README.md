@@ -1,4 +1,4 @@
-![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d003f129-8bde-4d20-989d-c2a6ffb231fb)# CDA-AWS-DVA-C02
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0ea04f5b-c9df-4969-918c-baf72ef19893)![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d003f129-8bde-4d20-989d-c2a6ffb231fb)# CDA-AWS-DVA-C02
 AWS Certified Developer - Associate
 
 # Development with AWS Services
@@ -670,6 +670,88 @@ You must use the NumberOfBytes parameter to specify the length of the random byt
 - Data key caching stores data keys and related cryptographic material in a cache. When you encrypt or decrypt data, the AWS Encryption SDK looks for a matching data key in the cache. If it finds a match, it uses the cached data key rather than generating a new one. Data key caching can improve performance, reduce cost, and help you stay within service limits as your application scales.
 - TradeOff between security and cost/usage
 - Uses LocalCryptoMaterialsCache(max age, max bytes, max number of messages)
+- Once installed SDK, commands with ```aws-encryption-cli``` can be used to perform encryption and decryption on client-side.
+
+**How to manage KMS Request Quotas**
+- They vary based on region and type of CMK (like symmetric or assymetric) used in the request. It can be shared for one account across the regions.
+- Use exponential backoff
+- Use envelope encryption To reduce calls 
+- Request a increase quota when experiencing ThrottlingException 400 bad requests, via API or Support Request to AWS.
+
+**How to Encrypt secrets used in the code**
+- For ex. DB passwords injected via environment variable can be encrypted
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ef7a5bb0-9280-4657-9e6e-5f956937fd90)
+- LAMBDA FUNCTION WITH KMS
+
+**S3 Bucket SSE-KMS**
+- Example of envelope encryption and how to avoid lot of KMS calls and high bills at scale -> S3 bucket keys which generates lot of data keys and encrypt the data , reducing the direct calls to KMS
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/19e9446b-4930-45bb-b5a6-60b137a3c4bd)
+- less KMS CloudTrail events in CloudTrail
+- server-side encryption
+- request costs by up to 99 percent
+
+**CloudWatch logs encryption with KMS**
+- Encryption can be enabled at log-group level by associating a CMK with log-group level via cloudwatch logs API (can't be done from console).
+
+## CloudHSM (hardware security modules)
+- Generate and use cryptographic keys on dedicated FIPS 140-2 Level 3 single-tenant HSM instances.
+- can be Integrated with KMS with option of custom key store
+- Highly available via CLOUDHSM clusters deployed across the regions
+- You do not use AWS Identity and Access Management (IAM) users or IAM policies to access resources within your cluster. Instead, you use HSM users directly on HSMs in your AWS CloudHSM cluster.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8f7455cd-14d4-462c-ab1e-d33ae950161c)  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/55dbd00b-82ec-4704-9d33-c17c0838d68c)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7bbb31e2-1149-4d22-93e7-41475261bdc1)  
+
+## SSM (simple systems manager) Parameter store 
+- provides secure, hierarchical storage for configuration data management and secrets management 
+- You can store data such as passwords, database strings, Amazon Machine Image (AMI) IDs, and license codes as parameter values. You can store values as plain text or encrypted data
+- You can reference Systems Manager parameters in your scripts, commands, SSM documents, and configuration and automation workflows by using the unique name that you specified when you created the parameter.
+- You can configure change notifications and invoke automated actions for both parameters and parameter policies. These events are recieved by EventBridge.
+- Parameter Store is integrated with AWS Secrets Manager so that you can retrieve Secrets Manager secrets
+- Parameter Store provides support for three types of parameters: String (any text data), StringList(comma separated list), and SecureString (ecnrypted confidential data such as passwords etc..) 
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e306abf1-1fb1-4c53-93c1-af7767df3af5)
+- You restrict access to AWS Systems Manager parameters by using AWS Identity and Access Management (IAM). More specifically, you create IAM policies that restrict access
+- You can change a standard parameter to an advanced parameter at any time, but you can’t revert an advanced parameter to a standard parameter. This is because reverting an advanced parameter to a standard parameter would cause the system to truncate the size of the parameter from 8 KB to 4 KB, resulting in data loss.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/325e1849-f858-4a59-87eb-70cf34226dec)
+- EventBridge can be configured via EventBridge rule that invokes a target based on events that happen to one or more parameters in your AWS account
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ba112f04-3d92-4979-b29c-3a44204d021d)
+
+- For ex. When you create an advanced parameter, you specify when a parameter expires, when to receive notification before a parameter expires
+- how long to wait before notification should be sent that a parameter hasn't changed
+
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1501a98e-e18f-4348-969a-4ab756400944)
+- In the lambda functions, we can simply use ```boto3``` client library to use SSM and call its methods to read the secrets directly from SSM store and avoid hardcoding the credentials. Note: lambda function will also require permissions via IAM to read/update/delete parameters in parameter store.
+- For ```SecureString``` string type, we can use flag ```withDecryption=True``` and permissions to access KMS keys, lambda function will be able to also decrypt the value stored in parameter store.
+
+## Secrets manager 
+- Best place to store secrets like DB credentials, Oauth Tokens, certificates etc.. similar to hashicorp Vault.
+- Force rotation of secrets
+- Generation of secrets can be done on rotation (via lambda)
+- Ex. rotate AWS RDS DB credentials
+- A secret has versions which hold copies of the encrypted secret value. When you change the secret value, or the secret is rotated, Secrets Manager creates a new version
+- Secrets are encrypted with KMS (mandatory)
+- Multi region replication for secrets for disaster recovery
+- Since the credentials are no longer stored with the application, rotating credentials no longer requires updating your applications and deploying changes to application clients.
+- A secret contains JSON key value pairs + metadata about the secret like ARN, a description, a resource policy, and tags etc...
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/495f8a7b-38e6-41de-b1f6-461ede00c9f0)  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/11d57115-77b3-4c21-a6da-f7b5fa5d1c93)
+- Code can directly access the secrets from secret manager by assuming the IAM role ```RoleToRetrieveSecretAtRuntime```
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/eac80c50-e9bd-4acb-8ffa-5fc91b4b98df)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/33cf0ae5-e1a7-4448-b2f8-d92366a4d038)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fdb8e0af-c2f0-488f-8c85-6615c264214a)
+- Can be integrated with CloudFormation templates where it can be entirely managed by for ex. RDS DB including rotation mechanism or it can be generated by us in template and dynamically referenced in RDS resource (very similar to helm charts).
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ee077bd6-2215-4b7b-b068-5c1c62f02972)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fb1d280d-e66d-4658-9d15-2c59dd902d26)   
+ 
+- From ```CodeBuild``` environment, we can configure environment variables including secrets and specify it to be fetched from secrets managed, SSM Parameter store etc...
+
+## AWS Nitro Enclaves
+- AWS Nitro Enclaves is an Amazon EC2 feature that allows you to create isolated execution environments, called enclaves, from Amazon EC2 instances. Enclaves are separate, hardened, and highly-constrained virtual machines.
+- They provide only secure local socket connectivity with their parent instance. They have no persistent storage, interactive access, or external networking
+- Process highly sensitive data in an isolated compute environment: Personally Identifiable Information (PII), healthcare, financial, secure MUlti party computations etc...
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/66d272cc-081a-4ca0-ac89-fb01485b88ec)
+- Nitro Enclaves also supports an attestation feature, which allows you to verify an enclave's identity and ensure that only authorized code is running inside it. Nitro Enclaves is integrated with the AWS Key Management Service
+
 
 **AWS Certificate management**
 
