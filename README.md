@@ -1,4 +1,4 @@
-![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0ea04f5b-c9df-4969-918c-baf72ef19893)![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d003f129-8bde-4d20-989d-c2a6ffb231fb)# CDA-AWS-DVA-C02
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2f74dece-655c-414e-a194-0c7c73f7ec18)# CDA-AWS-DVA-C02
 AWS Certified Developer - Associate
 
 # Development with AWS Services
@@ -701,6 +701,9 @@ You must use the NumberOfBytes parameter to specify the length of the random byt
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8f7455cd-14d4-462c-ab1e-d33ae950161c)  
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/55dbd00b-82ec-4704-9d33-c17c0838d68c)
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7bbb31e2-1149-4d22-93e7-41475261bdc1)  
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0ea04f5b-c9df-4969-918c-baf72ef19893)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d003f129-8bde-4d20-989d-c2a6ffb231fb)
 
 ## SSM (simple systems manager) Parameter store 
 - provides secure, hierarchical storage for configuration data management and secrets management 
