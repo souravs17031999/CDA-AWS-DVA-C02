@@ -623,15 +623,6 @@ Here's a sample response from an implicit grant request. Your identity token str
   - Use case example   
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cb4939d5-48c3-4136-85a8-e5b7fd3a1030)  
 
-
-**To generate an SSH key pair, run the command ssh-keygen.**
-```ssh-keygen```
-  - Generate a CSR: ```openssl req –out certificatesigningrequest.csr -new -newkey rsa:2048 -nodes -keyout privatekey.key```
-  - Decode CSR: ```openssl req -in server.csr -noout –text```
-  - Generate CSR For existing private key: ```openssl req -out CSR.csr -key privateKey.key -new```
-  - Generate a CSR for an Existing Certificate and Private Key: ```openssl x509 -x509toreq -in certificate.crt -out CSR.csr -signkey privateKey.key```
-  - Generate Self signed certificate: ```openssl req -newkey rsa:2048 -nodes -keyout domain.key-x509 -days 365 -out domain.crt```
-
 **Using KMS with AWS services**
 
   - Amazon S3 integrates with AWS Key Management Service (AWS KMS) to provide server-side encryption of Amazon S3 objects. Amazon S3 uses AWS KMS keys to encrypt your Amazon S3 objects.
@@ -755,8 +746,39 @@ You must use the NumberOfBytes parameter to specify the length of the random byt
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/66d272cc-081a-4ca0-ac89-fb01485b88ec)
 - Nitro Enclaves also supports an attestation feature, which allows you to verify an enclave's identity and ensure that only authorized code is running inside it. Nitro Enclaves is integrated with the AWS Key Management Service
 
+## Sanitizing Sensitive data
+- Data containing any PII (Personally identifiable information) should be sanitized i.e. encrypted which can be done at various levels.
+- For ex. while entering the requests from cloudFront servers, lambda function can intercept the requests and perform encryption of sensitive fields or entire payload and then decrypt while returning back the same information (field level encryption).
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9bddd570-c765-407c-97c0-540bd526ee60)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/50314467-634e-4f4f-a50d-9a2d5a2fb707)
 
-**AWS Certificate management**
+
+## AWS Certificate management**  
+- AWS Certificate Manager (ACM) handles the complexity of creating, storing, and renewing public and private SSL/TLS X.509 certificates and keys that protect your AWS websites and applications.
+- A certificate authority (CA) is an entity that issues digital certificates. The CA issues signed digital certificates that affirm the identity of the certificate subject and bind that identity to the public key contained in the certificate. A CA also typically manages certificate revocation.
+- A public key infrastructure (PKI) consists of hardware, software, people, policies, documents, and procedures that are needed to create, issue, manage, distribute, use, store, and revoke digital certificates.
+- A certificate authority (CA) typically exists within a hierarchical structure that contains multiple other CAs with clearly defined parent-child relationships between them. Child or subordinate CAs are certified by their parent CAs, creating a certificate chain. The CA at the top of the hierarchy is referred to as the root CA, and its certificate is called the root certificate. This certificate is typically self-signed.
+
+**AWS Public certificates**
+- This service is for enterprise customers who need a secure web presence using TLS. ACM certificates are deployed through Elastic Load Balancing, Amazon CloudFront, Amazon API Gateway
+- ACM certificates are X.509 SSL/TLS certificates that bind the identity of your website and the details of your organization to the public key that is contained in the certificate. ACM uses your AWS KMS key to encrypt the private key.
+
+**AWS PRIVATE CA**
+- This service is for enterprise customers building a public key infrastructure (PKI) inside the AWS cloud and intended for private use within an organization.
+- you can create your own certificate authority (CA) hierarchy and issue certificates with it for authenticating users, computers, applications, services, servers, and other devices.
+- Certificates issued by a private CA cannot be used on the internet.
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0a7c3a07-c61d-4831-8f48-ff0ab5331181)
+
+
+**To generate an SSH key pair, run the command ssh-keygen.**
+```ssh-keygen```
+  - Generate a CSR: ```openssl req –out certificatesigningrequest.csr -new -newkey rsa:2048 -nodes -keyout privatekey.key```
+  - Decode CSR: ```openssl req -in server.csr -noout –text```
+  - Generate CSR For existing private key: ```openssl req -out CSR.csr -key privateKey.key -new```
+  - Generate a CSR for an Existing Certificate and Private Key: ```openssl x509 -x509toreq -in certificate.crt -out CSR.csr -signkey privateKey.key```
+  - Generate Self signed certificate: ```openssl req -newkey rsa:2048 -nodes -keyout domain.key-x509 -days 365 -out domain.crt```
+
 
 # Deployment
 
