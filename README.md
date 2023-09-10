@@ -3,6 +3,75 @@ AWS Certified Developer - Associate
 
 # Development with AWS Services
 
+## AWS LAMBDA FUNCTION
+- AWS Lambda is a compute service that lets you run code without provisioning or managing servers.
+- With Lambda, all you need to do is supply your code in one of the language runtimes that Lambda supports.
+- The Lambda service runs your function only when needed and scales automatically. You only pay for the compute time that you consume—there is no charge when your code is not running.
+
+**When to Use Lambda**
+- File processing: Use Amazon Simple Storage Service (Amazon S3) to trigger Lambda data processing in real time after an upload.
+- Stream processing: Use Lambda and Amazon Kinesis to process real-time streaming data for application activity tracking, transaction order processing, clickstream analysis, data cleansing, log filtering, indexing, social media analysis, Internet of Things (IoT) device data telemetry, and metering.
+- Web applications: Combine Lambda with other AWS services to build powerful web applications that automatically scale up and down and run in a highly available configuration across multiple data centers.
+- IoT backends: Build serverless backends using Lambda to handle web, mobile, IoT, and third-party API requests.
+- Mobile backends: Build backends using Lambda and Amazon API Gateway to authenticate and process API requests. Use AWS Amplify to easily integrate with your iOS, Android, Web, and React Native frontends.
+
+**Pricing**
+- Request pricing: Free tier of 1,000,000 AWS Lambda requests
+- Duration pricing: 400,000 GBs (400,000 SECONDS IF 1 GB RAM) of compute time
+- Data transfer with AWS Lambda Functions is free in the same AWS Region between the following services: S3, SNS, SQS ETC...
+- Data transferred “in” to and “out” of your AWS Lambda functions, from outside the region the function executed, will be charged at the Amazon EC2 data transfer rates
+
+**Language support**
+- Node.js (JavaScript) • Python • Java (Java 8 compatible) • C# (.NET Core) • Golang • C# / Powershell • Ruby • Custom Runtime API (community supported, example Rust)
+- • Lambda Container Image • The container image must implement the Lambda Runtime API
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c5d36b0f-bcf6-45bd-9274-fa17f3e29254)     
+- Ex. 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2e182266-52f8-434f-8e27-6dffaca1853b)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/720c396d-7351-4a5b-b2bd-abeb60d3192f)   
+
+**Key features**
+- Use environment variables to adjust your function's behavior without updating code.
+- Manage the deployment of your functions with versions
+- Create a container image for a Lambda function by using an AWS provided base image or an alternative base image so that you can reuse your existing container tooling
+
+**Concepts**
+- programming model:
+  - The programming model defines the interface between your code and the Lambda system.
+  - You tell Lambda the entry point to your function by defining a handler in the function configuration
+  - The runtime passes in objects to the handler that contain the invocation event and the context, such as the function name and request ID.
+  - When the handler finishes processing the first event, the runtime sends it another.
+  - The function's class stays in memory, so clients and variables that are declared outside of the handler method in initialization code can be reused.
+  - The runtime captures logging output from your function and sends it to Amazon CloudWatch Logs.
+  - Lambda scales your function by running additional instances of it as demand increases, and by stopping instances as demand decreases.
+- Execution environment:
+  - The execution environment manages the resources required to run your function.
+  - The execution environment also provides lifecycle support for the function's runtime and any external extensions associated with your function.
+  - The function's runtime communicates with Lambda using the Runtime API. Ex. ```/runtime/invocation/next```, ```/runtime/invocation/AwsRequestId/response```, ```/runtime/init/error```, ```/runtime/invocation/AwsRequestId/error```
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/80fa5e71-3edf-4f13-a9c3-e16a3fd8df68)
+  - Execution environment lifecycle 
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/04ab3e72-bb9e-4eea-bc3f-0a6ef9ae3e25)
+    - Init phase capped at 10 seconds
+    - Invoke phase capped as configurable by the user (total execution time + extensions)
+    - Shutdown phase capped at 2 seconds
+  - After the function and all extensions have completed, Lambda maintains the execution environment for some time in anticipation of another function invocation.
+  - When you write your function code, do not assume that Lambda automatically reuses the execution environment for subsequent function invocations.
+- Deployment packages: container images, .zip archives
+- Private networking: A Lambda function always runs inside a VPC owned by the Lambda service. Lambda applies network access and security rules to this VPC and Lambda maintains and monitors the VPC automatically.
+- Concurrency controls: reserved concurrency, provisioned concurrency
+- Lambda offers built-in HTTP(S) custom endpoint support through function URLs.
+- When you invoke a function, you can choose to invoke it synchronously or asynchronously. With synchronous invocation, you wait for the function to process the event and return a response. With asynchronous invocation, Lambda queues the event for processing and returns a response immediately.
+- Event source mapping:
+  - An event source mapping is a resource in Lambda that reads items from an Amazon Simple Queue Service (Amazon SQS) queue, an Amazon Kinesis stream, or an Amazon DynamoDB stream, and sends the items to your function in batches.
+  - maintain a local queue of unprocessed items and handle retries if the function returns an error or is throttled
+  - customize batching behavior and error handling, or to send a record of items that fail processing to a destination.
+  
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5c631f78-c45b-466c-8270-2ce14de63506) 
+
+
+
+
+
 # Security
 
 ## IAM 
