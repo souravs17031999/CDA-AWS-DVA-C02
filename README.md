@@ -114,9 +114,39 @@ AWS Certified Developer - Associate
 • Amazon Lex
 • Amazon Alexa
 • Amazon Kinesis Data Firehose
+    - Default response
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6cda5d89-0445-4854-bf0e-2d6b324b929a)
+    - The payload is a string that contains an event in JSON format. The name of the file where the AWS CLI writes the response from the function is response.json
+    - If the function returns an object or error, the response is the object or error in JSON format. If the function exits without error, the response is null.
+    - If Lambda was able to run the function, the status code is 200, even if the function returned an error.
 
   - **Asynchronous invokation**
     - Lambda queues the event for processing and returns a response immediately. For asynchronous invocation, Lambda handles retries and can send invocation records to a destination.
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b9553267-d04a-4317-a1e6-f1403d00c6f8)
+    - For asynchronous invocation, Lambda places the event in a queue and returns a success response without additional information.
+    - A separate process reads events from the queue and sends them to your function
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f96290f1-fb34-4760-8e2b-0af82624cfb6)
+    - Lambda will perform retries with exponential backoff incase of failure of async invokation of event
+    - If the function returns an error, Lambda attempts to run it two more times, with a one-minute wait between the first two attempts, and two minutes between the second and third attempts.
+    -  For throttling errors (429) and system errors (500-series), Lambda returns the event to the queue and attempts to run the function again for up to 6 hours. The retry interval increases exponentially from 1 second after the first attempt to a maximum of 5 minutes.
+    -  Events might also get deleted from queue if it becomes too late to process them.
+    -  Send invokation record to SNS, SQS, AWS LAMBDA, EVENTBRIDGE
+    -  The invocation record contains details about the request and response in JSON format. You can configure separate destinations for events that are processed successfully, and events that fail all processing attempts.
+    -   dead-letter queue for discarded events: For dead-letter queues, Lambda only sends the content of the event, without details about the response.
+    -   If Lambda can't send a record to a destination you have configured, it sends a DestinationDeliveryFailures metric to Amazon CloudWatch.
+    -   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/47bb9c7c-1714-4455-921b-c296de97ed51)
+    -   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9d249bdc-0d3e-443f-856e-8aa334891261)
+    -   A dead-letter queue acts the same as an on-failure destination in that it is used when an event fails all processing attempts or expires without being processed. However, a dead-letter queue is part of a function's version-specific configuration, so it is locked in when you publish a version.
+    -   To reprocess events in a dead-letter queue, you can set it as an event source for your Lambda function. Alternatively, you can manually retrieve the events.
+    -   Choose an Amazon SQS standard queue if you expect a single entity, such as a Lambda function or CloudWatch alarm, to process the failed event.
+    -   Choose an Amazon SNS standard topic if you expect multiple entities to act on a failed event. For example, you can configure a topic to send events to an email address, a Lambda function, and/or an HTTP endpoint.
+    -   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0d8ca1d1-f096-49d1-b247-f35a1eb1cf93)   
+
+    -   If you're using Amazon SQS as an event source, configure a dead-letter queue on the Amazon SQS queue itself and not on the Lambda function.
+
+
+
+
 
 
 
