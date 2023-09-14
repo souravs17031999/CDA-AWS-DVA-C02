@@ -68,6 +68,62 @@ AWS Certified Developer - Associate
   
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5c631f78-c45b-466c-8270-2ce14de63506) 
 
+**How does it works**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1868d3ec-718e-4d0e-ac80-4f7d7e072e6f)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f60bb556-38bd-419c-aa50-e07006f9e835)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bc8cf5f1-efaf-4b41-ab65-a354783d09bf) 
+
+**Working Example Basic lambda function deploy**
+- Basic python lambda handler  
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/682d9cbc-459e-4f05-a07b-219ebdd97b6f)   
+- General Configuration: memory, timeout, roles/permissions etc....
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/88bc6fe7-4e6f-4449-b6f4-6c44fedf816c)
+- Monitoring cloudwatch
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/69929e1d-d782-4bb1-8bb9-32dc0406154a)
+- Logging cloudwatch
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/48628f90-5d08-45ec-80d0-14776205d3e8)
+- Execution role
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9a1907d3-b473-49a0-a327-93e6505a1dd3)
+- Versioning: A published version is a snapshot of your function code and configuration that can't be changed
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/edbeb769-3edb-4e16-adaf-10036da6bf05)
+- Environment Variables: When you publish a version, the environment variables are locked for that version along with other. Some environment variables are reserved and set by lambda runtimes. For ex. ```AWS_DEFAULT_REGION```, ```_X_AMZN_TRACE_ID``` etc...
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/19df7b7e-efa2-4e8b-a2e2-b408770d0c5d)
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e5c8efd7-38f6-4f39-8803-4fba5a706cee)
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2e376aa6-20ac-4445-9a28-d7d0f59b71dd)
+- Securing Environment variables
+  - Security at rest: Lambda always provides server-side encryption at rest with an AWS KMS key
+  - Security at transit: For additional security, you can enable helpers for encryption in transit, which ensures that your environment variables are encrypted client-side for protection in transit.
+
+**Invoking Lambda functions**
+- You can invoke Lambda functions directly using the Lambda console, a function URL HTTP(S) endpoint, the Lambda API, an AWS SDK, the AWS Command Line Interface (AWS CLI), and AWS toolkits
+- You can also configure other AWS services to invoke your function in response to events or external requests, or on a schedule.
+- For another AWS service to invoke your function directly, you need to create a trigger using the Lambda console. A trigger is a resource you configure to allow another AWS service to invoke your function when certain events or conditions occur. Multiple triggers can co-exist independently and each event that Lambda passes to your function has data from only one trigger.
+- For your Lambda function to process items from a stream or a queue, such as an Amazon Kinesis stream or an Amazon Simple Queue Service (Amazon SQS) queue, you need to create an event source mapping. An event source mapping is a resource in Lambda that reads items from a stream or a queue and creates events containing batches of items to send to your Lambda function. Each event that your function processes can contain hundreds or thousands of items.
+- 
+  - **Synchronous invokation**
+    - With synchronous invocation, you wait for the function to process the event and return a response.
+    - Ex. User Invoked:
+• Elastic Load Balancing (Application Load Balancer)
+• Amazon API Gateway
+• Amazon CloudFront (Lambda@Edge)
+• Amazon S3 Batch
+• Service Invoked:
+• Amazon Cognito
+• AWS Step Functions
+• Other Services:
+• Amazon Lex
+• Amazon Alexa
+• Amazon Kinesis Data Firehose
+
+  - **Asynchronous invokation**
+    - Lambda queues the event for processing and returns a response immediately. For asynchronous invocation, Lambda handles retries and can send invocation records to a destination.
+
+
+
+
+
+
+
 
 
 
