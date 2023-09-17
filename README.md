@@ -1,4 +1,4 @@
-# CDA-AWS-DVA-C02
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b11c1182-24e2-4dc3-a94b-4bd2637c6c9a)# CDA-AWS-DVA-C02
 AWS Certified Developer - Associate
 
 # Development with AWS Services
@@ -100,29 +100,44 @@ AWS Certified Developer - Associate
 - For another AWS service to invoke your function directly, you need to create a trigger using the Lambda console. A trigger is a resource you configure to allow another AWS service to invoke your function when certain events or conditions occur. Multiple triggers can co-exist independently and each event that Lambda passes to your function has data from only one trigger.
 - For your Lambda function to process items from a stream or a queue, such as an Amazon Kinesis stream or an Amazon Simple Queue Service (Amazon SQS) queue, you need to create an event source mapping. An event source mapping is a resource in Lambda that reads items from a stream or a queue and creates events containing batches of items to send to your Lambda function. Each event that your function processes can contain hundreds or thousands of items.
 - 
-  - **Synchronous invokation**
+  - **Synchronous invokation**  
     - With synchronous invocation, you wait for the function to process the event and return a response.
     - Ex. User Invoked:
-• Elastic Load Balancing (Application Load Balancer)
-• Amazon API Gateway
-• Amazon CloudFront (Lambda@Edge)
-• Amazon S3 Batch
-• Service Invoked:
-• Amazon Cognito
-• AWS Step Functions
-• Other Services:
-• Amazon Lex
-• Amazon Alexa
-• Amazon Kinesis Data Firehose
+    • Elastic Load Balancing (Application Load Balancer)
+    • Amazon API Gateway
+    • Amazon CloudFront (Lambda@Edge)
+    • Amazon S3 Batch
+    • Service Invoked:
+    • Amazon Cognito
+    • AWS Step Functions
+    • Other Services:
+    • Amazon Lex
+    • Amazon Alexa
+    • Amazon Kinesis Data Firehose   
     - Default response
     ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6cda5d89-0445-4854-bf0e-2d6b324b929a)
     - The payload is a string that contains an event in JSON format. The name of the file where the AWS CLI writes the response from the function is response.json
     - If the function returns an object or error, the response is the object or error in JSON format. If the function exits without error, the response is null.
     - If Lambda was able to run the function, the status code is 200, even if the function returned an error.
 
-  - **Asynchronous invokation**
+  - **Asynchronous invokation**  
+      • Amazon Simple Storage Service (S3)
+      • Amazon Simple Notification Service (SNS)
+      • Amazon CloudWatch Events / EventBridge
+      • AWS CodeCommit (CodeCommitTrigger: new branch, new tag, new push)
+      • AWS CodePipeline (invoke a Lambda function during the pipeline, Lambda must callback)
+      ----- other -----
+      • Amazon CloudWatch Logs (log processing)
+      • Amazon Simple Email Service
+      • AWS CloudFormation
+      • AWS Config
+      • AWS IoT
+      • AWS IoT Events   
     - Lambda queues the event for processing and returns a response immediately. For asynchronous invocation, Lambda handles retries and can send invocation records to a destination.
-    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b9553267-d04a-4317-a1e6-f1403d00c6f8)
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b9553267-d04a-4317-a1e6-f1403d00c6f8)  
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4f2e39ad-2749-4499-bdd0-69bbbf8307ef)
+    - Returns statusCode "202" here for success/failure 
+
     - For asynchronous invocation, Lambda places the event in a queue and returns a success response without additional information.
     - A separate process reads events from the queue and sends them to your function
     ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f96290f1-fb34-4760-8e2b-0af82624cfb6)
@@ -143,6 +158,164 @@ AWS Certified Developer - Associate
     -   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0d8ca1d1-f096-49d1-b247-f35a1eb1cf93)   
 
     -   If you're using Amazon SQS as an event source, configure a dead-letter queue on the Amazon SQS queue itself and not on the Lambda function.
+
+**Event Source Mappings**
+- An event source mapping is a Lambda resource that reads from an event source and invokes a Lambda function i.e. cases when services can't directly invoke lambda functions.
+- Ex of such services: Amazon DynamoDB, Amazon Kinesis, Amazon MQ, Amazon Managed Streaming for Apache Kafka (Amazon MSK), Self-managed Apache Kafka, Amazon Simple Queue Service (Amazon SQS), Amazon DocumentDB (with MongoDB compatibility) (Amazon DocumentDB)
+- An event source mapping uses permissions in the function's execution role to read and manage items in the event source.
+- For event source mapping to be created, we need ARN of that stream resource.
+- Lambda event source mappings process events at least once due to the distributed nature of its pollers.
+- By default, an event source mapping batches records together into a single payload that Lambda sends to your function based on Either of follwing conditions: The batching window reaches its maximum value (time), The batch size is met, The payload size reaches 6 MB.
+- Events needs to be polled from source, Your Lambda function is invoked synchronously.
+- For DLQ in case of events failure, DLQ should be on SQS itself and not on lambda function since it's synchronous invocation and DLQ on Lambda only works with async invocations.
+- Streaming via Kineses/DynamoDB
+  - A Kinesis data stream is a set of shards. Each shard contains a sequence of data records. A consumer is an application that processes the data from a Kinesis data stream. You can map a Lambda function to a shared-throughput consumer (standard iterator), or to a dedicated-throughput consumer with enhanced fan-out.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cea817ac-f548-4e9c-83ca-56b7c07e4f3e)
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/59ba1153-011e-48c6-827a-aab5331df1ae)  
+- SQS standard/SQS FIFO queues
+  - Lambda reads messages in batches and invokes your function once for each batch. When your function successfully processes a batch, Lambda deletes its messages from the queue.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/231fda0c-d6de-4b98-beef-53e50ceb8aea)
+  - By default, Lambda polls up to 10 messages in your queue at once and sends that batch to your function. To avoid invoking the function with a small number of records, you can tell the event source to buffer records for up to 5 minutes by configuring a batch window. Before invoking the function, Lambda continues to poll messages from the SQS standard queue until the batch window expires, the invocation payload size quota is reached, or the configured maximum batch size is reached.
+
+ ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c3a8503d-9ecb-4ae6-87d5-ec7d8054263f)  
+
+**Event Filtering**
+- control which records from a stream or queue Lambda sends to your function. For example, you can add a filter so that your function only processes Amazon SQS messages containing certain data parameters.
+- By default, you can define up to five different filters for a single event source mapping.
+- Your filters are logically ORed together. If a record from your event source satisfies one or more of your filters, Lambda includes the record in the next event it sends to your function.
+- A filter criteria (FilterCriteria) object is a structure that consists of a list of filters (Filters).
+- Your filter pattern can include metadata properties (fields containing information about the event that created the record. ) , data properties (fields of the record containing the data from your stream or queue) , or both.
+- Ex.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/eced0654-e933-45ee-8f1b-3246991df575)
+
+**ERRORS SCENARIOS HANDLING FOR LAMBDA**
+- Asynchronous invocation: You can configure a dead-letter queue on the function to capture events that weren't successfully processed.
+- Event source mappings: you determine the length of time between retries and destination for failed events by configuring the visibility timeout and redrive policy on the source queue.
+- AWS services: services decide whether to retry or to relay the error back to requester.
+
+**Recursive loop detection**
+- If your function is invoked more than 16 times in the same chain of requests, then Lambda automatically stops the next function invocation in that request chain and notifies you.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/785f34bd-d248-40a6-a590-686c926cb0ef)
+
+**Security Auth for Lambda endpoint**
+- ```AWS_IAM```: users who need to invoke your Lambda function URL must have the ```lambda:InvokeFunctionUrl``` permission. Depending on who makes the invocation request, you may have to grant this permission using a resource-based policy.
+- ```NONE```: you may want your function URL to be public. For example, you might want to serve requests made directly from a web browser. To allow public access to your function URL. However, users must still have ```lambda:InvokeFunctionUrl``` permissions in order to successfully invoke your function URL.
+
+**TRACEABILITY**
+- Lambda integrates with ```AWS X-Ray``` to help you trace, debug, and optimize Lambda applications. You can use X-Ray to trace a request as it traverses resources in your application, which may include Lambda functions and other AWS services.
+
+**Few Lambda Commands**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4f90ecb2-6630-47b9-932c-ddfcd6081757)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/65275ca7-7895-4dd8-8659-1762113d321b)   
+
+### Lambda Integrations 
+
+**Lambda + ALB**  
+- When the load balancer forwards the request to a target group with a Lambda function as a target, it invokes your Lambda function and passes the content of the request to the Lambda function, in JSON format.
+- Elastic Load Balancing invokes your Lambda function synchronously with an event that contains the request body and metadata.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/53fb96e7-9c09-4753-abf9-ec3c49fb44fc)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6920e4ee-4fb9-4126-97f3-1eb911e58aa1)
+- If requests from a client or responses from a Lambda function contain headers with multiple values or contains the same header multiple times, or query parameters with multiple values for the same key, you can enable support for multi-value header syntax. After you enable multi-value headers, the headers and query parameters exchanged between the load balancer and the Lambda function use arrays instead of strings. If you do not enable multi-value header syntax and a header or query parameter has multiple values, the load balancer uses the last value that it receives.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/052a8c88-e7c0-44d5-ae62-b3c7e36e5c73)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3a92c8a1-eaab-41d3-b2e2-709f82790517)
+- Permissions 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/06c48ab3-7fd2-4ff2-85b5-aef64edb1485)
+
+**Lambda + ALB**
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/55f26f79-17e5-4f4c-9b01-4049c8fac106)    
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6a34d023-b816-4cc0-ae2d-356b35971fc9)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/02fee79b-1736-4172-a858-3ed3b9f3f76c)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/80d83231-b41a-48ba-90e1-07b52113f037)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c9212f76-7146-4d38-9a07-5eaa1278f0cf)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/905d7413-b078-448e-b9fb-be8bb22d6b6a)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/34a96f12-f621-4fd2-82b3-511ff245e103)   
+![tempsnip](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6d066c92-d829-4523-ae4f-48c471a95b25)  
+
+**Lambda + SQS (DLQ)**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9318acd9-289f-4892-b465-cb8102e0e533)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/08a76795-1d88-4529-b029-e852c7215133)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/14292f1c-2d3d-4bb8-8504-61906f883c4d)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fb29b551-b888-43fc-b105-80ec310642ff)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/335038b4-a1de-46c1-8a10-43796a36614d)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/83510582-3a88-439e-9cbd-631f95a43a7d)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2b6ed1bd-5533-4be0-8a04-44a136c4643f)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ce5cc5f1-d797-4a38-b2c4-29255d6bdcfb)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4c06a472-9552-4752-a74f-ebc7270ddc1b)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/72f91c18-0de3-45c8-be81-4c0f1ba22dba)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6e211af9-afeb-4c8a-bdf2-67a401464095)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fd30c380-3b53-47a5-98e1-f8b16bdff9ec)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9e33d1b0-3ca0-43b5-801a-c9b686a4488b)  
+
+**Lambda + Cloudwatch events/EventBridge**
+- EventBridge (CloudWatch Events) helps you to respond to state changes in your AWS resources.
+- With EventBridge (CloudWatch Events), you can create rules that match selected events in the stream and route them to your AWS Lambda function to take action.
+- You can also create a Lambda function and direct AWS Lambda to invoke it on a regular schedule. You can specify a fixed rate (CRON expression).
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6e584023-c75d-471e-a4dd-34c6d454065f)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/dca51139-ff06-4e79-ac8c-763b67683982)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/065da954-6c07-4e3f-afd5-9f3e1325da70)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b5586409-4824-4a0b-8f39-c4cf5622d61b)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0104bc31-a9e7-4475-a702-c848698a3996)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f0de7719-4a1a-4656-a633-dba73a0a16a8)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d2838bfa-0fee-437a-a682-8ad56df11fc4)
+
+**Lambda + S3**  
+- Amazon S3 can send an event to a Lambda function when an object is created or deleted. You configure notification settings on a bucket, and grant Amazon S3 permission to invoke a function on the function's resource-based permissions policy.
+- Amazon S3 invokes your function asynchronously with an event that contains details about the object.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7780ecdd-6219-4fde-99c0-233ec1ecc7f0)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/76dbe87c-53a5-4ec7-8ea4-c86d40f6dd4a)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/332a761c-ff45-4ed7-a3a2-98a96ae88bb9)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e8fe1836-2507-4acf-88b0-c7e65a2b92a9)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7e22ed62-6326-47e6-9f0d-92bbf5f4705f)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fabcd3a0-31af-46c3-9e6b-8006a0279114)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0821b2d2-4abd-4f50-9ff7-9f25e82f682f)
+
+**Lambda + EventSourceMappings (SQS)**  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fd0720fe-71c4-488d-9536-2a0a846e9eba)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/eab22360-dcf9-4a60-97c4-0a29fa30ee33)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d5f6eb13-6ead-492f-b320-225fa631e04a)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1f8a7c9a-b947-4209-907e-0661677c3776)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/80e2ae78-0c13-4327-b7fd-52f77eafabe6)   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
