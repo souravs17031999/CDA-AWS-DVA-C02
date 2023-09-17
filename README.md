@@ -65,6 +65,30 @@ AWS Certified Developer - Associate
   - An event source mapping is a resource in Lambda that reads items from an Amazon Simple Queue Service (Amazon SQS) queue, an Amazon Kinesis stream, or an Amazon DynamoDB stream, and sends the items to your function in batches.
   - maintain a local queue of unprocessed items and handle retries if the function returns an error or is throttled
   - customize batching behavior and error handling, or to send a record of items that fail processing to a destination.
+    
+- **Tuning for optimal Performance**:
+  - If your application is CPU-bound (computation heavy), increase RAM
+  - Timeout: default 3 seconds, maximum is 900 seconds (15 minutes)
+  - The execution context is a temporary runtime environment that initializes any external dependencies of your lambda code: can be reused for multiple invocations reducing latency and increasing speed of execution
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/626e7bc1-7a50-42b0-9187-f232dde7b3be)
+  - /tmp space directory: If your Lambda function needs disk space to perform operations (Max 10GB)
+  - To encrypt content on /tmp, you must generate KMS Data Keys
+  - Concurrency limit: up to 1000 concurrent executions
+  - Can set a “reserved concurrency” at the function level (=limit)
+  - Each invocation over the concurrency limit will trigger a “Throttle”
+    • Throttle behavior:
+    • If synchronous invocation => return ThrottleError - 429
+    • If asynchronous invocation => retry automatically and then go to DLQ
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7ba37227-5039-4fa7-96d4-1682c7f1388a)
+  - Cold Start:
+    • New instance => code is loaded and code outside the handler run (init)
+    • If the init is large (code, dependencies, SDK…) this process can take some time.
+    • First request served by new instances has higher latency than the rest
+  - Provisioned concurrency:
+    - Concurrency is allocated before the function is invoked (in advance)
+    - So the cold start never happens and all invocations have low latency
+
+
   
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5c631f78-c45b-466c-8270-2ce14de63506) 
 
@@ -206,9 +230,17 @@ AWS Certified Developer - Associate
 - If your function is invoked more than 16 times in the same chain of requests, then Lambda automatically stops the next function invocation in that request chain and notifies you.
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/785f34bd-d248-40a6-a590-686c926cb0ef)
 
-**Security Auth for Lambda endpoint**
+**Security Auth for Lambda endpoint Function URL**
+- Dedicated HTTP(S) endpoint for your Lambda function
+• A unique URL endpoint is generated for you (never changes)
+• https://<url-id>.lambda-url.<region>.on.aws (dual-stack IPv4 & IPv6)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/121e5d11-df88-4835-ae7b-b6be32cc7a99)  
+- Access your function URL through the public Internet only. Doesn’t support PrivateLink (Lambda functions do support).
+
 - ```AWS_IAM```: users who need to invoke your Lambda function URL must have the ```lambda:InvokeFunctionUrl``` permission. Depending on who makes the invocation request, you may have to grant this permission using a resource-based policy.
 - ```NONE```: you may want your function URL to be public. For example, you might want to serve requests made directly from a web browser. To allow public access to your function URL. However, users must still have ```lambda:InvokeFunctionUrl``` permissions in order to successfully invoke your function URL.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8407892f-ae7a-4c9a-aa40-aa24c34854e4)  
+
 
 **AWS IAM PERMISSIONS FOR LAMBDA**
 - LAMBDA EXECUTION ROLE: Grants the Lambda function permissions to AWS services / resources
@@ -226,6 +258,15 @@ AWS Certified Developer - Associate
     • _X_AMZN_TRACE_ID: contains the tracing header
     • AWS_XRAY_CONTEXT_MISSING: by default, LOG_ERROR
     • AWS_XRAY_DAEMON_ADDRESS: the X-Ray Daemon IP_ADDRESS:PORT
+- Your AWS Lambda function can interact with AWS Secrets Manager using the Secrets Manager API or any of the AWS Software Development Kits (SDKs). You can also use the AWS Parameters and Secrets Lambda Extension to retrieve and cache AWS Secrets Manager secrets in Lambda functions without using an SDK
+
+**Lambda layers**
+- A Lambda layer is a .zip file archive that contains supplementary code or data. Layers usually contain library dependencies, a custom runtime, or configuration files.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/34e3aaf3-3687-4f7d-ac55-00183cee9a8b)
+- Lambda extracts the layer contents into the /opt directory in your function’s execution environment. This gives your function access to your layer content.
+- You can include up to five layers per function. Also, you can use layers only with Lambda functions deployed as a .zip file archive.
+- You should be able to import any library that you’ve added as a layer to the current function.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ee86556d-ea15-4cdf-9d30-e2ecaf748d6e)  
 
 **TRACEABILITY**
 - Lambda integrates with ```AWS X-Ray``` to help you trace, debug, and optimize Lambda applications. You can use X-Ray to trace a request as it traverses resources in your application, which may include Lambda functions and other AWS services.
@@ -303,59 +344,67 @@ AWS Certified Developer - Associate
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1f8a7c9a-b947-4209-907e-0661677c3776)   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/80e2ae78-0c13-4327-b7fd-52f77eafabe6)   
 
+**LAMBDA@EDGE + CLOUDFRONT**
+- Lambda@Edge is an extension of AWS Lambda that lets you deploy Python and Node.js functions at Amazon CloudFront edge locations. A common use case of Lambda@Edge is to use functions to customize the content that your CloudFront distribution delivers to your end users.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6ec008b7-f878-49b7-9e73-885242bc4edd)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8733baf0-e876-4462-adb6-7805d8bcd85f)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/24569365-fb27-450a-a740-820db72aa0b3)
 
+**Lambda + VPC (Virtual private cloud)**
+- By default, your Lambda function is launched outside your own VPC (in an AWS -owned VPC)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b5dfedb8-1260-4751-893b-44e9898980e6)
+- Lambda will create an ENI (Elastic Network Interface) in your subnets
+• AWSLambdaVPCAccessExecutionRole
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ef3e77be-abda-4d2f-8534-a4604b148548)
+- Deploying a Lambda function in a public subnet does not give it internet access or a public IP
+- Deploying a Lambda function in a private subnet gives it internet access if you have a NAT Gateway / Instance
+- You can use VPC endpoints to privately access AWS services without a NAT
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3751e9c3-4da5-4751-8a81-03ecb36d2025)
+- Note: Lambda - CloudWatch Logs works even without endpoint or NAT Gateway
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5df528ec-38ba-4f62-873e-6686e281b3f5)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/404b6492-36f0-4d11-bd3f-aae2ac338b79)     
+- You can connect other VPCs to the VPC with interface endpoints using VPC peering.
+- Traffic between peered VPCs stays on the AWS network and does not traverse the public internet. Once VPCs are peered, resources like Amazon Elastic Compute Cloud (Amazon EC2) instances, Amazon Relational Database Service (Amazon RDS) instances, or VPC-enabled Lambda functions in both VPCs can access the Lambda API through interface endpoints created in the one of the VPCs.
 
+**Lambda + EFS (elastic file system)**
+- You can configure a function to mount an Amazon Elastic File System (Amazon EFS) file system to a local directory.
+- For performance and resilience, use at least two Availability Zones. For example, in a simple configuration you could have a VPC with two private subnets in separate Availability Zones. The function connects to both subnets and a mount target is available in each.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/35192b0d-e873-45e5-a7c9-47052b6207ab)
+- You can configure a function to mount an Amazon EFS file system in another AWS account. For this to happen, it needs: VPC peering must be configured, The security group for the Amazon EFS file system you want to mount must be configured to allow inbound access from the security group associated with your Lambda function., Subnets must be created in each VPC with matching Availability Zone (AZ) IDs., DNS Hostnames must be enabled in both VPCs.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3662025d-7738-4c68-8a66-fa894c0f9e5f)
+  
+**Lambda + CloudFormation**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c37edab7-9bd8-4716-a0ad-4821324e0f66)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4e8a1048-95d0-4fd0-bef6-9d0d7eb8a433)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/09d6b4af-c7fa-4a42-8d64-1af1fd0db202)   
 
+**Lambda container images**
+- Deploy Lambda function as container images of up to 10GB from ECR
+- Pack complex dependencies, large dependencies in a container
+- Base images are available for Python, Node.js, Java, .NET, Go, Ruby
+- Can create your own image as long as it implements the Lambda Runtime API
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3c91c287-9baa-4cde-a83d-c994a34d0a45)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/52b973c4-3e95-4169-905d-86a13ea4279d)
 
+**Lambda versions and aliases**
+- Aliases are ”pointers” to Lambda function versions
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e69c526d-8c81-448a-b995-2edcddfea091)
+- ```CodeDeploy``` can help you automate traffic shift for Lambda aliases
+- Linear: grow traffic every N minutes until 100%
+  • Linear10PercentEvery3Minutes
+  • Linear10PercentEvery10Minutes
+  • Canary: try X percent then 100%
+  • Canary10Percent5Minutes
+  • Canary10Percent30Minutes
+  • AllAtOnce: immediate
+- Can create Pre & Post Traffic hooks to check the health of the Lambda function
 
+**Lambda Insights and Profiler**
+- Gain insights into runtime performance of your Lambda functions using ```CodeGuru``` Profiler 
+- ```AmazonCodeGuruProfilerAgentAccess``` policy to your function  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/514b6aa1-1c83-4d37-899e-6eb06c1d42c0)   
+  
 
 # Security
 
