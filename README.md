@@ -1,4 +1,4 @@
-![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b11c1182-24e2-4dc3-a94b-4bd2637c6c9a)# CDA-AWS-DVA-C02
+# CDA-AWS-DVA-C02
 AWS Certified Developer - Associate
 
 # Development with AWS Services
@@ -175,6 +175,7 @@ AWS Certified Developer - Associate
 - SQS standard/SQS FIFO queues
   - Lambda reads messages in batches and invokes your function once for each batch. When your function successfully processes a batch, Lambda deletes its messages from the queue.
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/231fda0c-d6de-4b98-beef-53e50ceb8aea)
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b11c1182-24e2-4dc3-a94b-4bd2637c6c9a) 
   - By default, Lambda polls up to 10 messages in your queue at once and sends that batch to your function. To avoid invoking the function with a small number of records, you can tell the event source to buffer records for up to 5 minutes by configuring a batch window. Before invoking the function, Lambda continues to poll messages from the SQS standard queue until the batch window expires, the invocation payload size quota is reached, or the configured maximum batch size is reached.
 
  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c3a8503d-9ecb-4ae6-87d5-ec7d8054263f)  
