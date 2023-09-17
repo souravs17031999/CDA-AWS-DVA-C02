@@ -99,7 +99,8 @@ AWS Certified Developer - Associate
 - You can also configure other AWS services to invoke your function in response to events or external requests, or on a schedule.
 - For another AWS service to invoke your function directly, you need to create a trigger using the Lambda console. A trigger is a resource you configure to allow another AWS service to invoke your function when certain events or conditions occur. Multiple triggers can co-exist independently and each event that Lambda passes to your function has data from only one trigger.
 - For your Lambda function to process items from a stream or a queue, such as an Amazon Kinesis stream or an Amazon Simple Queue Service (Amazon SQS) queue, you need to create an event source mapping. An event source mapping is a resource in Lambda that reads items from a stream or a queue and creates events containing batches of items to send to your Lambda function. Each event that your function processes can contain hundreds or thousands of items.
-- 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/46f255b1-39a3-4948-ba7a-6691df9727e8)  
+
   - **Synchronous invokation**  
     - With synchronous invocation, you wait for the function to process the event and return a response.
     - Ex. User Invoked:
@@ -180,6 +181,13 @@ AWS Certified Developer - Associate
 
  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c3a8503d-9ecb-4ae6-87d5-ec7d8054263f)  
 
+**LAMBDA DESTINATIONS**
+- More control other than simple DLQ for async invocations
+- Sucess and failure events from async invocation both can be sent to multiple targets (destinations) and discarded batch of events from eventsource mappings (sync invocation) can be sent.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1afa73bc-2beb-4987-8bd2-d552bc211dee)
+- Destinations provide more useful capabilities by passing additional function execution information, including code exception stack traces, to more destination services.
+
+
 **Event Filtering**
 - control which records from a stream or queue Lambda sends to your function. For example, you can add a filter so that your function only processes Amazon SQS messages containing certain data parameters.
 - By default, you can define up to five different filters for a single event source mapping.
@@ -201,6 +209,23 @@ AWS Certified Developer - Associate
 **Security Auth for Lambda endpoint**
 - ```AWS_IAM```: users who need to invoke your Lambda function URL must have the ```lambda:InvokeFunctionUrl``` permission. Depending on who makes the invocation request, you may have to grant this permission using a resource-based policy.
 - ```NONE```: you may want your function URL to be public. For example, you might want to serve requests made directly from a web browser. To allow public access to your function URL. However, users must still have ```lambda:InvokeFunctionUrl``` permissions in order to successfully invoke your function URL.
+
+**AWS IAM PERMISSIONS FOR LAMBDA**
+- LAMBDA EXECUTION ROLE: Grants the Lambda function permissions to AWS services / resources
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ad296769-f704-4822-9931-d57802bc1141)
+- Use resource-based policies to give other accounts and AWS services permission to use your Lambda resources.
+
+**ENVIRONMENT VARIABLES**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7962ebeb-656f-4007-9004-d7ced36e2d6b)
+- Security of environment variables
+  - At REST
+    - Lambda always provides server-side encryption at rest with an AWS KMS key. By default, Lambda uses an AWS managed key. 
+  - At TRANSIT
+    - For additional security, you can enable helpers for encryption in transit, which ensures that your environment variables are encrypted client-side for protection in transit.
+    - Environment variables to communicate with X-Ray
+    • _X_AMZN_TRACE_ID: contains the tracing header
+    • AWS_XRAY_CONTEXT_MISSING: by default, LOG_ERROR
+    • AWS_XRAY_DAEMON_ADDRESS: the X-Ray Daemon IP_ADDRESS:PORT
 
 **TRACEABILITY**
 - Lambda integrates with ```AWS X-Ray``` to help you trace, debug, and optimize Lambda applications. You can use X-Ray to trace a request as it traverses resources in your application, which may include Lambda functions and other AWS services.
