@@ -405,6 +405,142 @@ AWS Certified Developer - Associate
 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/514b6aa1-1c83-4d37-899e-6eb06c1d42c0)   
   
+## AWS DYNAMODB  
+
+- fully managed NoSQL database service that provides fast and predictable performance with seamless scalability
+- create database tables that can store and retrieve any amount of data and serve any level of request traffic.
+- core components:
+  - A table is a collection of items, and each item is a collection of attributes.
+  - DynamoDB uses primary keys to uniquely identify each item in a table and secondary indexes to provide more querying flexibility.
+  - You can use DynamoDB Streams to capture data modification events in DynamoDB tables.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8359d9e1-0cfd-4a5b-b284-d9f59a366369)
+  - An item is a group of attributes that is uniquely identifiable among all of the other items.
+  - An attribute is a fundamental data element, something that does not need to be broken down any further. For example, an item in a People table contains attributes called PersonID, LastName, FirstName, and so on.
+  - Each item in the table has a unique identifier, or primary key, that distinguishes the item from all of the others in the table. In the People table, the primary key consists of one attribute (PersonID).
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b6b50bc2-4c9d-49a0-93dd-4545bc78857c)
+  - The primary key for Music consists of two attributes (Artist and SongTitle). Each item in the table must have these two attributes. The combination of Artist and SongTitle distinguishes each item in the table from all of the others.
+  - Millions of requests per seconds, trillions of row, 100s of TB of storage
+ 
+**Partitioning**
+- DynamoDB stores data in partitions. A partition is an allocation of storage for a table, backed by solid state drives (SSDs) and automatically replicated across multiple Availability Zones within an AWS Region.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/11ba9151-75ce-4db0-9ad3-60000196c146)
+- DynamoDB stores and retrieves each item based on its partition key value.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3867c985-4e6a-4c41-aa94-2e40013ce30b)
+
+**Primary Key**
+- _Partition key_:
+  - A simple primary key, composed of one attribute known as the partition key.
+  - DynamoDB uses the partition key's value as input to an internal hash function. The output from the hash function determines the partition (physical storage internal to DynamoDB) in which the item will be stored.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2b58b130-009d-4e31-9406-2cfdaa143865)
+  - The partition key of an item is also known as its hash attribute. 
+
+- _Partition key and sort key_:
+  - composite primary key, this type of key is composed of two attributes. The first attribute is the partition key (same as above to determine physical storage area internal), and the second attribute is the sort key.
+  - All items with the same partition key value are stored together, in sorted order by sort key value.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/551a4865-bc4d-4473-a86a-6d9958c82f76)
+  - In a table that has a partition key and a sort key, it's possible for multiple items to have the same partition key value. However, those items must have different sort key values.
+  - The sort key of an item is also known as its range attribute.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/39b51d77-966d-4198-827a-62a9293a1533)
+
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3f698ecd-c484-40ba-8e3c-665e9aca3eab)
+
+**HOW TO Choose Partition key**
+- Use high-cardinality attributes. These are attributes that have distinct values for each item, like emailid, employee_no, customerid, sessionid, orderid, and so on.
+- Use composite attributes. Try to combine more than one attribute to form a unique key, if that meets your access pattern. For example, consider an orders table with customerid#productid#countrycode as the partition key and order_date as the sort key, where the symbol # is used to split different field.
+- a randomizing strategy can greatly improve write throughput. But it’s difficult to read a specific item because you don’t know which suffix value was used when writing the item.
+- Isolate frequently accessed items
+  - If your application drives disproportionately high traffic to one or more items, adaptive capacity rebalances your partitions such that frequently accessed items don't reside on the same partition. This isolation of frequently accessed items reduces the likelihood of request throttling due to your workload exceeding the throughput quota on a single partition.
+
+**Antipatterns for partition keys**
+- Use sequences or unique IDs generated by the DB engine as the partition key, especially when you are migrating from relational databases.
+- Using low-cardinality attributes like Product_SKU as the partition key and Order_Date as the sort key greatly increases the likelihood of hot partition issues.
+- For example, if one product is more popular, then the reads and writes for that partition key are high resulting in throttling issues.
+
+**How to Choose Sort Keys**
+- Careful design of the sort key lets you retrieve commonly needed groups of related items using range queries with operators such as begins_with, between, >, <, and so on.
+
+
+**Secondary Indexes**
+- A secondary index lets you query the data in the table using an alternate key, in addition to queries against the primary key. 
+  - _Global secondary index_ – An index with a partition key and sort key that can be different from those on the table. A global secondary index is considered "global" because queries on the index can span all of the data in the base table, across all partitions.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9f94a1ad-8f25-4bd6-94fc-d69a7b38fc7c)
+  - In the Above table, Scenario: Now suppose that you wanted to write a leaderboard application to display top scores for each game. A query that specified the key attributes (UserId and GameTitle) would be very efficient. However, if the application needed to retrieve data from GameScores based on GameTitle only, it would need to use a ```Scan``` operation, making it slow. To speed up queries on non-key attributes, you can create a global secondary index.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/587f188f-893b-4532-bb9d-1d49df42dc17)
+  - you could create a global secondary index named GameTitleIndex, with a partition key of GameTitle and a sort key of TopScore. The base table's primary key attributes are always projected into an index, so the UserId attribute is also present.
+  - Attribute projection:   
+   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ccd4b8f0-2952-47c8-b261-c66140eefc02)
+  - Because the non-key attributes Wins and Losses are projected into the index, an application can determine the wins vs. losses ratio for any game, or for any combination of game and user ID.
+  - When an application writes an item to a table, DynamoDB automatically copies the correct subset of attributes to any global secondary indexes in which those attributes should appear.
+  - AWS account is charged for storage of the item in the base table and also for storage of attributes in any global secondary indexes on that table.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fee4bae3-5563-4b4a-8d84-7291c42de886)  
+
+
+  - _Local secondary index_ – An index that has the same partition key as the table, but a different sort key. A local secondary index is "local" in the sense that every partition of a local secondary index is scoped to a base table partition that has the same partition key value.
+  - Each table in DynamoDB has a quota of 20 global secondary indexes (default quota) and 5 local secondary indexes.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c8b8037f-c231-4bce-9d40-d0d30a23e21a)
+  - given a particular ForumName, a Query operation could immediately locate all of the threads for that forum. Within a group of items with the same partition key value, the items are sorted by sort key value. If the sort key (Subject) is also provided in the query
+  - Sceanrio: Which forum threads get the most views and replies, Which thread in a particular forum has the largest number of messages?, How many threads were posted in a particular forum within a particular time period?
+  - you can specify one or more local secondary indexes on non-key attributes, such as Replies or LastPostDateTime.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/58d235f2-be84-4df3-a88d-eead5d24288d)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/95a84d7c-3802-4ba9-9dab-720532f44665)
+
+**DynamoDB Streams**
+- feature that captures data modification events in DynamoDB tables. The data about these events appear in the stream in near-real time, and in the order that the events occurred.
+- Each event is represented by a stream record: A new item is added to the table, An item is updated, An item is deleted from the table
+- You can use DynamoDB Streams together with AWS Lambda to create a trigger—code that runs automatically whenever an event of interest appears in a stream
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/015352a9-bd8d-4d3d-848f-910f003b1947)
+
+**DynamoDB table creation**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/aebcf53e-60b2-4734-8499-67152c8e316e)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d4107cfa-0a59-484c-9716-55ce667a7f1d)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9d127e22-e161-46a6-82a2-4a0ade999342)  
+Composite Primary Key
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4c2efe51-8278-4e26-9365-4bd764ebfd48)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fb8b7ae3-a21a-4fd6-a85d-f7c46fad1aa6)  
+Single Partition/primary key
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/979c7f10-d4b3-452c-b9e8-4640f6392b57)   
+Schemaless/flexible schema
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/aec53a1e-6704-429b-93b3-da402240cd07)  
+Global Indexes
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d55d4d7f-a2f0-44bc-ad1a-97e4eaa373d0)   
+
+
+**Capacity Modes**
+- read/write capacity mode controls how you are charged for read and write throughput and how you manage capacity
+- Secondary indexes inherit the read/write capacity mode from the base table.
+
+- _On-demand_
+  - DynamoDB on-demand offers pay-per-request pricing for read and write requests so that you pay only for what you use.
+  - DynamoDB instantly accommodates your workloads as they ramp up or down to any previously reached traffic level. If a workload’s traffic level hits a new peak, DynamoDB adapts rapidly to accommodate the workload.
+  - Scenarios: You create new tables with unknown workloads, You have unpredictable application traffic, You prefer the ease of paying for only what you use.
+  - Tables can be switched to on-demand mode once every 24 hours. Creating a table as on-demand also starts this 24-hour period. Tables can be returned to provisioned capacity mode at any time. 
+
+- _Provisioned_ (default, free-tier eligible)
+ - RCU: Read Capacity Units: throughput for reads
+ - WCU: Write Capacity Units: throughput for writes
+ - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9c4a375e-9238-4415-b593-0bb430fc2b06)
+ - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d3520875-4918-4c24-b289-1341bf7597da)
+ - For example, suppose that you create a provisioned table with 6 read capacity units and 6 write capacity units.
+   - Perform strongly consistent reads of up to 24 KB per second
+   - Perform eventually consistent reads of up to 48 KB
+   - Write up to 6 KB per second
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Security
 
