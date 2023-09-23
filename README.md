@@ -463,19 +463,23 @@ AWS Certified Developer - Associate
 **Secondary Indexes**
 - A secondary index lets you query the data in the table using an alternate key, in addition to queries against the primary key. 
   - _Global secondary index_ – An index with a partition key and sort key that can be different from those on the table. A global secondary index is considered "global" because queries on the index can span all of the data in the base table, across all partitions.
+  - Can be added/modified after table creation
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9f94a1ad-8f25-4bd6-94fc-d69a7b38fc7c)
   - In the Above table, Scenario: Now suppose that you wanted to write a leaderboard application to display top scores for each game. A query that specified the key attributes (UserId and GameTitle) would be very efficient. However, if the application needed to retrieve data from GameScores based on GameTitle only, it would need to use a ```Scan``` operation, making it slow. To speed up queries on non-key attributes, you can create a global secondary index.
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/587f188f-893b-4532-bb9d-1d49df42dc17)
   - you could create a global secondary index named GameTitleIndex, with a partition key of GameTitle and a sort key of TopScore. The base table's primary key attributes are always projected into an index, so the UserId attribute is also present.
+  - If the writes are throttled on the GSI, then the main table will be throttled!
   - Attribute projection:   
    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ccd4b8f0-2952-47c8-b261-c66140eefc02)
   - Because the non-key attributes Wins and Losses are projected into the index, an application can determine the wins vs. losses ratio for any game, or for any combination of game and user ID.
   - When an application writes an item to a table, DynamoDB automatically copies the correct subset of attributes to any global secondary indexes in which those attributes should appear.
   - AWS account is charged for storage of the item in the base table and also for storage of attributes in any global secondary indexes on that table.
+  - ```KEYS_ONLY, INCLUDE, ALL```
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fee4bae3-5563-4b4a-8d84-7291c42de886)  
 
 
   - _Local secondary index_ – An index that has the same partition key as the table, but a different sort key. A local secondary index is "local" in the sense that every partition of a local secondary index is scoped to a base table partition that has the same partition key value.
+  - Must be defined at table creation time
   - Each table in DynamoDB has a quota of 20 global secondary indexes (default quota) and 5 local secondary indexes.
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c8b8037f-c231-4bce-9d40-d0d30a23e21a)
   - given a particular ForumName, a Query operation could immediately locate all of the threads for that forum. Within a group of items with the same partition key value, the items are sorted by sort key value. If the sort key (Subject) is also provided in the query
@@ -524,6 +528,92 @@ Global Indexes
    - Perform strongly consistent reads of up to 24 KB per second
    - Perform eventually consistent reads of up to 48 KB
    - Write up to 6 KB per second
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2877e02e-2b99-4da9-a41a-516b4312cbc6)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/334bb8fe-caec-468f-a0a8-0976822d8ec9)
+   - When DynamoDB throttles a read or write, it returns a ```ProvisionedThroughputExceededException``` to the caller
+   - DynamoDB uses burst capacity to accommodate reads or writes in excess of your table's throughput settings.  
+     With burst capacity, unexpected read or write requests can succeed where they otherwise would be throttled  
+
+
+**Basic Operations**
+- CRUD operations
+  - ```PutItem```
+    - Creates a new item or fully replace an old item (same Primary Key)
+
+  - ```GetItem```
+    - Read based on Primary key.
+    - Primary Key can be HASH or HASH+RANGE
+    - Eventually Consistent Read (default)
+    - ```ProjectionExpression``` can be specified to retrieve only certain attributes
+
+  - ```UpdateItem```
+    - Edits an existing item’s attributes or adds a new item if it doesn’t exist
+    - Can be used to implement Atomic Counters – a numeric attribute that’s unconditionally incremented
+
+  - ```Conditional Writes```
+    - Accept a write/update/delete only if conditions are met, otherwise returns an error
+    - attribute_exists
+• attribute_not_exists
+• attribute_type
+• contains (for string)
+• begins_with (for string)
+• ProductCategory IN (:cat1, :cat2) and Price between :low and :high
+• size (string length)   
+
+  - ```DeleteItem```
+    - Delete an individual item
+    - Ability to perform a conditional delete
+
+  - ```DeleteTable```
+    - Delete a whole table and all its items
+
+  - ```Query```
+    - KeyConditionExpression: Partition Key value (must be = operator) – required, Sort Key value (=, <, <=, >, >=, Between, Begins with) – optional
+    - FilterExpression: Additional filtering after the Query operation, Use only with non-key attributes
+   
+  - ```Scan```
+    - Scan the entire table and then filter out data (inefficient)
+    - For faster performance, use Parallel Scan
+
+  - ```BatchWriteItem```
+    - Up to 25 PutItem and/or DeleteItem in one call
+    - Up to 16 MB of data written, up to 400 KB of data per item
+    - Can’t update items (use UpdateItem)
+    - ```UnprocessedItems``` for failed write operations (exponential backoff or add WCU)
+
+  - ```BatchGetItem```
+    - Return items from one or more tables
+    - Up to 100 items, up to 16 MB of data
+    - Items are retrieved in parallel to minimize latency
+    - ```UnprocessedKeys``` for failed read operations (exponential backoff or add RCU) 
+
+- Few Examples:
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2369be41-71bf-4b26-8a61-408736ad19d0)  
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/005b0e5f-0698-420a-b788-4fb95b259ab4)  
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a5eb07f6-7851-4ba3-9674-d91cbdbca97f)   
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e7597d50-9cf7-47aa-94c6-95ba773953dc)  
+  - To Prevent Overwrite
+    - attribute_not_exists() if single primary key, attribute_not_exists(pk) AND attribute_not_exists(sk) evaluate to true or false before attempting the write operation.
+  - string comparison
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fa096c28-acb3-44f0-93a6-7019b3e8f4d3)  
+  - check element in a set
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d99c1513-719a-48a0-8348-5d906394ff7e)  
+  - Complex condition using logical operators 
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f2e40706-a26d-4aff-af66-f6a9203eb534)   
+
+**PartiQL**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a8066aa3-49fd-42ab-ab67-e09b2e49ba35)
+- a SQL-compatible query language, to select, insert, update, and delete data in Amazon DynamoDB. Using PartiQL, you can easily interact with DynamoDB tables and run ad hoc queries
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c82f489e-b7ca-419d-a397-c8af88693cea)
+
+**Optimistic locking**
+- Optimistic locking is a strategy to ensure that the client-side item that you are updating (or deleting) is the same as the item in Amazon DynamoDB. If you use this strategy, your database writes are protected from being overwritten by the writes of others
+- each item has an attribute that acts as a version number. If you retrieve an item from a table, the application records the version number of that item. You can update the item, but only if the version number on the server side has not changed.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/da46a68e-b675-4a9c-8a1d-47338995d1c4)
+
+**DAX (DynamoDB Accelerator) **
+- 
+
 
 
 
