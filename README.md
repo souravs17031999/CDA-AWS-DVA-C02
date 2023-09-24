@@ -935,6 +935,7 @@ you’ve setup through API Gateway
     - iat – Must be before the current time in UTC.
     - scope or scp – The token must include at least one of the scopes in the route's authorizationScopes.
 
+## SERVERLESS APPLICATION MODEL (SAM)
 
 
 ## Messaging systems and patterns
@@ -944,9 +945,6 @@ you’ve setup through API Gateway
 ### SNS
 
 ### KINESIS
-
-## SERVERLESS APPLICATION MODEL (SAM)
-
 
 # Security
 
