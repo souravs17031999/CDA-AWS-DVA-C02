@@ -711,6 +711,241 @@ Durability level	Availability zones to provide automatic failover without interr
 
 ## API GATEWAY
 
+- AWS service for creating, publishing, maintaining, monitoring, and securing REST, HTTP, and WebSocket APIs at any scale
+- Create a single interface for all the microservices in your company
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e359759c-8877-472b-b37e-9b60ab62befd)  
+
+- _API Gateway creates RESTful APIs that_:
+  - Are HTTP-based.
+  - Enable stateless client-server communication.
+  - Implement standard HTTP methods such as GET, POST, PUT, PATCH, and DELETE.
+  - For example, /incomes could be the path of a resource representing the income of the app user.
+  - In API Gateway REST APIs, the frontend is encapsulated by method requests and method responses. The API interfaces with the backend by means of integration requests and integration responses.
+  - API Gateway enables you to define a schema or model for the payload  to facilitate setting up the body mapping template.
+- _API Gateway to create HTTP APIs_
+  - HTTP APIs to send requests to AWS Lambda functions or to any publicly routable HTTP endpoint.
+  - you can create an HTTP API that integrates with a Lambda function on the backend. When a client calls your API, API Gateway sends the request to the Lambda function and returns the function's response to the client.
+  - HTTP APIs support OpenID Connect and OAuth 2.0 authorization
+- _API Gateway creates WebSocket APIs that_:
+  - Adhere to the WebSocket protocol, which enables stateful, full-duplex communication between client and server.
+  - Route incoming messages based on message content.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8d550704-7b56-47a6-995f-23fa93e473ad)
+- Together with AWS Lambda, API Gateway forms the app-facing part of the AWS serverless infrastructure.
+- Backend servers can easily push data to connected users and devices, avoiding the need to implement complex polling mechanisms. Ex. Chat applications, Real-time dashboards such as stock tickers, Real-time alerts and notifications.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/defa9687-b866-4373-ade7-f0ed316300ef)
+- Client to server connection
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/afb08447-5293-4870-af00-9fe17719757e)  
+- Server to client connection  
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9c5b23c4-a28f-4dbf-97b2-102c082ab43d)
+- Routing for websocket API's
+  - • Incoming JSON messages are routed to different backend
+• If no routes => sent to $default
+• You request a route selection expression to
+select the field on JSON to route from
+• Sample expression: $request.body.action
+• The result is evaluated against the route keys
+available in your API Gateway
+• The route is then connected to the backend
+you’ve setup through API Gateway
+
+
+- Ex. Integration with Kinesis data streams
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/36d94087-b5b6-4503-a375-97ddf176425d)   
+
+**Endpoint types**
+- _Edge-optimized API endpoints_
+  - An edge-optimized API endpoint is best for geographically distributed clients. API requests are routed to the nearest CloudFront Point of Presence (POP). This is the default endpoint type for API Gateway REST APIs.
+- _Regional API endpoints_
+  - A regional API endpoint is intended for clients in the same region. When a client running on an EC2 instance calls an API in the same region, or when an API is intended to serve a small number of clients with high demands, a regional API reduces connection overhead.
+- _Private API endpoints_
+  - A private API endpoint is an API endpoint that can only be accessed from your Amazon Virtual Private Cloud (VPC) using an interface VPC endpoint, which is an endpoint network interface (ENI) that you create in your VPC.
+
+**Creating REST API**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7750566f-6ecc-4c4d-867b-e75bc27197d4) 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0a776896-610a-43d8-aad9-a916c8415eff)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fa528630-b721-4e7b-a5b1-7353645de237)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9993665f-f3ab-426f-b834-38e0083459be)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b38776a7-70bc-4da1-abc8-76596c6eb1f4)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/58fe801e-a973-422c-8057-a400a2091f44)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c4a9ed57-66c4-4c06-bdee-f4e73ef9d2d1)    
+![tempsnip](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8f9907b7-3328-4267-8068-0cafece8603f) 
+
+**Deploying REST API**
+- After creating your API, you must deploy it to make it callable by your users.
+- To deploy an API, you create an API deployment and associate it with a stage. A stage is a logical reference to a lifecycle state of your API (for example, dev, prod, beta, v2).
+- Ex. ```https://{restapi-id}.execute-api.{region}.amazonaws.com/{stageName}```
+- Stage variables are name-value pairs that you can define as configuration attributes associated with a deployment stage of a REST API. They act like environment variables and can be used in your API setup and mapping templates.
+- To use a stage variable to customize the HTTP integration endpoint, you must first configure a stage variable of a specified name (for example, url), and then assign it a value, (for example, example.com). Next, from your method configuration, set up an HTTP proxy integration. Instead of entering the endpoint's URL, you can tell API Gateway to use the stage variable value, ```http://${stageVariables.url}```. This value tells API Gateway to substitute your stage variable ```${}``` at runtime, depending on which stage your API is running.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/12714061-4220-4f4e-a20f-edd2a9e29f44)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8856728f-7d71-463c-9a56-70c8941b8a52)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0de59743-34fe-4939-9865-2e3234a6d20c)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b2683acf-a6fc-4233-9af3-ecf8710fbf2b)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6d3452fc-a5b7-4f92-a69f-244f0bedfab1)
+- Ex. ```stageVariables.<variable_name>, { "name" : "$stageVariables.<variable_name>"}, http://${stageVariables.<variable_name>}, arn:aws:apigateway:<region>:<service>:${stageVariables.<variable_name>}```
+
+**Canary release deployment**
+- software development strategy in which a new version of an API (as well as other software) is deployed for testing purposes, and the base version remains deployed as a production release for normal operations on the same stage.
+- total API traffic is separated at random into a production release and a canary release with a pre-configured ratio. Typically, the canary release receives a small percentage of API traffic and the production release takes up the rest. The updated API features are only visible to API traffic through the canary. You can adjust the canary traffic percentage to optimize test coverage or performance.
+- After the test metrics pass your requirements, you can promote the canary release to the production release and disable the canary from the deployment.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/00ad6f0a-8200-4723-b007-eb5e9f23b5c9)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e365e981-4fb2-444a-9d88-e1c896ecc6db)
+
+**Integration type**
+- _AWS/HTTP_
+  - you must configure both the integration request and integration response and set up necessary data mappings from the method request to the integration request, and from the integration response to the method response.
+  - Setup data mapping using mapping templates for the request & response
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a085b448-a8d8-4054-8ad8-6de0f3ad9c02)   
+
+- _AWS_PROXY_
+  - This type of integration lets an API method be integrated with the Lambda function invocation action
+  - you do not set the integration request or the integration response.
+  - API Gateway passes the incoming request from the client as the input to the backend Lambda function.
+  - This is the preferred integration type to call a Lambda function through API Gateway
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9502f581-8f04-4997-864e-65ae60b55c61)   
+
+- _HTTP_PROXY_
+  - The HTTP proxy integration allows a client to access the backend HTTP endpoints with a streamlined integration setup on single API method.
+  - You do not set the integration request or the integration response.
+  - Possibility to add HTTP Headers if need be (ex: API key)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bc93f751-8ec3-4e6e-9d20-75ec91117f9a)    
+
+- _MOCK_
+  - return a response without sending the request further to the backend. This is useful for API testing because it can be used to test the integration set up without incurring charges for using the backend and to enable collaborative development of an API.
+
+**Integration Request**
+
+- An integration request is an HTTP request that API Gateway submits to the backend, passing along the client-submitted request data, and transforming the data, if necessary.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bd1b3f0f-0f3e-4786-b7c1-b1300542cda5)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e442d033-3786-455f-84ef-1b9417bbcd63)  
+
+**Integration Response**
+
+- You can choose to pass through the result as-is or to transform the integration response data to the method response data if the two have different formats.
+- you can map the endpoint response data to the method response data. The response data that can be mapped includes the response status code, response header parameters, and response body.
+- If no method response is defined for the returned status code, API Gateway returns a 500 error.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5468ec48-7828-4f9c-85f1-a4ca4ae704fd)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/242d599b-c776-4d31-8738-cd468dbd838d)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3f83320c-9e39-4e48-a4b8-5e63a6181f28)
+
+**Mapping templates**
+
+- Mapping template examples integration  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/97a04b68-7471-4aaa-ac3f-59850be3e229)
+- A mapping template is a script expressed in ```Velocity Template Language (VTL)``` and applied to the payload using JSONPath .
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a72b4bed-bee3-4408-a83d-a517d1ac7f57)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b68a0493-84ed-4b5f-91c1-fb9d9b27c506)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/aeb2ee6e-e5a8-472d-a381-9544dd3bdadf)   
+
+**Request Validation via OpenAPI spec**
+
+- You can use API Gateway to import a REST API from an external definition file into API Gateway. Currently, API Gateway supports OpenAPI v2.0 and OpenAPI v3.0 definition files
+- configure API Gateway to perform basic validation of an API request before proceeding with the integration request. When the validation fails, API Gateway immediately fails the request, returns a 400 error response to the caller, and publishes the validation results in CloudWatch Logs.
+- The required request parameters in the URI, query string, and headers of an incoming request are included and not blank.
+- The applicable request payload adheres to the configured JSON schema request of the method.
+- In API Gateway, a model defines the data structure of a payload. In API Gateway, models are defined using the JSON schema draft 4. The following JSON object is sample data in the Pet Store example.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d5793e77-aafb-46cf-abe4-356e36e31a2b)
+- There are two request validators declared in the ```x-amazon-apigateway-request-validators``` map at the API level.
+- The ```params-only``` validator is enabled on the API and inherited by the GET method.
+- This validator allows API Gateway to verify that the required query parameter (q1) is included and not blank in the incoming request.
+- The ```all``` validator is enabled on the POST method.
+- This validator verifies that the required header parameter (h1) is set and not blank. It also verifies that the payload format adheres to the specified ```RequestBodyModel``` If there is no matching content type is found, request validation is not performed.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2f56e2e6-d3ee-430b-a25d-cafd032f604d)  
+
+**API Caching**
+
+- With caching, you can reduce the number of calls made to your endpoint and also improve the latency of requests to your API.
+- API Gateway caches responses from your endpoint for a specified time-to-live (TTL) period, in seconds. Ex. 300 seconds
+- This is a HIPAA Eligible Service. For more information about AWS, U.S. Health Insurance Portability and Accountability Act of 1996 (HIPAA), and using AWS services to process, store, and transmit protected health information (PHI)
+- Clients can invalidate the cache with header: Cache- Control: max-age=0
+
+**API KEYS and Usage plans**
+
+- alphanumeric string values to distribute to your customers
+- Can use with usage plans to control access
+- Throttling limits are applied to the API keys
+- Quotas limits is the overall number of maximum requests
+- Associate API stages and API keys with the usage plan.
+- Callers of the API must supply an assigned API key in the x-api-key header in requests to the API
+- If there is a match, API Gateway throttles the requests based on the plan's request limit and quota
+- A throttling limit sets the target point at which request throttling should start. This can be set at the API or API method level.
+- A quota limit sets the target maximum number of requests with a given API key that can be submitted within a specified time interval
+
+**API gateway throttling**
+- AWS throttling limits are applied across all accounts and clients in a region. These limit settings exist to prevent your API—and your account—from being overwhelmed by too many requests. These limits are set by AWS and can't be changed by a customer.
+- Per-account limits are applied to all APIs in an account in a specified Region. The default rate limit is 10.000 requests per second, and the default burst limit is 5000 requests.
+- Per-API, per-stage throttling limits are applied at the API method level for a stage.
+- Per-client throttling limits are applied to clients that use API keys associated with your usage plan as client identifier
+- In API Gateway, the burst limit represents the target maximum number of concurrent request submissions that API Gateway will fulfill before returning 429 Too Many Requests error responses.
+
+**CORS**
+- A cross-origin HTTP request is one that is made to:
+  - A different domain (for example, from example.com to amazondomains.com)
+  - A different subdomain (for example, from example.com to petstore.example.com)
+  - A different port (for example, from example.com to example.com:10777)
+  - A different protocol (for example, from https://example.com to http://example.com)
+- The ```OPTIONS``` pre-flight request must contain the following headers:
+  - ```Access-Control-Allow-Methods```
+  - ```Access-Control-Allow-Headers```
+  - ```Access-Control-Allow-Origin```
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1de2c266-1d2d-4cf0-86f1-e6f739d3ab72)   
+- For the proxy: lambda should return response headers itself in the response
+- For the non-proxy: it can be configured from the console.
+
+**Security (IAM PERMISSIONS)**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2e5d4238-9883-4c74-9fb1-36e0a7258063)
+- With IAM identity-based policies, you can specify which actions and resources are allowed or denied as well as the conditions under which actions are allowed or denied.
+- The following example shows an identity-based policy that allows a user to create or update only private REST APIs.
+ ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7c33f369-4cbd-4269-a33f-c6642a803c35)
+- Authentication = IAM | Authorization = IAM Policy
+- Resource based policies
+  - Ex. resource policy grants API access in one AWS account to two roles in a different AWS account via Signature Version 4 (SigV4) protocols
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/27a75c12-7adb-4dd5-835e-0461f94dd9c2)
+  - Ex. resource policy denies (blocks) incoming traffic to an API from two specified source IP address blocks.
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/77457e82-9cde-439d-b254-52276a5dc218)
+  - Ex. resource policies allow incoming traffic to a private API only from a specified virtual private cloud (VPC) or VPC endpoint.
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7a9dd666-7b53-4aa6-bcb9-6d6ed4fc39b4)
+- Service-linked roles: ```AWSServiceRoleForAPIGateway``` – Allows API Gateway to access Elastic Load Balancing, Amazon Kinesis Data Firehose, and other service resources on your behalf.
+
+
+**Security (Cognito User pools)**
+- Cognito fully manages user lifecycle, token expires automatically
+- API gateway verifies identity automatically from AWS Cognito
+- No custom implementation required
+- Authentication = Cognito User Pools | Authorization = API Gateway Methods
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e21b6804-f852-4dc7-a4c0-209e49a8d691)  
+
+
+**Security (LAMBDA AUTHORIZER)**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/067ac85e-7b48-4250-bcba-e903cc058497)
+- Authentication = External | Authorization = Lambda function
+- Token-based authorizer (bearer token) – ex JWT (JSON Web Token) or Oauth
+- A request parameter-based Lambda authorizer (headers, query string, stage var)
+- Lambda must return an IAM policy for the user, result policy is cached
+- V1 example:  
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a2096409-9086-46ac-aa06-afd2800e034a)
+- V2 example:
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ee34baf8-440c-421e-9489-cbf14ce5b242)
+- JWT Authorizer:
+  - Decode the token, Check the token's algorithm and signature by using the public key that is fetched from the issuer's jwks_uri, Validate claims,
+    - kid – The token must have a header claim that matches the key in the jwks_uri that signed the token.
+    - iss – Must match the issuer that is configured for the authorizer.
+    - aud or client_id – Must match one of the audience entries that is configured for the authorizer.
+    - exp – Must be after the current time in UTC.
+    - nbf – Must be before the current time in UTC.
+    - iat – Must be before the current time in UTC.
+    - scope or scp – The token must include at least one of the scopes in the route's authorizationScopes.
+
+
+
+## Messaging systems and patterns
+
+### SQS
+
+### SNS
+
+### KINESIS
+
+## SERVERLESS APPLICATION MODEL (SAM)
 
 
 # Security
