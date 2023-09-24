@@ -488,12 +488,6 @@ AWS Certified Developer - Associate
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/58d235f2-be84-4df3-a88d-eead5d24288d)
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/95a84d7c-3802-4ba9-9dab-720532f44665)
 
-**DynamoDB Streams**
-- feature that captures data modification events in DynamoDB tables. The data about these events appear in the stream in near-real time, and in the order that the events occurred.
-- Each event is represented by a stream record: A new item is added to the table, An item is updated, An item is deleted from the table
-- You can use DynamoDB Streams together with AWS Lambda to create a trigger—code that runs automatically whenever an event of interest appears in a stream
-- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/015352a9-bd8d-4d3d-848f-910f003b1947)
-
 **DynamoDB table creation**
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/aebcf53e-60b2-4734-8499-67152c8e316e)   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d4107cfa-0a59-484c-9716-55ce667a7f1d)  
@@ -611,24 +605,111 @@ Global Indexes
 - each item has an attribute that acts as a version number. If you retrieve an item from a table, the application records the version number of that item. You can update the item, but only if the version number on the server side has not changed.
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/da46a68e-b675-4a9c-8a1d-47338995d1c4)
 
-**DAX (DynamoDB Accelerator) **
-- 
+**DAX (DynamoDB Accelerator)**   
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fa239a53-1267-42ac-b1dc-45fd2bf5e036)
+- DynamoDB response times can be measured in single-digit milliseconds. However, there are certain use cases that require response times in microseconds. For these use cases, DynamoDB Accelerator (DAX) delivers fast response times for accessing eventually consistent data.
+- For read-heavy or bursty workloads, DAX provides increased throughput and potential operational cost savings by reducing the need to overprovision read capacity units: beneficial for applications that require repeated reads for individual keys.
+- DAX supports server-side encryption. With encryption at rest, the data persisted by DAX on disk will be encrypted.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c737afe6-d4a0-48f7-9ec2-33d4618d85be)
+- When an application sends a GetItem or BatchGetItem request, DAX tries to read the items directly from the item cache using the specified key values. If the items are found (cache hit), DAX returns them to the application immediately. If the items are not found (cache miss), DAX sends the request to DynamoDB. DynamoDB processes the requests using eventually consistent reads and returns the items to DAX. DAX stores them in the item cache and then returns them to the application.
+- The item cache has a Time to Live (TTL) setting, which is 5 minutes by default.
+- If you specify zero as the item cache TTL setting, items in the item cache will only be refreshed due to an LRU eviction or a "write-through" operation.
+- DAX also maintains a query cache to store the results from Query and Scan operations.
+- Every DAX cluster provides a cluster endpoint for use by your application. By accessing the cluster using its endpoint, your application does not need to know the hostnames and port numbers of individual nodes in the cluster.
+- Ex. ```dax://my-cluster.l6fzcv.dax-clusters.us-east-1.amazonaws.com```
+- Amazon DynamoDB Accelerator (DAX) is a write-through/read-through caching service
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e7a4a504-12a6-437c-88ab-1ad439a8737c)
+- If your application needs to write large quantities of data (such as a bulk data load), it might make sense to bypass DAX and write the data directly to DynamoDB. Such a write-around strategy reduces write latency. However, the item cache doesn't remain in sync with the data in DynamoDB.
+- This pattern of loading data into the cache only when the item is requested is often referred to as lazy loading. The advantage of this approach is that data that is populated in the cache has been requested and has a higher likelihood of being requested again.
+- The disadvantage of lazy loading is the cache miss penalty on the first read of the data, which takes more time to retrieve the data from the table instead of directly from the cache.
+- _DAX handles cache evictions in three different ways_:
+  - First, it uses a Time-to-Live (TTL) value that denotes the absolute period of time that an item is available in the cache.
+  - Second, when the cache is full, a DAX cluster uses a Least Recently Used (LRU) algorithm to decide which items to evict.
+  - Third, with the write-through functionality, DAX evicts older values as new values are written through DAX.
+
+**DynamoDB Streams**
+- feature that captures data modification events in DynamoDB tables. The data about these events appear in the stream in near-real time, and in the order that the events occurred.
+- Each event is represented by a stream record: A new item is added to the table, An item is updated, An item is deleted from the table
+- You can use DynamoDB Streams together with AWS Lambda to create a trigger—code that runs automatically whenever an event of interest appears in a stream
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/015352a9-bd8d-4d3d-848f-910f003b1947)
+- When to choose DynamoDB streams over Kinesis data streams 
+Properties	Kinesis Data Streams for DynamoDB	DynamoDB Streams
+Data retention	Up to 1 year.	24 hours.
+Kinesis Client Library (KCL) support	Supports KCL versions 1.X and 2.X.	Supports KCL version 1.X.
+Number of consumers	Up to 5 simultaneous consumers per shard, or up to 20 simultaneous consumers per shard with enhanced fan-out.	Up to 2 simultaneous consumers per shard.
+Throughput quotas	Unlimited.	Subject to throughput quotas by DynamoDB table and AWS Region.
+Record delivery model	Pull model over HTTP using GetRecords and with enhanced fan-out, Kinesis Data Streams pushes the records over HTTP/2 by using SubscribeToShard.	Pull model over HTTP using GetRecords.
+Ordering of records	The timestamp attribute on each stream record can be used to identify the actual order in which changes occurred in the DynamoDB table.	For each item that is modified in a DynamoDB table, the stream records appear in the same sequence as the actual modifications to the item.
+Duplicate records	Duplicate records might occasionally appear in the stream.	No duplicate records appear in the stream.
+Stream processing options	Process stream records using AWS Lambda, Kinesis Data Analytics, Kinesis data firehose , or AWS Glue streaming ETL.	Process stream records using AWS Lambda or DynamoDB Streams Kinesis adapter.
+Durability level	Availability zones to provide automatic failover without interruption.	Availability zones to provide automatic failover without interruption.
+- Specifies the information that will be written to the stream whenever data in the table is modified:
+  - KEYS_ONLY — Only the key attributes of the modified item.
+  - NEW_IMAGE — The entire item, as it appears after it was modified.
+  - OLD_IMAGE — The entire item, as it appeared before it was modified.
+  - NEW_AND_OLD_IMAGES — Both the new and the old images of the item.
+- To read and process a stream, your application must connect to a DynamoDB Streams endpoint and issue API requests.
+- Stream records are organized into groups, or shards. Each shard acts as a container for multiple stream records, and contains information required for accessing and iterating through these records. The stream records within a shard are removed automatically after 24 hours.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c13f3fd0-cd76-4e28-b5b3-cbda9d7604cb)
+- Combining DynamoDB Time to Live (TTL), DynamoDB Streams, and AWS Lambda can help simplify archiving data, reduce DynamoDB storage costs, and reduce code complexity. Using Lambda as the stream consumer provides many advantages, most notably the cost reduction compared to other consumers such as Kinesis Client Library (KCL). You aren’t charged for GetRecords API calls on your DynamoDB stream when using Lambda to consume events, and Lambda can provide event filtering by identifying JSON patterns in a stream event.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8766b713-02d8-4719-871b-3124346bbcbb)
+- The AWS Lambda service polls the stream for new records four times per second. When new stream records are available, your Lambda function is synchronously invoked
+- Records are not retroactively populated in a stream after enabling it
+- Adapter design pattern for kinesis with DYNAMODB
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c947f74a-80cf-4e23-9e2b-82ca0f432dda)
+- Integration Architechture
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3e6ed2ac-b24d-473c-a730-ea70fa7094b7)  
+
+
+
+**DynamoDB TTL (TIME TO LIVE)**
+- Time to Live (TTL) allows you to define a per-item timestamp to determine when an item is no longer needed.
+- Doesn’t consume any WCUs (i.e., no extra cost) EXCEPT when the deletion is replicated to additional Regions
+- TTL is useful if you store items that lose relevance after a specific time.
+- you must identify a specific attribute name that the service will look for when determining if an item is eligible for expiration. After you enable TTL on a table, a per-partition scanner background process automatically and continuously evaluates the expiry status of items in the table.
+- A second background process scans for expired items and deletes them. Both processes take place automatically in the background, do not affect read or write traffic to the table, and do not have a monetary cost.
+- Items are removed from any local secondary index and global secondary index in the same way as a DeleteItem operation. This operation comes at no extra cost.
+- A delete operation for each item enters the DynamoDB Stream, but is tagged as a system delete and not a regular delete
+- Items that have expired, but haven’t yet been deleted by TTL, still appear in reads, queries, and scans. If you do not want expired items in the result set, you must filter them out (CLIENT-SIDE)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e01a688f-5424-4b4e-9cae-8b008a8e32f8)
+- The TTL mechanism will work on items that have been inserted after the TTL has been enabled on the table
+- DynamoDB is removing items with expired TTL in up to 48 hours from the original expiration time
+- Archiving TTL deletes to S3 is a common use-case to offload cold data, reduce table storage and maintain most current data in the table.
+
+**DynamoDB transactions**
+- transactions simplify the developer experience of making coordinated, all-or-nothing changes to multiple items both within and across tables.
+- Transactions provide atomicity, consistency, isolation, and durability (ACID) in DynamoDB, helping you to maintain data correctness in your applications.
+- DynamoDB performs two underlying reads or writes of every item in the transaction: one to prepare the transaction and one to commit the transaction.
+- ```TransactWriteItems```
+  - is a synchronous and idempotent write operation that groups up to 100 write actions in a single all-or-nothing operation. These actions can target up to 100 distinct items in one or more DynamoDB tables
+  - You can optionally include a client token when you make a TransactWriteItems call to ensure that the request is idempotent.
+- ```TransactGetItems```
+  - is a synchronous read operation that groups up to 100 Get actions together. These actions can target up to 100 distinct items in one or more DynamoDB tables
+  - actions are performed atomically so that either all of them succeed or all of them fail:
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e0e49e66-7da3-4bc3-8243-f07e501fee53)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/485d3f13-aaea-42fa-a52b-0fc25d1b9855)  
+
+
+
+**DynamoDB CLI examples**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7b9d0d48-01d2-41f0-9c86-ef24e9226e5d)  
+
+**Dynamo DB as session state**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/82dad4a7-e360-44c7-a1db-4544a17dde27)   
+
+**DynamoDB with S3 integration**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e0477379-cc45-4afe-a2d3-9a1cca7a918b)   
+
+**DynamoDB security**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2048c6d4-ce09-436f-89b1-bba415c593b3)
+- In addition to controlling access to DynamoDB API actions, you can also control access to individual data items and attributes
+- To implement this kind of fine-grained access control, you write an IAM permissions policy that specifies conditions for accessing security credentials and the associated permissions. You then apply the policy to users, groups, or roles that you create using the IAM console. Your IAM policy can restrict access to individual items in a table, access to the attributes in those items, or both at the same time.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8fc6d547-91c8-4bf9-b027-541eb52b8f35)   
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+## API GATEWAY
 
 
 
