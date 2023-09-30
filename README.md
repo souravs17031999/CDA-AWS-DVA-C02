@@ -706,7 +706,7 @@ Durability level	Availability zones to provide automatic failover without interr
 - To implement this kind of fine-grained access control, you write an IAM permissions policy that specifies conditions for accessing security credentials and the associated permissions. You then apply the policy to users, groups, or roles that you create using the IAM console. Your IAM policy can restrict access to individual items in a table, access to the attributes in those items, or both at the same time.
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8fc6d547-91c8-4bf9-b027-541eb52b8f35)   
 
-
+## AWS S3 
 
 
 ## API GATEWAY
@@ -936,6 +936,72 @@ you’ve setup through API Gateway
     - scope or scp – The token must include at least one of the scopes in the route's authorizationScopes.
 
 ## SERVERLESS APPLICATION MODEL (SAM)
+
+- The AWS Serverless Application Model (AWS SAM) is a toolkit that improves the developer experience of building and running serverless applications on AWS. AWS SAM consists of two primary parts:
+  - **AWS SAM template specification**: can use to define your serverless application infrastructure on AWS.
+  - Use the AWS CloudFormation syntax directly within your AWS SAM template, taking advantage of its extensive support of resource and property configurations
+  - AWS SAM does the complex work of transforming your template into the code necessary to provision your infrastructure through AWS CloudFormation
+  - **AWS SAM command line interface (AWS SAM CLI)**: A command line tool that you can use with AWS SAM templates and supported third-party integrations to build and run your serverless applications. Perform local debugging and testing.
+
+- Example 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5ebffa18-014c-4840-a43a-0f2bee5dc13c)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c8100b4d-3ac8-4424-8317-cb10e116ef34)   
+
+- SAM process in breif
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7f1030ba-f742-49c0-b8d6-81f1f92ac9fc)  
+- ```sam init```
+![what-is-sam-01](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7b41ee73-2d51-440f-aafd-0dc0c96e396d)
+- ```sam build```
+![what-is-sam-02](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d5ab3491-3d59-4f13-9509-e2ee1270f5d2)  
+- ```sam local invoke```:  Invoke Lambda function with payload once and quit after invocation completes
+![what-is-sam-04](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/84921cad-5276-4a33-a0f9-7d7b089d27fa)
+- ```sam local start-lambda```: Starts a local endpoint that emulates AWS Lambda
+- ```sam local start-api```: Starts a local HTTP server that hosts all your functions
+- ```sam local generate-event```: Generate sample payloads for event sources 
+- ```sam deploy```
+![what-is-sam-03](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e72ab33b-180d-49f9-8370-4b0f9239f233)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/400c1ad3-d2bd-40d8-b243-e3036ddd4cc6)   
+
+- ```sam build```
+  - creates a .aws-sam build directory containing The AWS SAM template, The build.toml file, Contains your Lambda functions and layers structured independently of each other. 
+  - The ```--use-container``` option downloads a container image and uses it to build your Lambda functions. The local container is then referenced in your .aws-sam/build.toml file.
+  - Use the ```--container-env-var``` to pass environment variables to the build container.
+- ```sam deploy```
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/27975e83-c50c-4950-8f4b-599913d64f9e)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/42fe6619-6e91-49c4-a601-45c69ff88286)
+
+- ```AWS::Serverless::Function```
+  - Creates an AWS Lambda function, an AWS Identity and Access Management (IAM) execution role, and event source mappings that trigger the function.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ceb275dd-1f75-4ad5-8e78-b4bd95ca9120)
+  - ```DeploymentPreference```: enable gradual Lambda deployments.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/190c72b7-3b87-4cf8-992f-9bd2518f5d9a)
+  - ```Hooks```: Validation Lambda functions that are run before and after traffic shifting.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ee7e31be-a050-4e50-9b4d-062f0f0af4d8)   
+
+- ```AWS::Serverless::Api```
+  - Creates a collection of Amazon API Gateway resources and methods that can be invoked through HTTPS endpoints.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ac235e12-9de2-4d57-bae4-4b698e26e6df)
+
+- ```AWS::Serverless::SimpleTable```
+  - Creates a DynamoDB table with a single attribute primary key. It is useful when data only needs to be accessed via a primary key.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/65473eab-3512-41e9-a578-ae54ee5035e8)  
+  
+**AWS SAM policy templates**
+
+- The AWS Serverless Application Model (AWS SAM) allows you to choose from a list of policy templates to scope the permissions of your Lambda functions and AWS Step Functions state machines to the resources that are used by your application.
+- ```S3ReadPolicy```: Gives read only permissions to objects in S3
+- ```SQSPollerPolicy```: Allows to poll an SQS queue
+- ```DynamoDBCrudPolicy```: CRUD = create read update delete
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d4a340a3-0a13-4f7f-b87a-c638baa17600)  
+
+**SAR (Serverless Application Repository)**
+- managed repository for serverless applications. It enables teams, organizations, and individual developers to store and share reusable applications, and easily assemble and deploy serverless architectures
+- you can use pre-built applications from the Serverless Application Repository in your serverless architectures, helping you and your teams reduce duplicated work, ensure organizational best practices, and get to market faster
+- When you publish a serverless application to the AWS Serverless Application Repository, you make it available for others to find and deploy.
+- Before you can deploy an application, the AWS Serverless Application Repository checks the application’s template for IAM roles, AWS resource policies, and nested applications that the template specifies that it should create. Applications can contain any of the following four capabilities: ```CAPABILITY_IAM, CAPABILITY_NAMED_IAM, CAPABILITY_RESOURCE_POLICY, and CAPABILITY_AUTO_EXPAND```.   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cd57867e-5188-4f8b-9d63-82c364991934)  
+- ```sam publish```
 
 
 ## Messaging systems and patterns
