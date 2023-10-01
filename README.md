@@ -404,7 +404,110 @@ AWS Certified Developer - Associate
 - ```AmazonCodeGuruProfilerAgentAccess``` policy to your function  
 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/514b6aa1-1c83-4d37-899e-6eb06c1d42c0)   
-  
+
+## AWS STEP FUNCTIONS 
+- AWS Step Functions is a serverless orchestration service, Through Step Functions' graphical console, you see your application’s workflow as a series of event-driven steps.
+- Written in JSON notation 
+- Step Functions is based on state machines and tasks.
+- In Step Functions, a workflow is called a state machine, which is a series of event-driven steps. Each step in a workflow is called a state.
+- A Task state represents a unit of work that another AWS service, such as AWS Lambda, performs.  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/700e7c1c-260b-472f-b7ff-50430fe96389)   
+
+**Standard workflows**
+- Standard workflows have exactly-once workflow execution and can run for up to one year. This means that each step in a Standard workflow will execute exactly once.
+
+**Express workflows**
+- Express workflows, however, have at-least-once workflow execution and can run for up to five minutes. This means that one or more steps in an Express Workflow can potentially run more than once, while each step in the workflow executes at least once.
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2b501d00-4418-4983-98e0-6580551e2c46)   
+
+**Use Cases**
+
+- You create a workflow that runs a group of Lambda functions (steps) in a specific order. 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/91385fb5-209d-4ad8-8c6d-c07116a50ff1)
+- Using a Choice state, you can have Step Functions make decisions based on the Choice state’s input  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2eb87b17-635b-4dbf-a25b-58263aac7aa3)
+- Retry/Catch
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f91b2b14-834e-4dac-84b7-4f5819c00b3b)
+- With a callback and a task token, you have Step Functions tell Lambda to send your customer’s money and report back when your customer’s friend receives it.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/30ace6f2-9448-4e7e-955c-0718aade1a14)
+- Using a Parallel state, Step Functions inputs the video file, so Lambda can process it into the five display resolutions at the same time.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/94a4609a-6711-4f5d-bc22-38cf5d28ea53)
+- Using a Map state, Step Functions has Lambda process each of your customer's items in parallel.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/dcf25e5e-6d18-4e64-8c9c-5544eaa84b9b)   
+
+**states**
+
+- ```Choice State``` -Test for a condition to send to a branch (or default branch)
+- ```Fail or Succeed State``` - Stop execution with failure or success
+- ```Pass State``` - Simply pass its input to its output or inject some fixed data, without performing work.
+- ```Wait State``` - Provide a delay for a certain amount of time or until a specified time/date.
+- ```Map State``` - Dynamically iterate steps.
+- ```Parallel State``` - Begin parallel branches of execution.   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c4add06a-d2b3-47f7-8de0-17b0a6126f91)   
+
+**Error handling**
+
+- All states, except Pass and Wait states, can encounter runtime errors.
+- Predefined error codes:   
+• ```States.ALL``` : matches any error name   
+• ```States.Timeout```: Task ran longer than TimeoutSeconds or no heartbeat received  
+• ```States.TaskFailed```: execution failure  
+• ```States.Permissions```: insufficient privileges to execute code
+- Instead of the application handling the error handling mechanisms, retry and catch fallbacks can be used as cross cutting concerns
+- Retry examples   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d30154e7-f8a3-49fd-aed7-ffdc29ddf7aa)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bec5f5e5-fef3-4e45-b031-7b091df5ad79)   
+
+- Catch fallbacks
+- When a state reports an error and either there is no Retry field, or if retries fail to resolve the error, Step Functions scans through the catchers in the order listed in the array. When the error name appears in the value of a catcher's ErrorEquals field, the state machine transitions to the state named in the Next field.   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/92da9b24-8cdd-4aa3-9379-ef8e9847079d)   
+- ResultPath
+  - A path that determines what input the catcher sends to the state specified in the Next field.
+  - for the first catcher in the example, the catcher adds the error output to the input as a field named error-info if there isn't already a field with this name in the input
+  - Then, the catcher sends the entire input to RecoveryState. For the second catcher, the error output overwrites the input and the catcher only sendsthe error output to EndState.
+
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6419c89c-d864-441b-955a-91f2b9e9095b)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f780f9d5-d97f-4853-a45b-84e21e5f66e0)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/28cb71ba-1bca-425f-a5cd-343641dca340)
+
+**Service Integration patterns**
+- Each of these service integration patterns is controlled by how you create a URI in the ```Resource``` field of your task definition.
+- Wait for a Callback with the ```Task Token```
+  - Callback tasks provide a way to pause a workflow until a task token is returned.
+  - For tasks like these, you can pause Step Functions until the workflow execution reaches the one year service quota, and wait for an external process or workflow to complete.
+  - The task will pause until it receives that task token back with a ```SendTaskSuccess``` or ```SendTaskFailure``` call.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a5b8c97e-1616-47ed-8425-f72bbe6d3459)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f15bf54e-3ce5-4b15-8a28-31eb68c89eee)
+  - To avoid stuck executions you can configure a heartbeat timeout interval in your state machine definition.
+  - Push mechanism
+
+- ```Activity tasks```
+  - Enables you to have the Task work performed by an Activity Worker
+  - Pull mechanism
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/76814c50-75c6-4949-9fa6-54f949700832)
+  - Activity Worker poll for a Task using GetActivityTask API
+  - After Activity Worker completes its work, it sends response of its success/failure using ```SendTaskSuccess``` or ```SendTaskFailure```
+
+## AWS APPSYNC
+- AWS AppSync enables developers to connect their applications and services to data and events with secure, serverless and high-performing GraphQL and Pub/Sub APIs. You can do the following with AWS AppSync
+- Access data from one or more data sources from a single GraphQL API endpoint.
+- Retrieve data in real-time with WebSocket or MQTT on WebSocket
+- For mobile apps: local data access & data synchronization
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8ec2eb8e-3eda-4860-be82-5e83032c19ae) 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/29682e2c-7117-480e-ac24-88850ba4b300)
+- For Security, ```API_KEY```, ```AWS_IAM```, ```OPENID_CONNECT```, ```AMAZON_COGNITO_USER_POOLS```
+
+## AWS AMPLIFY
+- AWS Amplify is a set of purpose-built tools and features that enables frontend web and mobile developers to quickly and easily build full-stack applications on AWS. Amplify provides two services:
+  - ```Amplify Hosting``` and ```Amplify Studio```
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d85a5b6b-6bb2-4a85-93d2-03b72a9f57ba)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3348964a-24b2-4844-8c4c-0f062364bd56)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5a5af532-2b80-498b-bccf-f9db3b4931a7)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b651246f-b340-4607-9afa-135ba1cdb0e5)
+- • Integrated with Cypress testing framework
+• Allows you to generate UI report for your tests  
+
 ## AWS DYNAMODB  
 
 - fully managed NoSQL database service that provides fast and predictable performance with seamless scalability
