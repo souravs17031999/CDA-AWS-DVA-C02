@@ -811,6 +811,183 @@ Durability level	Availability zones to provide automatic failover without interr
 
 ## AWS S3 
 
+- Amazon S3 allows people to store objects (files) in “buckets” (directories)
+- Buckets must have a globally unique name (across all regions all accounts)
+- Buckets are defined at the region level
+- The key is the FULL path:
+• ```s3://my-bucket/my_file.txt```
+• ```s3://my-bucket/my_folder1/another_folder/my_file.txt```
+• The key is composed of prefix + object name
+• ```s3://my-bucket/my_folder1/another_folder/my_file.txt```
+- Max. Object Size is 5TB (5000GB), If uploading more than 5GB, must use “multi-part upload”
+- _Buckets_
+  - A bucket is a container for objects stored in Amazon S3. You can store any number of objects in a bucket and can have up to 100 buckets in your account.
+- _Objects_
+  - Objects are the fundamental entities stored in Amazon S3.
+  - The metadata is a set of name-value pairs that describe the object. These pairs include some default metadata, such as the date last modified, and standard HTTP metadata, such as Content-Type. You can also specify custom metadata at the time that the object is stored.
+  - An object is uniquely identified within a bucket by a key (name) and a version ID (if S3 Versioning is enabled on the bucket)
+  - For example, in the URL https://DOC-EXAMPLE-BUCKET.s3.us-west-2.amazonaws.com/photos/puppy.jpg, DOC-EXAMPLE-BUCKET is the name of the bucket and photos/puppy.jpg is the key.
+
+**Security: Bucket policies**
+- you can secure access to objects in your buckets, so that only users with the appropriate permissions can access them
+- How Authorizor works:
+  - Converts all the relevant access policies (user policy, bucket policy, ACLs) at run time into a set of policies for evaluation.
+  - Amazon S3 evaluates a subset of policies in a specific context, based on the context authority: ```User context, Bucket context, Object context```
+    
+- Ex. JSON policies 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a5b93ecf-05df-4421-9c1b-cd82cf6d34da)   
+
+- User-Based:
+  - IAM Policies – which API calls should be allowed for a specific user from IAM
+  - Ex.
+  - Allowing an IAM user access to one of your buckets
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/59ce7c4a-fae3-41fe-9592-55bb571220f0)
+  - Allowing each IAM user access to a folder in a bucket
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/85a95ae7-1d70-47b6-9d48-527b1179d0ae)
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/61af6e0a-f53a-45f7-823c-2ea9b5fb4b1a)
+  - Restricting access to Amazon S3 buckets within a specific AWS account
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c25c51bb-52f4-4cb2-9b76-b34e44890303)   
+
+  - EX. OF AWS MANAGED POLICIES: ```AmazonS3FullAccess```, ```AmazonS3ReadOnlyAccess```, ```AmazonS3ObjectLambdaExecutionRolePolicy```
+
+
+- Resource-Based
+  - Bucket Policies – bucket wide rules from the S3 console - allows cross account
+  - The policy allows Dave, a user in account Account-ID, s3:GetObject, s3:GetBucketLocation, and s3:ListBucket Amazon S3 permissions on the awsexamplebucket1 bucket.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6c52e3ea-9d48-420c-b3b8-9af30b485a94)   
+
+  - Resources
+  - Ex. ```arn:partition:service:region:namespace:relative-id```
+  - Principals
+    - "AWS":"account-ARN"
+  - Actions
+    - Object operations
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/31275f8b-9626-47e1-91ed-919149d68567)  
+    - Bucket operations
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/062523f1-a2df-4c7b-b764-0b44d6cd5923)
+    - Explicit deny
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/068eb91d-06e8-4da8-a50d-cc2bf909d3aa)
+    - Account operations
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/80d51b26-afdb-403a-95fd-1415ddcdf28e)  
+    - Condition keys
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6efcd248-0370-4fac-992e-ea4dd9a84f75)   
+    - Objects upload requiring SSE (SERVER SIDE ENCRYPTION)
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ab3d5ed0-e6d2-4f28-bcd3-9c87fc52769b)
+    - Granting access to specific version of object
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d6ab7cc9-8689-4ada-a91b-7be37b6ad8f0)
+    - Allow access on the basis of tags
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7204b9e4-53ed-430a-96a2-c1fa9f77cbbf)   
+
+  - Object Access Control List (ACL) – finer grain (can be disabled)
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e1275f71-2c0b-410e-a4e6-6421529454e7)
+  - ACLs enabled
+    - Bucket owner preferred – The bucket owner owns and has full control over new objects that other accounts write to the bucket with the bucket-owner-full-control canned ACL.
+    - Object writer – The AWS account that uploads an object owns the object, has full control over it, and can grant other users access to it through ACLs.
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0734c0e6-6ce2-4870-bdd3-cff696a3190c)
+
+  - Bucket Access Control List (ACL) – less common (can be disabled)   
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7793078d-a237-463d-bd45-754a15cf725f)
+  - ACL permissions are mapped to policy permissions for buckets and objects
+   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/83abd187-f690-4139-9455-c84eb72f9ba5)    
+  - Supports canned ACL's: predefined set of grantees and permissions. Ex. ```private```, ```public-read```, ```public-read-write```, ```bucket-owner-read``` etc...
+
+**Static website hosting**
+- S3 can host static websites and have them accessible on the Internet
+- the website is available at the AWS Region-specific website endpoint of the bucket: ```http://bucket-name.s3-website-Region.amazonaws.com``` or ```http://bucket-name.s3-website.Region.amazonaws.com``` (returns the default index.html/configured)
+- need public read access permissions
+- if not want to grant public read permissions and still host the website, Amazon CloudFront distribution to serve your static website.
+
+**S3 versioning**
+- means of keeping multiple variants of an object in the same bucket
+- When you enable versioning in a bucket, all new objects are versioned and given a unique version ID.
+- Objects that are stored in your bucket before you set the versioning state have a version ID of null
+- If you delete an object, instead of removing the object permanently, Amazon S3 inserts a delete marker, which becomes the current object version.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9224fc9c-b924-4080-9c26-f275f400aa75)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/dbdf6ef9-9e13-49ed-aa41-8045e5ab3030)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ef4d74bf-54f5-414d-a044-b27e86631ccf)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/10381e85-1539-449e-8200-ff064e26ae0d)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7fdc8acf-dfc1-4042-8ad6-6e2534c494e9)
+
+**S3 REPLICATION**
+- automatic, asynchronous copying of objects across Amazon S3 buckets.
+- You can replicate objects to a single destination bucket or to multiple destination buckets.
+- To automatically replicate new objects as they are written to the bucket, use live replication, such as Cross-Region Replication (CRR). To replicate existing objects to a different bucket on demand, use ```S3 Batch Replication```.
+- _Pre-requisites_:
+  - Both source and destination buckets must have versioning enabled
+  - permissions to replicate objects from the source bucket to the destination bucket or buckets on your behalf.
+- Cross-Region Replication (CRR)
+- Same-Region Replication (SRR)
+- For DELETE operations   
+• Can replicate delete markers from source to target (optional setting)   
+• Deletions with a version ID are not replicated (to avoid malicious deletes)
+- There is no “chaining” of replication   
+• If bucket 1 has replication into bucket 2, which has replication into bucket 3  
+• Then objects created in bucket 1 are not replicated to bucket 3  
+
+**S3 Storage classes, Tiers and Lifecycle management**
+
+- High durability (99.999999999%, 11 9’s) of objects across multiple AZ
+• If you store 10,000,000 objects with Amazon S3, you can on average expect to
+incur a loss of a single object once every 10,000 years
+- Availibility: • Example: S3 standard has 99.99% availability = not available 53 minutes a year
+
+- _Storage classes for frequently accessed objects_
+  - **S3 Standard** – The default storage class. If you don't specify the storage class when you upload an object, Amazon S3 assigns the S3 Standard storage class.
+- _Storage classes for infrequently accessed objects_
+  - **S3 Standard-IA** - Amazon S3 stores the object data redundantly across multiple geographically separated Availability Zones (minimum storage duration period of 30 days)
+  - **S3 One Zone-IA** - Amazon S3 stores the object data in only one Availability Zone, which makes it less expensive than S3 Standard-IA (minimum storage duration period of 30 days)
+- _Storage classes for archiving objects_
+  - **S3 Glacier Instant Retrieval** - Use for archiving data that is rarely accessed and requires milliseconds retrieval.
+  - **S3 Glacier Flexible Retrieval** - Use for archives where portions of the data might need to be retrieved in minutes. (1-5 minutes), minimum storage duration period of 90 days
+  - **S3 Glacier Deep Archive** - Use for archiving data that rarely needs to be accessed. has a minimum storage duration period of 180 days and a default retrieval time of 12 hours.
+- _S3 Intelligent-Tiering automatically optimizing data with changing or unknown access patterns_
+  - Frequent Access (automatic), Infrequent Access (automatic, object is not accessed for 30 consecutive days), Archive Instant Access (automatic, object is not accessed for 90 consecutive days), Archive Access (optional, 90 - 730 days ), Deep Archive Access (optional, 180-730 days)
+
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5c55acc9-6c1b-469c-ae60-ab5b197ee173)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/09c2d060-cd95-40ec-8e9d-287d8a184581)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f4737bb2-0f6f-45ef-8db2-35d8b6f458ec)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5b9d9078-6211-4ade-92d7-7134e90ab4e4)  
+
+- Retrieval options for archived data
+  - Expedited: available within 1–5 minutes, Intelligent-Tiering Archive Access tier
+  - Standard:  3–5 hours for objects, Glacier Flexible Retrieval storage class or S3 Intelligent-Tiering Archive Access tier
+  - Bulk: finish within 5–12 hours for objects that are stored in the S3 Glacier Flexible Retrieval storage class or S3 Intelligent-Tiering Archive Access tier. typically finish within 48 hours for objects stored in the S3 Glacier Deep Archive storage class or S3 Intelligent-Tiering Deep Archive Access tier.  
+
+- S3 lifecycle actions
+  - An S3 Lifecycle configuration is an XML file that consists of a set of rules with predefined actions that you want Amazon S3 to perform on objects during their lifetime.
+  - Amazon S3 supports a waterfall model for transitioning between storage classes
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b91d80eb-3904-4792-b6a0-58a12f642bfb)   
+
+  - _Transition actions_:
+    - These actions define when objects transition to another storage class. 
+  - _Expiration actions_:
+    - These actions define when objects expire. Amazon S3 deletes expired objects on your behalf.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f82049fc-3029-40b9-aa1a-9d2e95a2a1bc)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b63a55b0-8f60-4ee9-92a9-fa6057b86bad)   
+
+- Amazon S3 Analytics – Storage Class Analysis: Help you decide when to transition objects to the right storage class
+
+- S3 EVENT NOTIFICATIONS
+  - receive notifications when certain events happen in your S3 bucket.
+  - SQS, SNS, LAMBDA (NEEDS IAM PERMISSIONS ATTACHED TO S3 BUCKETS)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/23088ffe-f7e9-4851-9cf9-c500e262fea2)
+  - EVENTBRIDGE (Amazon S3 does not require any additional permissions to deliver events to Amazon EventBridge)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cb49e3ff-5281-4560-9f1e-8b460bdfefa0)  
+
+**S3 PERFORMANCE OPTIMIZATION**
+- Your application can achieve at least 3,500 PUT/COPY/POST/DELETE or 5,500 GET/HEAD requests per second per prefix in a bucket.
+- ```Multi-Part upload```: recommended for files > 100MB, must use for files > 5GB
+- ```S3 Transfer Acceleration```: Increase transfer speed by transferring file to an AWS edge location which will forward the data to the S3 bucket in the target region
+- ```Byte-Range Fetches```: Parallelize GETs by requesting specific byte ranges  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/765d8ef5-c2a9-458a-8855-6821a0b298d7)   
+- ```S3 SELECT```: you can use structured query language (SQL) statements to filter the contents of an Amazon S3 object and retrieve only the subset of data that you need, works on objects stored in CSV, JSON, or Apache Parquet format. works with Glacier as well, so Glacier SELECT.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e6865eaf-ee86-4fac-9aa1-ecf430b2a059)  
+
+**Metadata and tags**
+- S3 User-Defined Object Metadata: Name-value (key-value) pairs, User-defined metadata names must begin with "x-amz-meta-”
+- S3 Object Tags: Useful for fine-grained permissions (only access specific objects with specific tags), can be used in s3 analytics
+  - In bucket lifecycle configuration, you can specify a filter to select a subset of objects to which the rule applies. You can specify a filter based on the key name prefixes, object tags, or both.
+- You cannot search the object metadata or object tags. Instead, you must use an external DB as a search index such as DynamoDB
 
 ## API GATEWAY
 
