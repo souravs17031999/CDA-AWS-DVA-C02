@@ -891,6 +891,12 @@ Durability level	Availability zones to provide automatic failover without interr
    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/83abd187-f690-4139-9455-c84eb72f9ba5)    
   - Supports canned ACL's: predefined set of grantees and permissions. Ex. ```private```, ```public-read```, ```public-read-write```, ```bucket-owner-read``` etc...
 
+**S3 BLOCK PUBLIC ACCESS**
+- ```BlockPublicAcls```: PUT Bucket acl and PUT Object acl calls fail if the specified access control list (ACL) is public.
+- ```IgnorePublicAcls```: Setting this option to TRUE causes Amazon S3 to ignore all public ACLs on a bucket and any objects that it contains. This setting enables you to safely block public access granted by ACLs while still allowing PUT Object calls that include a public ACL
+- ```BlockPublicPolicy```: Setting this option to TRUE for a bucket causes Amazon S3 to reject calls to PUT Bucket policy if the specified bucket policy allows public access.
+- ```RestrictPublicBuckets```: Setting this option to TRUE restricts access to an access point or bucket with a public policy to only AWS service principals and authorized users within the bucket owner's account and access point owner's account.
+
 **Static website hosting**
 - S3 can host static websites and have them accessible on the Internet
 - the website is available at the AWS Region-specific website endpoint of the bucket: ```http://bucket-name.s3-website-Region.amazonaws.com``` or ```http://bucket-name.s3-website.Region.amazonaws.com``` (returns the default index.html/configured)
@@ -988,6 +994,65 @@ incur a loss of a single object once every 10,000 years
 - S3 Object Tags: Useful for fine-grained permissions (only access specific objects with specific tags), can be used in s3 analytics
   - In bucket lifecycle configuration, you can specify a filter to select a subset of objects to which the rule applies. You can specify a filter based on the key name prefixes, object tags, or both.
 - You cannot search the object metadata or object tags. Instead, you must use an external DB as a search index such as DynamoDB
+
+**S3 ENCRYPTION**
+
+- SSE (SERVER SIDE ENCRYPTION)
+  - _SSE-S3_
+    - Encryption type is AES-256
+    - Must set header "x-amz-server-side-encryption": "AES256"
+    - automatically applied to new objects stored in S3 bucket
+    - Bucket policy to force to require encryption 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4975b2ca-3135-47b4-b11d-c3479d51a35a)  
+
+  - _SSE-KMS_
+    - Must set header "x-amz-server-side-encryption": "aws:kms"
+    - Encryption using keys handled and managed by AWS KMS (Key Management Service)
+    - When you upload, it calls the GenerateDataKey KMS API
+    - When you download, it calls the Decrypt KMS API
+    - you can configure your buckets to use S3 Bucket Keys for SSE-KMS. Using a bucket-level key for SSE-KMS can reduce your AWS KMS request costs by up to 99 percent by decreasing the request traffic from Amazon S3 to AWS KMS.
+    - AWS generates a short-lived bucket-level key from AWS KMS then temporarily keeps it in S3. This bucket-level key will create data keys for new objects during its lifecycle. S3 Bucket Keys are used for a limited time period within Amazon S3, reducing the need for S3 to make requests to AWS KMS to complete encryption operations
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/03c5ac80-6845-4540-8857-60c8df94a7b8)  
+
+  - _SSE-C_
+    - keys fully managed by the customer outside of AWS
+    - HTTPS must be used
+    - Encryption key must provided in HTTP headers, for every HTTP request made
+
+- CSE (CLIENT SIDE ENCRYPTION)
+  - Use client libraries such as Amazon S3 Client-Side Encryption Library
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/eabad170-d546-4c70-97d6-fe198d8113eb)
+
+**S3 CORS**
+- The request's ```Origin``` header must match an ```AllowedOrigin``` element.
+- The request method (for example, GET or PUT) or the ```Access-Control-Request-Method``` header in case of a preflight ```OPTIONS``` request must be one of the AllowedMethod elements.
+- Every header listed in the request's ```Access-Control-Request-Headers``` header on the preflight request must match an ```AllowedHeader``` element.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5d63c8d8-c90a-49c9-8e91-e21dcbede369)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0edf810a-681d-4ac2-8e51-09607fd90cb9)
+
+**S3 MFA DELETE**
+- MFA (Multi-Factor Authentication) – force users to generate a code on a device (usually a mobile phone or hardware) before doing important operations on S3
+- Permanently delete an object version, Suspend Versioning on the bucket
+- To use MFA Delete, Versioning must be enabled on the bucket
+- Only the bucket owner (root account) can enable/disable MFA Delete
+
+**S3 PRE-SIGNED URL'S**
+- You can use presigned URLs to grant time-limited access to objects in Amazon S3 without updating your bucket policy.
+- The credentials used by the presigned URL are those of the AWS user who generated the URL.
+- You can also use presigned URLs to allow someone to upload a specific object to your Amazon S3 bucket. This allows an upload without requiring another party to have AWS security credentials or permissions.
+- A presigned URL remains valid for the period of time specified when the URL is generated. If you create a presigned URL with the Amazon S3 console, the expiration time can be set between 1 minute and 12 hours. If you use the AWS CLI or AWS SDKs, the expiration time can be set as high as 7 days.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f0590d92-55de-45e3-8d0d-a194655d4c34)   
+
+**S3 ACCESS POINTS**
+- Access points are named network endpoints that are attached to buckets that you can use to perform S3 object operations, such as GetObject and PutObject.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0d2b5f13-a3c7-4211-969f-4d9f501648cb)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e2c69ec7-7b9b-43ba-9e16-39ab9efc2d31)
+- You can delegate access control for a bucket to the bucket's access points.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a0021cea-46d2-4a16-9002-3e75c996ff44)  
+
+**S3 OBJECT LAMBDA**
+- Use AWS Lambda Functions to change the object before it is retrieved by the caller application
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0e017563-a6a2-4c91-ad1d-087139baf2df)   
 
 ## API GATEWAY
 
