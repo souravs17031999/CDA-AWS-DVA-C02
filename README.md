@@ -1349,11 +1349,161 @@ you’ve setup through API Gateway
 - ```sam publish```
 
 
-## Messaging systems and patterns
+## Messaging systems and patterns + Integration
 
-### SQS
+- The following lists out a few common ways AWS customers are using a combination of services.
+  - Routing Amazon EventBridge or Amazon Simple Notification Service (Amazon SNS) events to an Amazon Simple Queue Service (Amazon SQS) queue as a buffer for downstream consumers.
+  - Pulling events directly from a stream (Kinesis Data Streams or Amazon Managed Streaming for Apache Kafka (Amazon MSK)) or a queue (SQS or Amazon MQ) with EventBridge Pipes and sending events to an     
+    EventBridge bus to push out to consumers.
+  - Routing EventBridge or SNS events to a Kinesis Data Streams or Amazon MSK for gathering and viewing analytics.
 
-### SNS
+- Consumer
+  - 
+
+### SQS (SIMPLE QUEUE SERVICE)
+
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/649b6634-896e-4b47-abd9-e92d6702420e)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5db10bc2-1717-4a72-8166-5316acfa7db6)
+
+- offers hosted queues that integrate and decouple distributed software systems and components
+- Messages in the queue are typically processed by a single subscriber.
+- Can have duplicate messages (at least once delivery, occasionally)
+- Can have out of order messages (best effort ordering)
+- _Producer_
+  - Produced to SQS using the SDK (```SendMessage``` API)
+  - The message is persisted in SQS until a consumer deletes it
+  - Message retention: default 4 days, up to 14 days
+- _Consumer_
+  - Poll SQS for messages (receive up to 10 messages at a time)
+  - Delete the messages using the ```DeleteMessage``` API
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f022fc17-04f5-4724-9205-df0b78887f07)  
+- Increasing throughput of processing of consumers 
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/224ca7e3-77b9-4bff-8428-205d72b3806c)  
+- SQS with auto scaling group
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c015b475-0de9-44c5-9fb0-d54abc05ae66)  
+- SQS decoupling
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9d0ee309-e360-4619-8a6b-fcf213e9b36f)
+- _Standard vs FIFO queues_
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/937d6729-dbc8-40f7-a660-70ba89531060)
+- Short polling:
+  - Amazon SQS sends the response right away, even if the query found no messages.
+- Long polling:
+  - Amazon SQS sends an empty response only if the polling wait time expires. sends a response after it collects at least one available message, up to the maximum number of messages specified in the request
+
+**SQS MESSAGE VISIBILITY**
+
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/efbf4ebd-3aa1-45df-b262-6ba1070d5650)  
+- Amazon SQS sets a visibility timeout, a period of time during which Amazon SQS prevents all consumers from receiving and processing the message. The default visibility timeout for a message is 30 seconds. The minimum is 0 seconds. The maximum is 12 hours.
+- If you don't know how long it takes to process a message, create a heartbeat for your consumer process: Specify the initial visibility timeout (for example, 2 minutes) and then—as long as your consumer still works on the message—keep extending the visibility timeout by 2 minutes every minute.
+- You can shorten or extend a message's visibility by specifying a new timeout value using the ```ChangeMessageVisibility``` action.
+
+**SQS WITH (DLQ)**
+
+- Amazon SQS supports dead-letter queues (DLQ), which other queues (source queues) can target for messages that can't be processed (consumed) successfully.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6676e2a7-fd79-4e16-83d8-e178b996df94)
+- The ```maxReceiveCount``` is the number of times a consumer tries receiving a message from a queue without deleting it before being moved to the dead-letter queue.
+- The redrive allow policy specifies which source queues can access the dead-letter queue (Good to set a retention of 14 days in the DLQ)
+- You can use dead-letter queue redrive to manage the lifecycle of unconsumed messages. After you have investigated the attributes and related metadata available for standard unconsumed messages in a dead-letter queue, you can redrive the messages back to their source queues.
+- DLQ of a FIFO queue must also be a FIFO queue
+- DLQ of a Standard queue must also be a Standard queue
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/45e03fc8-151f-446c-a4ec-93216b2f2c19)
+
+**SQS DELAY QUEUE**
+- Delay queues let you postpone the delivery of new messages to consumers for a number of seconds, for example, when your consumer application needs additional time to process messages.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fd84f9c6-1826-406c-92b2-977c64177eea)  (0-15MINS)
+
+- SQS JAVA EXTENDED CLIENT
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/271e849e-51af-4a32-ad5c-a63260c6b167)    
+
+**SQS FIFO DEDUPLICATION**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f42fdf6e-78fc-4656-b069-bc00afe02f97)
+- Message deduplication ID is the token used for deduplication of sent messages. If a message with a particular message deduplication ID is sent successfully, any messages sent with the same message deduplication ID are accepted successfully but aren't delivered during the 5-minute deduplication interval.
+- Content-based deduplication: will do a SHA-256 hash of the message body
+
+**SQS GROUPING MESSAGES**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/dd7ee710-8fab-42b0-9d7b-eb6c94aa4e85)
+- MessageGroupId is the tag that specifies that a message belongs to a specific message group. Messages that belong to the same message group are always processed one by one, in a strict order relative to the message group (however, messages that belong to different message groups might be processed out of order).
+
+
+**SQS SECURITY**
+- IAM POLICY SYSTEM
+  - Attach a permission policy to a user or a group in your account, Attach a permission policy to a user in another AWS account, Attach a permission policy to a role (grant cross-account permissions) 
+- SQS ACCESS POLICIES
+  - Grant one permission to one AWS account
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0a87684d-f001-453e-b9b9-2cb1b01f1b83)
+  - Grant all permissions to two AWS accounts
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0aab93ca-3ee8-4d9f-a542-f2d1093c6dcc)
+  - Grant a permission to all users
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a07e00ee-0eb8-49df-99dd-75693b9a6609)  
+
+
+**IMPORTANT APIS**
+
+• CreateQueue (MessageRetentionPeriod), DeleteQueue   
+• PurgeQueue: delete all the messages in queue   
+• SendMessage (DelaySeconds), ReceiveMessage, DeleteMessage   
+• MaxNumberOfMessages: default 1, max 10 (for ReceiveMessage API)   
+• ReceiveMessageWaitTimeSeconds: Long Polling  
+• ChangeMessageVisibility: change the message timeout  
+• Batch APIs for SendMessage, DeleteMessage, ChangeMessageVisibility helps decrease your costs
+
+**CREATING SQS**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/930e7095-87b3-481f-ab59-d2125746bd6e)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9202b7f6-2e46-4d31-bda2-845e59a295b3)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c3bc3be8-0280-4f18-9291-aad2fe9353e3)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5aa44b98-0716-466c-ba6a-12b13c9c3a02)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2aac1bb7-ba8f-426d-9ccd-1d89bbcd651c)   
+
+### SNS (SIMPLE NOTIFICATION SERVICE)
+
+- publish-subscribe service that provides message delivery from publishers (also known as producers) to multiple subscriber endpoints(also known as consumers)
+- Publishers communicate asynchronously with subscribers by sending messages to a _topic_
+- Subscribers can subscribe to an Amazon SNS topic and receive published messages using a supported endpoint type
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/40cffb7c-5879-43ee-96ef-12338906a409)   
+
+**SQS-SNS FANOUT PATTERN**
+
+- Push once in SNS, receive in all SQS queues that are subscribers
+- S3 Events to multiple queues
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/85dd2535-b474-4aed-9186-fa064fdd0183)
+- SNS to Amazon S3 through Kinesis Data Firehose
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/82cca1e3-cdda-44db-928e-a83a2f546b50)
+- FIFO FANOUT
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/434270c7-ed5a-41c4-b2e5-cd8a9ed5e476)   
+
+**SNS FIFO**
+
+- provide strict message ordering and message deduplication
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b55a507a-80ed-4c6d-af24-5be17c41cc1b)
+- An Amazon SNS FIFO topic always delivers messages to subscribed Amazon SQS queues in the exact order in which the messages are published to the topic, and only once.
+- With an Amazon SQS FIFO queue subscribed, the consumer of the queue receives the messages in the exact order in which the messages are delivered to the queue, and no duplicates
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fecc5f6a-c4fd-4d80-800b-0c2c689f6ffc)
+- You can have multiple applications (or multiple threads within the same application) publishing messages to an SNS FIFO topic in parallel. To determine the established sequence of messages, you can check the sequence number (ASSIGNED BY AWS SNS)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/921ec06d-908b-4717-bad1-6f3b4fb5fdcb)
+- Messages that belong to the same group are processed one by one, in a strict order relative to the group.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/74b6761b-7189-4b10-83a5-79abe4a4122c)
+
+**MESSAGE FILTERING**
+- A filter policy is a JSON object containing properties that define which messages the subscriber receives
+- Amazon SNS FIFO topics support message filtering.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2c7c2a0d-1836-47c8-a1af-10d36b3e1294)
+- Ex. for messageAttributes policy 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5e51e379-8b2a-4c20-91c1-a4b02db3cc00)
+- For messageBody policy
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/240bad2a-8f73-4d36-be93-0cb147a2a4a6)
+
+
+**DLQ**
+- For any type of error, Amazon SNS can sideline messages to Amazon SQS dead-letter queues so data isn't lost.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f0c1b366-c27e-4398-924d-6a5b058fe51d)  
+
+**SNS SECURITY**
+- RAW MESSAGE DELIVERY:
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/32398b0c-dd25-4b0d-86fc-e4e8adb4b5aa)
+- CROSS ACCOUNT DELIVERY
+- 
+
+
 
 ### KINESIS
 
