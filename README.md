@@ -3,6 +3,30 @@ AWS Certified Developer - Associate
 
 # Development with AWS Services
 
+## AWS FUNDAMENTALS 
+
+### RDS
+### ELASTICCACHE
+- CACHE STRATEGIES
+
+  - READ ASIDE (LAZY LOADING)
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d28499e6-4473-4e8b-991f-64522048883d)  
+
+  - WRITE ASIDE
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e1405aaf-c712-4877-91ef-e221fff7fcac)   
+
+  - READ THROUGH
+   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/440f41a6-217d-495f-bc73-ee5bc3131bdd)  
+     
+  - WRITE THROUGH
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a4b871be-7fce-49d4-b347-19617dc4355e)
+
+  - WRITE BACK
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8200ab1d-e247-4054-97a4-1bbd875b2890)   
+
+
+
+
 ## AWS LAMBDA FUNCTION
 - AWS Lambda is a compute service that lets you run code without provisioning or managing servers.
 - With Lambda, all you need to do is supply your code in one of the language runtimes that Lambda supports.
@@ -2381,4 +2405,17 @@ You must use the NumberOfBytes parameter to specify the length of the random byt
 
 # Deployment
 
+## ELASTIC BEANSTALK
+
+## CLOUFORMATION 
+
+## AWS CI/CD 
+
+
 # Troubleshooting and Optimization
+
+## CLOUDWATCH
+
+## X-RAY
+
+## CLOUTRAIL 
