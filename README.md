@@ -1563,6 +1563,45 @@ you’ve setup through API Gateway
 • KCL 2.x (supports shared & enhanced fan-out consumer
 - For each Amazon Kinesis Data Streams application, KCL uses a unique lease table (stored in a Amazon DynamoDB table) to keep track of the shards in a KDS data stream that are being leased and processed by the workers of the KCL consumer application.
 
+- Task split by KCL workers via DynamoDB
+- Max it can be as number of shards, otherwise extra KCL workers wouldn't do anything (idle)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/59b2ea74-91b1-4363-b33d-8872485b729e)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e901c896-e055-4691-9ae6-fd2502ea92e0)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9970d975-829c-4271-8dfe-9ba941151705)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/81e735f6-6089-49e8-b233-0d7a6e092bf1)  
+
+**kinesis shard split and merge**
+- Used to divide a “hot shard”
+- The old shard is closed and will be deleted once the data is expired
+- Can’t split into more than two shards in a single operation
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bda17017-4a4d-431d-beb7-b0e0422c5f38)
+- Can be used to group two shards with low traffic (cold shards)
+- Old shards are closed and will be deleted once the data is expired
+- Can’t merge more than two shards in a single operation
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cbe5ab62-862b-4c4a-9773-ce7088a0272f)  
+
+**Kinesis Data Firehose**
+- delivering real-time streaming data to multiple destinations
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d9e62658-5e93-4a8b-8992-40b336b8e4fb)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/24c359c6-3364-41f1-848e-4267caaf31c8)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e5db53fa-3e4a-4046-8a03-974cb5125289)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6a3162c1-8188-45d4-8735-631a7e11b10d)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8c6521ba-ac59-4e83-ba38-2ab0d9bc511d)  
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/29d06431-3af5-400b-8d8b-9844baad83e3)  
+
+**Kinesis Data analytics (SQL applications)**
+- Real-time analytics on Kinesis Data Streams & Firehose using SQL
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a476e414-bf40-42ca-be3d-4d4167789172)  
+
+**Kinesis Data analytics (For Apache Flink application)**
+- Use Flink (Java, Scala or SQL) to process and analyze streaming data
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1ee718a6-64f3-454e-a7f1-3d5c3166b998)   
+
+**SQS VS SNS VS KINESIS**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/14b8216d-e0d9-4e1c-9677-a84f178b900b)   
+
+
 # Security
 
 ## IAM 
