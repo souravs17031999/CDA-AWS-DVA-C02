@@ -1501,11 +1501,67 @@ you’ve setup through API Gateway
 - RAW MESSAGE DELIVERY:
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/32398b0c-dd25-4b0d-86fc-e4e8adb4b5aa)
 - CROSS ACCOUNT DELIVERY
-- 
-
-
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e98a6bd0-e08d-4c89-8706-daee9bc3d997)   
 
 ### KINESIS
+
+- Kinesis Data Streams to collect and process large streams of data records in real time.
+- Data Streams application reads data from a data stream as data records.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c9f4c82c-3de2-4e2c-9963-7115768256f7)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8f2af240-da79-464e-8d28-672758027f9e)    
+- A Kinesis data stream is a set of shards. Each shard has a sequence of data records. Each data record has a sequence number that is assigned by Kinesis Data Streams.
+- Data records are composed of a sequence number, a partition key, and a data blob, which is an immutable sequence of bytes.
+- The retention period is the length of time that data records are accessible after they are added to the stream (1-365 days), Ability to reprocess (replay) data
+- _Provisioned mode_
+  - you must specify the number of shards for the data stream. The total capacity of a data stream is the sum of the capacities of its shards. You can increase or decrease the number of shards in a data stream as needed and you are charged for the number of shards at an hourly rate.
+- _On-demand mode_: 
+  - Kinesis Data Streams automatically manages the shards in order to provide the necessary throughput. You are charged only for the actual throughput that you use and Kinesis Data Streams automatically accommodates your workloads’ throughput needs as they ramp up or down
+- Producers put records into Amazon Kinesis Data Streams
+- Consumers get records from Amazon Kinesis Data Streams and process them.
+- A shard is a uniquely identified sequence of data records in a stream
+- A partition key is used to group data by shard within a stream
+- Each data record has a sequence number that is unique per partition-key within its shard.
+- The Kinesis Client Library (KCL) is compiled into your application to enable fault-tolerant consumption of data from the stream.
+
+**Producers**
+- Puts data records into data streams
+• Data record consists of:  
+• Sequence number (unique per partition-key within shard)  
+• Partition key (must specify while put records into stream)  
+• Data blob (up to 1 MB)   
+• Producers:  
+• AWS SDK: simple producer  
+• Kinesis Producer Library (KPL): C++, Java, batch, compression, retries  
+• Kinesis Agent: monitor log files 
+• Write throughput: 1 MB/sec or 1000 records/sec per shard  
+• ```PutRecord``` API  
+• Use batching with PutRecords API to reduce costs & increase throughput  
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/896cde65-c8a4-4d15-8167-31dacd2bf99c)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c35f4501-3079-4fa4-b467-9cf4fa6b92e9)  
+
+**Consumers**
+- Custom Consumer (AWS SDK) – Classic or Enhanced Fan-Out
+  - Classic
+    - pull records by consumers
+    - shared throughput
+  - Enhanced
+    - subscribed, push records to consumers
+    - same throughput to all consumers 
+• Kinesis Client Library (KCL): library to simplify reading from data stream
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/096f9883-69fa-4624-be5d-c3ed7409a2f9)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c714cf7b-c847-42fc-b072-b061bdf00d25)  
+
+**KCL**
+- A Java library that helps read record from a Kinesis Data Stream with distributed applications sharing the read workload
+- Each shard is to be read by only one KCL instance
+• 4 shards = max. 4 KCL instances  
+• 6 shards = max. 6 KCL instances
+- Records are read in order at the shard level  
+- Versions:  
+• KCL 1.x (supports shared consumer)   
+• KCL 2.x (supports shared & enhanced fan-out consumer
+- For each Amazon Kinesis Data Streams application, KCL uses a unique lease table (stored in a Amazon DynamoDB table) to keep track of the shards in a KDS data stream that are being leased and processed by the workers of the KCL consumer application.
 
 # Security
 
