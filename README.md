@@ -6,6 +6,21 @@ AWS Certified Developer - Associate
 ## AWS FUNDAMENTALS 
 
 ### RDS
+- MULTI-AZ DEPLOYMENTS
+
+  - MULTI-AZ INSTANCE DEPLOYMENTS
+    - Amazon RDS automatically provisions and maintains a synchronous standby replica in a different Availability Zone. The primary DB instance is synchronously replicated across Availability Zones to a standby replica
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b090d1a7-8d62-40b1-9929-fafbd8e83ca4)
+  - MULTI-AZ CLUSTER DEPLOYMENTS
+    - A Multi-AZ DB cluster has a writer DB instance and two reader DB instances in three separate Availability Zones in the same AWS Region.
+    - semisynchronous replication, which requires acknowledgment from at least one reader DB instance in order for a change to be committed.
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9e20dbcd-349b-41aa-95dd-1109d51f55c4)
+  - CROSS REGION DEPLOYMENTS
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/213e62da-f664-4a65-a2d2-9c290654e403)
+    - when you perform a cross-Region restore of a DB snapshot, first you copy the snapshot to the desired Region. Then, you can restore the DB snapshot to a new DB instance.
+
+  - RDS PROXY
+
 ### ELASTICCACHE
 - CACHE STRATEGIES
 
