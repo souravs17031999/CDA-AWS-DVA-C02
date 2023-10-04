@@ -5,7 +5,42 @@ AWS Certified Developer - Associate
 
 ## AWS FUNDAMENTALS 
 
-### RDS
+
+#### ROUTE 53
+- A – maps a hostname to IPv4
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/78ac182b-8b53-41e2-9ce7-72ac7515ab88) 
+
+- AAAA – maps a hostname to IPv6
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/01f09dae-f4c1-4f34-93f0-28cb372480ec)  
+
+- CNAME – maps a hostname to another hostname
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/478400c8-d1f1-4f27-a36b-b58a2cad1048)  
+
+  - The target is a domain name which must have an A or AAAA record
+  - Can’t create a CNAME record for the top node of a DNS namespace (Zone Apex)
+  - Example: you can’t create for example.com, but you can create for www.example.com
+- NS – Name Servers for the Hosted Zone
+  - Control how traffic is routed for a domain
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e37637cd-8a4a-482b-ae0d-ac18243b96f0)  
+
+- HOSTED ZONES 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ad90c870-6f2a-4ac4-a51e-5d28a3f64fc3)
+
+- CNAME VS ALIAS
+- ALIAS TARGETS
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cf1e572e-cdda-465d-b6bf-42cbf67c9fec)
+
+- You cannot set an ALIAS record for an EC2 DNS name
+
+
+#### ELB + ASG
+- 
+
+
+#### VPC 
+
+
+#### RDS
 - MULTI-AZ DEPLOYMENTS
 
   - MULTI-AZ INSTANCE DEPLOYMENTS
@@ -21,7 +56,7 @@ AWS Certified Developer - Associate
 
   - RDS PROXY
 
-### ELASTICCACHE
+#### ELASTICCACHE
 - CACHE STRATEGIES
 
   - READ ASIDE (LAZY LOADING)
@@ -40,6 +75,7 @@ AWS Certified Developer - Associate
     ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8200ab1d-e247-4054-97a4-1bbd875b2890)   
 
 
+#### ECS, ECR, FARGATE, DOCKER 
 
 
 ## AWS LAMBDA FUNCTION
