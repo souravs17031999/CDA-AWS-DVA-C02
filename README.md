@@ -1,4 +1,4 @@
-![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/465636af-7953-4fc7-a477-2085686d43b4)# CDA-AWS-DVA-C02
+# CDA-AWS-DVA-C02
 AWS Certified Developer - Associate
 
 # Development with AWS Services
@@ -53,18 +53,33 @@ AWS Certified Developer - Associate
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6b040a3f-c33a-4810-ad49-c80a12154f7f)  
  
 
-
-
-
-
-
-
 #### ELB + ASG
 - 
 
 
 #### VPC 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ce9cfd04-fa4f-4fa9-99d2-e1a23c104c40)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4f535f71-e1ca-47d1-aa2f-c163019f0afd)  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b6ed9a1f-ab38-4f21-9ff6-1b7d85108823)
+- NACL
+  - Can have ALLOW and DENY rules
+  - Are attached at the Subnet level
+  - Rules only include IP addresses
+- SECURITY GROUPS
+  - A firewall that controls traffic to and from an ENI / an EC2 Instance
+  - Can have only ALLOW rules
+  - Rules include IP addresses and other security groups
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8146682e-85f4-45b0-9f40-fd794a0754d4)
+- VPC Flow logs
+- VPC peering
+  - VPC Peering connection is not transitive (must be established for each VPC that need to communicate with one another)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3aea1cdf-062e-47e8-8935-cafd0f4d1c60)  
+- VPC endpoints
+  - Endpoints allow you to connect to AWS Services using a private network instead of the public www network
 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/65645ab5-f9a3-4f8d-b6f6-76da609ec553)   
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b7cd1997-0311-4fc0-b5bb-556717623ef0)  
 
 #### RDS
 - MULTI-AZ DEPLOYMENTS
