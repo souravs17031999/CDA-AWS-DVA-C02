@@ -1,4 +1,4 @@
-# CDA-AWS-DVA-C02
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/465636af-7953-4fc7-a477-2085686d43b4)# CDA-AWS-DVA-C02
 AWS Certified Developer - Associate
 
 # Development with AWS Services
@@ -7,6 +7,9 @@ AWS Certified Developer - Associate
 
 
 #### ROUTE 53
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cea5818e-24cd-4b8c-9c3d-bf014e8686e8)  
+
 - A – maps a hostname to IPv4
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/78ac182b-8b53-41e2-9ce7-72ac7515ab88) 
 
@@ -28,9 +31,32 @@ AWS Certified Developer - Associate
 
 - CNAME VS ALIAS
 - ALIAS TARGETS
+- A type of record that you can create with Amazon Route 53 to route traffic to AWS resources such as Amazon CloudFront distributions and Amazon S3 buckets.
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cf1e572e-cdda-465d-b6bf-42cbf67c9fec)
 
 - You cannot set an ALIAS record for an EC2 DNS name
+
+- Routing policies: Simple routing policy, Failover routing policy, Geolocation routing policy, Geoproximity routing policy, Latency routing policy, weighted (load balancing across regions) etc...
+
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/dcdc14bf-961b-4676-bd15-e9dc8c05c453)  
+- Traffic flow policy   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/681c1805-7d88-4a02-83aa-d94ccc4256ac)    
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/745b789a-0cdf-459f-97a8-822d860185bb)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a899e27c-ac42-4be5-9710-4c94455d0c4f)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c80e3625-7013-4a0d-9d7d-3c2b22cdf508)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a9aa57c9-ea86-4f5d-9e5e-984348d30e9e)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/04b8dee5-056e-4f18-8720-71ece0faa4fa)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/39104857-33d7-458f-ab2b-f7d6ec2a18e4)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2c2599bb-51c9-4865-b8bb-df6c287192c3)  
+
+- Combining health checks
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6b040a3f-c33a-4810-ad49-c80a12154f7f)  
+ 
+
+
+
+
+
 
 
 #### ELB + ASG
