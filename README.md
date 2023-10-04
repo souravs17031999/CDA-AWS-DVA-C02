@@ -54,8 +54,18 @@ AWS Certified Developer - Associate
  
 
 #### ELB + ASG
-- 
-
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2b945445-6cdc-4994-9aba-3a4955afe965)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6edb04fe-025b-406d-a0cc-b6a33e7a8add)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d410d447-59e8-4979-adf5-993b4bbfdb3f)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/135d9fab-f0c3-4042-8656-54391efd5ef0)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/acea93ce-c429-4548-838b-500172a5e3c8)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3508b60b-8a4f-4084-92dc-1ba38b4956df)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c2757128-d6f3-4488-b89c-bd2019c53ebc)   
+- Session affinity/stickness
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bc03ff3c-4db6-4bf0-bfea-6aeb588d8ed7)
+- SNI solves the problem of loading multiple SSL certificates onto one web server (to serve multiple websites)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/229f4a86-056a-4fbf-9efe-5be846800de6)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/80f8c4ab-5ad2-44f0-a124-d8f7ce1cd4c3)
 
 #### VPC 
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ce9cfd04-fa4f-4fa9-99d2-e1a23c104c40)
@@ -117,7 +127,28 @@ AWS Certified Developer - Associate
 
 
 #### ECS, ECR, FARGATE, DOCKER 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3203bd9b-2b8e-4665-9d96-efb010cc00de)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1df65b06-0fa4-450a-a28b-ba21367561c7)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fa3c42ed-2402-4b21-a694-2398d11cd305)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fb6957a9-6784-4c37-9beb-2af1b980fb03)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/eef7c504-c461-4008-9e8e-43677ee36a74)
+- ROLLING UPDATES
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/26f3b6ca-5049-49ca-bba7-fdc7a14e4fce)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0dd357ca-80ca-40a0-9e28-768567f6e91e)  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a1501f07-a120-4c9c-92bb-690032919475)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1165e87f-94bb-4779-b51f-27f5b72f6398)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/38d4f995-0fa1-4fc0-82b6-089d802697ed)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c8c1a769-3ed6-478f-ae20-b64683f110a4)
 
+
+#### CloudFront
+- Improves read performance, content is cached at the edge
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0ed8c808-eb63-463e-b7d3-5f70aa7415bb)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d673b0be-dde3-44fc-a5de-22084e83e250)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/813b075e-43b0-4930-84c6-44d88ae845c8)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/692f2293-22a1-47f5-89cc-b79c26ea6496)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/59330963-923b-43c6-a6de-9494d184bb7c)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5161e0e2-defd-4d14-8b2d-e22968221950)
 
 ## AWS LAMBDA FUNCTION
 - AWS Lambda is a compute service that lets you run code without provisioning or managing servers.
