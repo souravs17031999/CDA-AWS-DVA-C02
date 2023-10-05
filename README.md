@@ -5,6 +5,8 @@ AWS Certified Developer - Associate
 
 ## AWS FUNDAMENTALS 
 
+### EC2
+### EC2 INSTANCE STORAGE
 
 #### ROUTE 53
 
