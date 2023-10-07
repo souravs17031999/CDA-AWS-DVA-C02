@@ -2642,8 +2642,128 @@ You must use the NumberOfBytes parameter to specify the length of the random byt
 
 
 ## CLOUFORMATION 
--
+- Infrastructure as Code
+- AWS CloudFormation is a service that helps you model and set up your AWS resources so that you can spend less time managing those resources and more time focusing on your applications that run in AWS
+- Reuse your CloudFormation template to create your resources in a consistent and repeatable manner (multi region deployments etc..)
+- Because these templates are text files, you simply track differences in your templates to track changes to your infrastructure, similar to the way developers control revisions to source code.
+- Each resources within the stack is tagged with an identifier so you can easily see how much a stack costs you
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1b11fe5b-040f-420a-9a0a-107a7168e371)
+- Use the ```AWS CloudFormation Designer``` or your own text editor to create or modify a CloudFormation template in JSON or YAML format.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f50ddf3e-f36b-4144-9e3a-41728c52d407)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/89c95a69-59cc-4feb-b7fb-aae68938a59f)   
+- ```Custom resources``` enable you to write custom provisioning logic in templates that AWS CloudFormation runs anytime you create, update (if you changed the custom resource), or delete stacks. For example, you might want to include resources that aren't available as AWS CloudFormation resource types.
 
+**Templates**
+- A CloudFormation template is a JSON or YAML formatted text file.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c7bc6f6a-ae40-49af-b5aa-fa357436dadd)
+- you can add input parameters whose values are specified when you create a CloudFormation stack.
+- ```Resources``` are the core of your CloudFormation template   
+- They represent the different AWS Components that will be created and
+configured  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9742b092-b087-4770-8c3d-517f9e7e5a03) 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/08ea0aed-b98a-4dd8-a5d5-403b3feebde0)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f7522aa3-d322-4162-ab89-6c757c044545)   
+
+- ```Properties```: Resource declarations use a Properties attribute to specify the information used to create a resource.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c408c5a1-55a5-44e2-a8ca-67b7f4fd837b)  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fcf5e43e-98c4-4f8c-87ad-31ac34f65a5e)  
+
+- ```Intrinsic functions```: CloudFormation has a number of intrinsic functions that you can use to refer to other resources and their properties.   
+
+  - You can use the ```Ref``` function to refer to an identifying property of a resource. Frequently, this is the physical name of the resource; however, sometimes it can be an identifier, such as the IP address for an AWS::EC2::EIP resource or an Amazon Resource Name (ARN) for an Amazon SNS topic.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/efbecacd-b410-431a-8a8f-a4e118465bf6)   
+
+  - ```Parameters```: The Ref function can refer to input parameters that are specified at stack creation time.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b717db8a-9506-4992-96a8-d1ef93858547)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d2ec3a4b-7598-403b-8197-8fd74e546c22)
+  - You specify a ```Systems Manager parameter``` key as the value of the ```SSM parameter```, and AWS CloudFormation fetches the latest value from Parameter Store to use for the stack.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/03c00377-c793-4155-a38c-0606dc3af7c9)  
+
+
+  -  A number of resources have additional attributes whose values you can use in your template. To get these attributes, you use the ```Fn::GetAtt``` function.
+  -  The ```Fn::GetAtt``` function takes two parameters, the logical name of the resource and the name of the attribute to be retrieved.
+  -  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/89ecc5be-35a1-48d2-abba-e6ebb81ba89a)   
+
+  -  There may be settings that are region dependent or are somewhat complex for users to figure out because of other conditions or dependencies.
+  -  In these cases, you would want to put some logic in the template itself so that users can specify simpler values (or none at all) to get the results that they want. 
+  -  There are two template features that can help, the ```Mappings``` object and the ```AWS::Region``` pseudo parameter.
+  -  To use a map to return a value, you use the ```Fn::FindInMap``` function, passing the name of the map, the value used to find the mapped value, and the label of the mapped value you want to return
+  -  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f0fff7c5-ac51-4a94-8ed4-c572a55bf6a9)   
+  -  Multiple values
+  -  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/41b22290-82f2-48d3-894c-39a0536ab54c)    
+  - You can use an input parameter with the Fn::FindInMap function to refer to a specific value in a map
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/694bd444-4899-44eb-95d9-95e05a114757)   
+ 
+  -  There can be situations where a value from a parameter or other resource attribute is only part of the value you need.
+  -  The ```Fn::Join``` function takes two parameters, a delimiter that separates the values you want to concatenate and an array of values in the order that you want them to appear. 
+  -  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fbf8c5e1-f685-4d40-a48d-2d6fd2e38a47)  
+  -  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e0319163-0b1b-4d19-b54d-6650bfcfb0d1)    
+
+-  The ```Outputs``` object in the template contains declarations for the values that you want to have available after the stack is created.
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/052b6940-7146-4e61-ad2e-570ed133df9a)  
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/acacbb0f-45cc-402c-94d2-43492f386b0b)  
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4b200168-a074-4663-841b-d0291ac9cdde)  
+
+-  ``` Fn::ImportValue``` : cross stack reference
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6e6e6cb9-544a-44aa-a0c9-ca6161ea6578)   
+
+-  ```Conditions```: Conditions are used to control the creation of resources or outputs based on a condition
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/84d809d2-c322-4f89-b19d-b18a6eb59181)   
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6a73aba1-7668-49d3-a6eb-e52db8bd649a)    
+-  ```Fn::And, Fn::Equals, Fn::If, Fn::Not, Fn::Or```
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/33a734e4-1a28-4b86-8545-7e0a73040928)   
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/31b0e2b2-fd46-49f2-930d-0be40581096c)  
+
+-  ```Fn::Sub```: r !Sub as a shorthand, is used to substitute variables from a text
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/23321853-ad2c-4664-aa01-55dbcafdf058)  
+
+**ChangeSets**
+- Before making changes to your resources, you can generate a change set, which is a summary of your proposed changes.
+- Change sets allow you to see how your changes might impact your running resources, especially for critical resources, before implementing them.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8b09145e-948a-4ed6-8319-172c0ce9e57b)  
+
+
+**Stacks**
+- you manage related resources as a single unit called a stack.
+- To create those resources, you create a stack by submitting the template that you created, and CloudFormation provisions all those resources for you.
+- With change sets, you can preview the changes AWS CloudFormation will make to your stack, and then decide whether to apply those changes. Change sets are JSON-formatted documents that summarize the changes AWS CloudFormation will make to a stack.
+- Update behaviours
+  - Update with No Interruption
+  - Updates with Some Interruption
+  - Replacement
+- Stack notifications
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f66cd915-dae1-485c-80af-cd9e5b7fc29f)  
+- Stack policies
+  - A Stack Policy is a JSON document that defines the update actions that are allowed on specific resources during Stack updates
+  - Protect resources from unintentional updates
+  - When you set a Stack Policy, all resources in the Stack are protected by default
+  - Specify an explicit ALLOW for the resources you want to be allowed to be updated
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/57d35950-f4bc-4179-868a-825a4872a25f)  
+- Stack failure options
+  - You can provision failure options for all stack deployments and change set operations.
+  - ```Default```: everything rolls back (gets deleted)
+  - ```Preserve successfully provisioned``` resources preserves the state of successful resources, while failed resources will stay in a failed state until the next update operation is performed.
+- Detect stack drift
+  - Drift detection enables you to detect whether a stack's actual configuration differs, or has drifted, from its expected configuration.
+  - Use CloudFormation to detect drift on an entire stack, or on individual resources within the stack
+  - You can perform drift detection on stacks with the following statuses: ```CREATE_COMPLETE, UPDATE_COMPLETE, UPDATE_ROLLBACK_COMPLETE, and UPDATE_ROLLBACK_FAILED```
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4c082c86-6c37-4f3d-9f7d-3f6623b911ab)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fc659e3a-d6da-47b3-a091-3f8a0706320c)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b73e626b-9228-437d-809c-d65baaa68a2c)
+- Nested stacks
+  - Nested stacks are stacks created as part of other stacks. You create a nested stack within another stack by using the AWS::CloudFormation::Stack resource.
+  - For example, assume that you have a load balancer configuration that you use for most of your stacks. Instead of copying and pasting the same configurations into your templates, you can create a dedicated template for the load balancer. Then, you just use the resource to reference that template from within other templates.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/efa4aef0-5138-4709-8d85-6b42c154d806)  
+
+- ```StackSets```
+  - AWS CloudFormation StackSets extends the capability of stacks by enabling you to create, update, or delete stacks across multiple accounts and AWS Regions with a single operation
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/74a9e35a-74fa-4a7c-8930-8aaf8380a655)
+  - An administrator account is the AWS account in which you create stack sets.
+  - A stack set lets you create stacks in AWS accounts across regions by using a single CloudFormation template
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2e0d8c20-53cc-4ae3-8ba2-abc0e17e777b)
+
+- Cross stacks vs nested stacks
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8a4b8d6a-c840-4b00-9f9d-9ea45aefa479)  
 
 ## CDK (cloud developement kit)
 
