@@ -2542,9 +2542,198 @@ You must use the NumberOfBytes parameter to specify the length of the random byt
 
 ## ELASTIC BEANSTALK
 
+- With Elastic Beanstalk, you can quickly deploy and manage applications in the AWS Cloud without having to learn about the infrastructure that runs those applications
+- Elastic Beanstalk supports applications developed in Go, Java, .NET, Node.js, PHP, Python, and Ruby. When you deploy your application, Elastic Beanstalk builds the selected supported platform version and provisions one or more AWS resources, such as Amazon EC2 instances, to run your application.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/27b56c94-06b5-48b6-b327-3f2f2b6436f0)
+- There is no additional charge for Elastic Beanstalk. You pay only for the underlying AWS resources that your application consumes. 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c17f2430-bf67-48e4-999d-535c637a14e6)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c5eec90b-8b13-433f-a93e-2da36688ca2c)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/639ed118-53a5-4025-bce9-3fab5d909c26)
+- In addition to the Elastic Beanstalk console, you can use the following tools to create and manage Elastic Beanstalk environments: EB CLI, SDK IN programming languages like JAVA, JS ETC...
+- Under the hood, Elastic Beanstalk relies on CloudFormation
+
+**Environments**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/283e08c4-420d-4812-a5a0-62dadad9070c)
+- Web server env / worker env
+- Every environment has a ```CNAME (URL)``` that points to a load balancer. The environment has a URL, such as ```myapp.us-west-2.elasticbeanstalk.com```.
+- This URL is aliased in Amazon Route 53 to an Elastic Load Balancing URL—something like ```abcdef-123456.us-west-2.elb.amazonaws.com—by``` using a CNAME record.
+
+**Worker Environment**
+- If your AWS Elastic Beanstalk application performs operations or workflows that take a long time to complete, you can offload those tasks to a dedicated worker environment.
+- Decoupling your web application front end from a process that performs blocking operations is a common way to ensure that your application stays responsive under load.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/eff0fbd1-b766-4396-b945-631e11f99fbb)
+- With periodic tasks, you can also configure the worker daemon to queue messages based on a cron schedule.
+- Supports DLQ with SQS queues
+
+**Web environment**
+
+**Environment Types**
+- Single-instance environment
+  - A single-instance environment contains one Amazon EC2 instance with an Elastic IP address.
+- Load-balanced, scalable environment
+  - Elastic Load Balancing and Amazon EC2 Auto Scaling services to provision the Amazon EC2 instances that are required for your deployed application.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ec1bdb8b-bd94-402d-943d-d8f1f125eef2)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cff6cb60-caae-44d6-b184-66532aa127ad) 
+
+**Environment configuration**
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/744496b5-42d9-46da-adc1-867efff1fc16)  
+
+**Deployment options**
+- _All at once_
+  - Suitable if you can accept a short loss of service, and if quick deployments are important to you.
+  - With this method, Elastic Beanstalk deploys the new application version to each instance
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d734bf7d-2e86-4443-906c-16690544a377)
+- _Rolling_
+  - Avoids downtime and minimizes reduced availability, at a cost of a longer deployment time.
+  - With this method, your application is deployed to your environment one batch of instances at a time.
+  - Suitable if you can't accept any period of completely lost service.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1381a067-4960-43a2-aa72-1ef4b0c93912)
+- _Rolling with additional batch_
+  - Avoids any reduced availability, at a cost of an even longer deployment time
+  - Elastic Beanstalk launches an extra batch of instances, then performs a rolling deployment. Launching the extra batch takes time, and ensures that the same bandwidth is retained throughout the deployment.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1010d263-bd2b-49ea-a009-690b18dd0495)
+- _Immutable_
+  - A slower deployment method, that ensures your new application version is always deployed to new instances, instead of updating existing instances.
+  - a second Auto Scaling group is launched in your environment and the new version serves traffic alongside the old version until the new instances pass health checks.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/16d9b105-5aa7-4250-8e15-4246d7169277)  
+- _Traffic splitting_
+  - A canary testing deployment method.
+  - Suitable if you want to test the health of your new application version using a portion of incoming traffic, while keeping the rest of the traffic served by the old application version.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9de6a02a-5b6c-4809-8609-921989c99530)
+- _Blue/Green_
+  - Zero downtime and release facility
+  - Create a new “stage” environment and deploy v2 there
+  - The new environment (green) can be validated independently and roll back if issues
+  - Using Beanstalk, “swap URLs” when done with the environment test
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/51fc001a-9abc-4be3-8b8b-ac0004c7860e)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/24384d55-6578-47dc-822d-661b763665ac)  
+
+**Beanstalk Lifecycle Policy**
+- Elastic Beanstalk can store at most 1000 application versions
+- By default, Elastic Beanstalk leaves the application version's source bundle in Amazon S3 to prevent loss of data.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/54320b1f-fbb9-45f8-8d10-a85132659071)
+- _RDS with Elastic Beanstalk_:
+  - This is not great for prod as the database lifecycle is tied to the Beanstalk environment lifecycle
+  - The best for prod is to separately create an RDS database and provide our EB application with the connection string
+  - You can choose what you want to happen to the database after you decouple it from your Elastic Beanstalk environment. Snapshot, Delete, Retain.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2c711261-4743-47d9-9d6e-f62b49bb330b)  
+
+**EB extensions**
+- You can add AWS Elastic Beanstalk configuration files (.ebextensions) to your web application's source code to configure your environment and customize the AWS resources that it contains.
+- YAML / JSON format
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c97e05c0-3f83-4824-a647-36b8fe440449)
+- Resources managed by .ebextensions get deleted if the environment goes away
+- You can use the ```option_settings``` key to modify the Elastic Beanstalk configuration and define variables that can be retrieved from your application using environment variables.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/63962265-9832-49dc-9380-62fa8dd26b26)
+- You can use the ```Resources``` key in a configuration file to create and customize AWS resources in your environment.
+- The resources that Elastic Beanstalk creates for your environment have names. You can use these names to get information about the resources with a function, or modify properties on the resources to customize their behavior.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/76424d55-32fb-4491-9a85-7fd70462d3da)  
+
+**EB cloning**
+- You can use an existing Elastic Beanstalk environment as the basis for a new environment by cloning the existing environment.
+- Useful for deploying a “test” version of your application
+- during the cloning process, Elastic Beanstalk doesn't copy data from Amazon RDS to the clone
+- environment variables are preserved
+- load balancer configuration is preserved
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3fc6576d-6140-476e-aa96-fd69ac8ed731)
+- Migrating load balancer
+  - after deployment to new environment, perform a CNAME swap or Route 53 update
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7af5878e-1b92-458b-abf6-2f00e208fa14)  
+
+
 ## CLOUFORMATION 
+-
+
+
+## CDK (cloud developement kit)
+
+- The AWS Cloud Development Kit (AWS CDK) lets you define your cloud infrastructure as code in one of its supported programming languages.
+- An AWS CDK app is an application written in TypeScript, JavaScript, Python, Java, C# or Go that uses the AWS CDK to define AWS infrastructure.
+- An app defines one or more stacks. Stacks (equivalent to AWS CloudFormation stacks) contain constructs. Each construct defines one or more concrete AWS resources, such as Amazon S3 buckets, Lambda functions, or Amazon DynamoDB tables.
+- The AWS CDK includes the CDK Toolkit (also called the CLI), a command line tool for working with your AWS CDK apps and stacks. Among other functions, the Toolkit provides the ability to do the following:
+  - Convert one or more AWS CDK stacks to AWS CloudFormation templates and related assets (a process called synthesis)
+  - Deploy your stacks to an AWS account and Region
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b3f6f5eb-f53d-4646-8705-60cbd04119f0)  
+
+**Deploying infrastructure via CDK**
+
+- Install ```aws-cdk-lib```
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/16dbd519-6973-46d2-9841-480748666d8a)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2f56f00e-87ab-4acc-a0af-8e0946b488f8)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/adb2421c-7b14-496b-b61c-4d4829976d66)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/277cf4b0-5688-439b-aed8-7767579f20bf)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cba95179-3d2d-4583-bfe4-766c776a9489)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7b3df55e-43c1-4122-8d0f-fd28341919a2)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5b526345-4a12-4b39-83cb-19b8eee347c1)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4e9c4d32-8385-48cc-8770-53e109994904)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a341c37f-c6ac-4e5c-b450-c14d36889ea4)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/60ae9ebf-5b82-46b2-ace3-1d4ca840422b)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d7ab2db7-45dc-4c79-be34-e1e7e4221c57)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/950e7ef1-59f9-46a6-a4ee-26f7923c882d)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fffe2e40-2e67-4b80-8880-184765c14f71)
+
+**Constructs**
+- A construct represents a "cloud component" and encapsulates everything AWS CloudFormation needs to create the component.
+- A construct can represent a single AWS resource, such as an Amazon Simple Storage Service (Amazon S3) bucket. A construct can also be a higher-level abstraction consisting of multiple related AWS resources. Examples of such components include a worker queue with its associated compute capacity, or a scheduled job with monitoring resources and a dashboard.
+
+**AWS Construct library**
+- L1 constructs
+  - CFN Resources
+  - They are named CfnXyz, where Xyz is name of the resource.
+  - For example, CfnBucket represents the ```AWS::S3::Bucket``` AWS CloudFormation resource.
+  - When you use Cfn resources, you must explicitly configure all resource properties. This requires a complete understanding of the details of the underlying AWS CloudFormation resource model.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0a6e278b-b7aa-4932-a4d6-b08a281af408)
+- L2 constructs
+  - higher-level, intent-based API.
+  - defaults, boilerplate, and glue logic you'd be writing yourself with a CFN Resource construct
+  - AWS constructs offer convenient defaults and reduce the need to know all the details about the AWS resources they represent.
+  - For example, the ```s3.Bucket``` class represents an Amazon S3 bucket with additional properties and methods, such as ```bucket.addLifeCycleRule()```, which adds a lifecycle rule to the bucket.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/19332732-0ce9-4e9b-a73c-51016f584a51)
+- L3 constructs
+  - patterns
+  - For example, the ```aws-ecs-patterns.ApplicationLoadBalancedFargateService``` construct represents an architecture that includes an ```AWS Fargate``` container cluster employing an ```Application Load Balancer```. The ```aws-apigateway.LambdaRestApi``` construct represents an ```Amazon API Gateway API``` that's backed by an ```AWS Lambda``` function.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/66d97cd0-f9be-475c-8fd8-37f4270abc9d)
+- Composition is the key pattern for defining higher-level abstractions through constructs.
+
+**Apps**
+- An App is a container for one or more stacks: it serves as each stack's scope. Stacks within a single App can easily refer to each others' resources (and attributes of those resources)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b9e8e9be-76ad-4430-8399-80d7441170d8)
+- The call to app.synth() is what tells the AWS CDK to synthesize a cloud assembly from an app. Typically you don't interact directly with cloud assemblies.
+- ```cdk.json file```
+
+**Stacks**
+- The unit of deployment in the AWS CDK is called a stack. All AWS resources defined within the scope of a stack
+
+**Environment**
+- AWS Environment = account & region
+- Each Stack instance in your AWS CDK app is explicitly or implicitly associated with an environment (env)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7f4c47a3-d849-44bd-9f27-9776be657ba9)
+
+**Bootstrapping**
+- Bootstrapping is the process of provisioning resources for the AWS CDK before you can deploy AWS CDK apps into an AWS environment.  
+- These resources include an Amazon S3 bucket for storing files and IAM roles that grant permissions needed to perform deployments.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1bd81771-6de3-41c6-a712-8ba78aa21f5e)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/33687e61-16fd-4867-ba78-5248748a639f)  
+
+**Unit testing**
+- Supports Jest (JS), Pytest (python)
+- Fine-grained assertions test specific aspects of the generated AWS CloudFormation template, such as "this resource has this property with this value."
+- Snapshot tests test the synthesized AWS CloudFormation template against a previously stored baseline template. Snapshot tests let you refactor freely, since you can be sure that the refactored code works exactly the same way as the original.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/68b7cd4f-3ec7-44c3-b3c7-fedd5df00bbf)
+- To import a template  
+  - Template.fromStack(MyStack) : stack built in CDK  
+  - Template.fromString(mystring) : stack build outside CDK  
+
+**Best practices**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cb159859-bc10-4871-90c3-e5a40ec51f59)  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a10819d9-b4a2-4382-99ca-f1f0d7b3945c)  
+  
+
+
+
 
 ## AWS CI/CD 
+
 
 
 # Troubleshooting and Optimization
