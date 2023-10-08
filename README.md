@@ -2851,8 +2851,200 @@ configured
 
 ## AWS CI/CD 
 
-- 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7a489a57-c555-4ef5-ba8f-1013564765d6)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/09a47d82-6ed2-4032-ae94-96a9c260d00f)  
 
+**AWS Cloud9**
+- integrated development environment, or IDE.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/26470b89-27e7-4a01-8200-a32b211a1317)
+- Working with code in several programming languages and the AWS Cloud Development Kit (AWS CDK), pair programming
+- Fully integrated with AWS SAM & Lambda to easily build serverless applications
+
+
+**AWS CodeCommit**
+- AWS CodeCommit is a version control service hosted by Amazon Web Services that you can use to privately store and manage assets i.e. source code etc...
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7bd15876-09b5-4b44-9c83-192355bc46e2)
+- Connection
+  - Setup for HTTPS users using Git credentials
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bf5b25ad-0c39-44d3-9398-9d943098f991)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/13686b1e-b3e2-4cfe-b258-748a1d6aef1b)
+  - Setup for SSH users not using the AWS CLI
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7268042f-eef8-4633-8e1e-ae8b48ab0abb)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7a1ddcc6-ccb6-4cc7-9d50-cd683ee1e697)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d41c238f-fb60-4d18-93d7-a6182cbb6d49)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6aeec37d-1dcd-4374-8e20-294289fc5ceb)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e79a6618-7c68-49a3-b14e-f4d135dba212)
+- Share code repo
+  - ```git-remote-codecommit```: It is the recommended method for supporting connections made with federated access, identity providers, and temporary credentials. To assign permissions to a federated identity, you create a role and define permissions for the role. When a federated identity authenticates, the identity is associated with the role and is granted the permissions that are defined by the role.
+  - You cannot use Git credentials or SSH key pairs with federated access or identity providers
+  - use Git credentials or SSH key pairs with IAM users (important while selecting protocol to share cloning URL)
+  - Create IAM policies, IAM groups and add users to IAM groups
+- You can set up notification rules for a repository so that repository users receive emails about the repository event types you specify.
+- You can create an Amazon SNS topic to use for notifications
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/51e1e7d9-35f3-4d58-9d9c-41fb83646cc9)
+- You can configure a CodeCommit repository so that code pushes or other events trigger actions: could be to SNS, Lambda etc.
+- _Configure Cross account access_
+- Ex. Account B group users needs to access Account A repository
+- Account A: Create a policy in AccountA that grants access to the repository, Create a role in AccountA that can be assumed by IAM users and groups in AccountB, Attach the policy to the role.
+- Account B: Create an IAM group for repository access for AccountB users, Create a policy and add users to the IAM group
+- Repository users: Configure the AWS CLI and Git for an AccountB user to access the repository in AccountA, Clone and access the CodeCommit repository in AccountA
+
+**AWS CodeBuild**
+- A fully managed continuous integration (CI) service
+- CodeBuild compiles your source code, runs unit tests, and produces artifacts that are ready to deploy.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6df6df24-a766-4c6e-a16b-4caff9f5a62b)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8043fa26-6ee5-4a03-8591-6581bb2501d4)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6bcfa4d1-307b-4401-aa5a-7f414b4b9181)
+- ```buildspec.yml```: A buildspec is a collection of build commands and related settings, in YAML format, that CodeBuild uses to run a build.
+- Output logs can be stored in Amazon S3 & CloudWatch Logs
+- Use EventBridge to detect failed builds and trigger notifications
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e94ecbae-8bc5-4969-b57b-212cb9cceaef)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e2a3eb61-5042-453b-8740-d8751b23fecc)
+- ```artifacts``` represents the set of build output artifacts that CodeBuild uploads to the output bucket.
+- For this, directory structure should look like this 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/19f80281-ca62-4dd2-9e8f-f46f7c0a4b05)
+- A ```build project``` includes information about how to run a build, including where to get the source code, which build environment to use, which build commands to run, and where to store the build output.
+- A ```build environment``` represents a combination of operating system, programming language runtime, and tools that CodeBuild uses to run a build.
+- _Phases_:
+  - ```install```: installing packages in the build environment.
+  - ```pre_build```: you might use this phase to sign in to Amazon ECR, or you might install npm dependencies.
+  - ```build```:  CodeBuild runs during the build. For example, you might use this phase to run Mocha, RSpec, or sbt.
+  - ```post_build```: you might use Maven to package the build artifacts into a JAR or WAR file, or you might push a Docker image into Amazon ECR. Then you might send a build notification through Amazon SNS.
+- ```Cache```: Represents information about where CodeBuild can prepare the files for uploading cache to an S3 cache bucket.
+- ```Reports```: Test reports, coverage reports, cucumber, Junit etc...
+- You can use the ```AWS CodeBuild agent``` to run CodeBuild builds on a local machine. There are agents available for x86_64 and ARM platforms.
+- Typically, AWS CodeBuild cannot access resources in a VPC. To enable access, you must provide additional VPC-specific configuration information in your CodeBuild project configuration.
+- This includes the VPC ID, the VPC subnet IDs, and the VPC security group IDs. VPC-enabled builds can then access resources inside your VPC.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/71be210e-2124-4678-8c26-721aab213aba)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bb328481-b7db-4730-b87f-287a8c1d2ee7)
+
+**AWS CodeDeploy**
+- CodeDeploy is a deployment service that automates application deployments to Amazon EC2 instances, on-premises instances, serverless Lambda functions, or Amazon ECS services.
+- ```EC2/On-Premises, AWS Lambda, Amazon ECS```
+- A ```deployment group``` is a set of individual instances. A deployment group contains individually tagged instances, Amazon EC2 instances in Amazon EC2 Auto Scaling groups, or both
+- ```Deployment configuration```
+  - EC2/On-Premises compute platform
+    - you can specify the minimum number of healthy instances for the deployment
+    - ```All at once, Half at a time, One at a time``` (In-place/Blue-green) 
+  - Lambda function or ECS 
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/79e93cb3-a5db-429f-a94c-289c8794fc6e)
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5cf01381-3d38-428c-9d37-fb06c73657e3)  
+    - ```Canary```: You can choose from predefined canary options that specify the percentage of traffic shifted to your updated Lambda function or ECS task set in the first increment and the interval, in minutes, before the remaining traffic is shifted in the second increment.
+    - ```Linear```: Traffic is shifted in equal increments with an equal number of minutes between each increment
+    - ```All-at-once```: All traffic is shifted from the original Lambda function or ECS task set to the updated function or task set all at once.
+- ```Deployment types```
+  - ```In-place deployment```: Only deployments that use the EC2/On-Premises compute platform can use in-place deployments. The application on each instance in the deployment group is stopped, the latest application revision is installed, and the new version of the application is started and validated.
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9381ffa5-cf26-4b3e-9a20-f61f459b81bc)  
+
+  - ```Blue/green deployment```: Instances are provisioned for the replacement environment. The latest application revision is installed on the replacement instances. Instances in the replacement environment are registered with one or more Elastic Load Balancing load balancers, causing traffic to be rerouted to them
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6005d33a-39e1-4d58-9380-d298b2846fdc)  
+
+- Workflow lambda
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/dc66a4ec-355c-4fe3-b42b-42e1194c0988)
+- Workflow ECS
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/49d13f4c-a6d7-4db0-aa38-c5f59d7162aa)
+- Workflow EC2
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c57bae49-bdcc-421f-90e5-dda1238345d4)  
+
+- ```appspec.yaml```
+  - An application specification file (AppSpec file), which is unique to CodeDeploy, is a YAML-formatted or JSON-formatted file. The AppSpec file is used to manage each deployment as a series of lifecycle event hooks, which are defined in the file.
+  - The AWS ```CodeDeploy agent``` is a software package that, when installed and configured on an instance, makes it possible for that instance to be used in CodeDeploy deployments.
+  - During deployment, the ```CodeDeploy agent``` looks up the name of the current event in the hooks section of the AppSpec file.
+  - The CodeDeploy agent is not used in an AWS Lambda or an Amazon ECS deployment.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/80eded6e-918c-440b-9d45-ef0735cce8af)  
+
+- Tagging instances for deployment groups
+  - Tags enable you to categorize your instances in different ways (for example, by purpose, owner, or environment).
+  - The criteria for instances in a deployment group can be as simple as a single tag in a single tag group.
+
+- Rollbacks
+  - Deployments can be rolled back:
+    - Automatically – rollback when a deployment fails or rollback when a CloudWatch Alarm thresholds are met
+    - Manually
+  - If a roll back happens, CodeDeploy redeploys the last known good revision as a new deployment (not a restored version)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/287ea192-fd52-4d10-a594-26889e4d5f38)  
+
+**AWS CodePipeline**
+- AWS CodePipeline is a continuous delivery service you can use to model, visualize, and automate the steps required to release your software.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/34915640-91b2-41b5-8e24-e85ef8e8d940)
+- A pipeline is a workflow construct that describes how software changes go through a release process. Each pipeline is made up of a series of stages.
+- A stage is a logical unit you can use to isolate an environment and to limit the number of concurrent changes in that environment
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/12c9bd23-5608-492c-893d-d8ac6c5f3ce0)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/88c4497c-f160-4a15-ae90-bba83558ca4a)
+- Use CloudWatch Events (Amazon EventBridge). Example:
+• You can create events for failed pipelines
+• You can create events for cancelled stages
+- Events for code pipeline emitted 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fb57b673-020d-423d-a85b-dd441ec3315c)   
+- If CodePipeline fails a stage, your pipeline stops, and you can get information in the console
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/27520242-4358-4033-a156-0a2c1b4047ef)   
+- Stopping executions
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c7e63b3b-3be6-4b70-8190-243b36ffdce9)  
+- Execution process
+  - Pipelines can process multiple executions at the same time. Each execution is run through the pipeline separately.
+  - The pipeline processes each execution in order and might supersede an earlier execution with a later one
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e3cec51f-2421-4e0c-a296-6cb78e89fabb)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c439f3dd-4d75-4b22-82e5-aa7871f1e631)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/749c55ad-779d-48f1-b417-e36b2f2eba98)  
+- CodePipeline takes care of inputs and outputs of each stages
+  - From codecommit, output artifact (any files to be built) from the Source stage.
+  - The output artifact (any files to be built) from the previous step is ingested as an input artifact to the Build stage. An output artifact (the built application) from the Build stage can be an updated application or an updated Docker image built to a container.
+  - The output artifact from the previous step (the built application) is ingested as an input artifact to the Deploy stage, such as staging or production environments in the AWS Cloud
+- Actions
+  - an action is part of the sequence in a stage of a pipeline. It is a task performed on the artifact in that stage.
+  - ```source, build, test, deploy, approval, and invoke```
+  - Approval:
+    - you can add an approval action to a stage in a pipeline at the point where you want the pipeline execution to stop so that someone with the required AWS Identity and Access Management permissions can approve or reject the action.
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2a1cd5dd-959e-469f-99ff-14748e40a7b0)  
+  - CloudFormation integration
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a725613e-ba03-4fef-bb6a-8119fcc0bb80)  
+
+  
+**AWS CodeStar**
+- AWS CodeStar is a cloud-based service for creating, managing, and working with software development projects on AWS.
+- AWS CodeStar also manages the permissions required for project users (called team members).
+- AWS CodeStar project templates allow you to start with a sample application and deploy it using AWS resources created to support your development project. When you choose an AWS CodeStar project template, the application type, programming language, and compute platform are provisioned for you.
+
+**AWS CodeArtifact**
+- AWS CodeArtifact is a secure, highly scalable, managed artifact repository service
+- Every CodeArtifact repository is a member of a single CodeArtifact domain.
+- To add packages to a repository, configure a package manager such as npm or Maven to use the repository endpoint (URL). You can then use the package manager to publish packages to the repository.
+- Ex. Maven, Npm, NuGet etc...
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/800f955b-485d-4c1d-9de0-dac2238b7df6)  
+
+- Upstream repositories:
+  - A repository can have other AWS CodeArtifact repositories as upstream repositories. This enables a package manager client to access the packages that are contained in more than one repository using a single repository endpoint.
+  - If an upstream repository has an external connection to a public repository, the repositories that are downstream from it can pull packages from that public repository. For example, suppose that the repository my_repo has an upstream repository named upstream, and upstream has an external connection to a public npm repository. In this case, a package manager that is connected to my_repo can pull packages from the npm public repository.
+  - You can add up to 10 upstream repositories to a CodeArtifact repository. You can only add one external connection.
+- CodeArtifact behavior when an external repository is not available: CodeArtifact repository will continue to be available for download from CodeArtifact.
+- For a package version in a public repository such as npmjs.com to be available through a CodeArtifact repository, it must first be added to a Regional package metadata cache (delay when it's available)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/dd1f9ff8-ba82-47b1-b695-aa483587e0ea)
+- Package retention
+  - CodeArtifact allows chaining upstream repositories. For example, repo-A can have repo-B as an upstream and repo-B can have repo-C as an upstream. This configuration makes the package versions in repo-B and repo-C available from repo-A.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bd12d27c-5688-474b-bfc2-10240c069799)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e13dd665-e412-48df-9eef-cbcac2d56953)
+  - If a package manager connected to repo-A requests a package version, lodash 4.17.20 for example, and the package version is not present in any of the three repositories, it will be fetched from npmjs.com. When lodash 4.17.20 is fetched, it will be retained in repo-A as that is the most-downstream repository and repo-C as it has the external connection to npmjs.com attached. lodash 4.17.20 will not be retained in repo-B as that is an intermediate repository.
+- Events integration
+- CodeArtifact is integrated with Amazon EventBridge, a service that automates and responds to events, including changes in a CodeArtifact repository. 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5e0e321d-f9fe-4128-9a2c-237993d83381)
+- Cross account access
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/62f90159-68b2-4b93-bc5a-ba697adfff18)
+- ```Domains```
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/28441cdb-e595-4f70-be58-d13ecd62f7e3)
+  - You can use a domain to apply permissions across many repositories owned by different AWS accounts. An asset is stored only once in a domain, even if it's available from multiple repositories.
+  - You cannot create a repository without a domain
+
+**AWS CodeGuru**
+- Amazon CodeGuru Reviewer is a service that uses program analysis and machine learning to detect potential defects that are difficult for developers to find and offers suggestions for improving your Java and Python code.
+- resource leak prevention or security analysis.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0ac79fe0-76db-4f91-a95f-a18a0688d9f9)
+- Reviewer and profiler
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d381b83f-188a-4706-b334-d2ab8f42ac26)
+- Helps understand the runtime behavior of your application  
+• Example: identify if your application is consuming excessive CPU capacity on a logging routine  
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fdadf963-10aa-4d97-8c90-906c9dc8851d)
+- Agent Configuration:
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ee9cd603-7860-44c9-a568-25d85cf5766f)  
 
 # Troubleshooting and Optimization
 
