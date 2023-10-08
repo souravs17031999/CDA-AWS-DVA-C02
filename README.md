@@ -3050,6 +3050,174 @@ configured
 
 ## CLOUDWATCH
 
+- Metrics
+  - Amazon CloudWatch is basically a metrics repository. An AWS service—such as Amazon EC2—puts metrics into the repository, and you retrieve statistics based on those metrics
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2432b9a4-11ae-40d6-a1f8-9969c83746f9)
+  - A ```namespace``` is a container for CloudWatch metrics. Metrics in different namespaces are isolated from each other, so that metrics from different applications are not mistakenly aggregated into the same statistics.
+  - The AWS namespaces typically use the following naming convention: ```AWS/service```
+  - A ```metric``` represents a time-ordered set of data points that are published to CloudWatch.
+  - Think of a metric as a variable to monitor, and the data points as representing the values of that variable over time
+  - Each metric data point must be associated with a time stamp
+  - A `dimension` is a name/value pair that is part of the identity of a metric
+  - For example, you can get statistics for a specific EC2 instance by specifying the InstanceId dimension when you search for metrics.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/811b03ad-9131-4c9b-a51d-15d419222af6)
+  - Amazon CloudWatch aggregates statistics according to the period length that you specify when retrieving statistics
+  - You can use an ```alarm``` to automatically initiate actions on your behalf. An alarm watches a single metric over a specified time period, and performs one or more specified actions, based on the value of the metric relative to a threshold over time. 
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d4d633c3-dc73-4eed-8776-e24255995bcb)
+  - By default, your instance is enabled for basic monitoring. You can optionally enable detailed monitoring. After you enable detailed monitoring, the Amazon EC2 console displays monitoring graphs with a 1-minute period for the instance.
+  - Note: EC2 Memory usage is by default not pushed (must be pushed from inside the instance as a custom metric)
+  - Custom Metrics
+    - You can publish your own metrics to CloudWatch using the AWS CLI or an API
+    - Use API call ```PutMetricData```
+    - Use dimensions:  For example, the following command publishes a ```Buffers``` metric with two dimensions named InstanceId and InstanceType.
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9302b562-2ee8-4860-aed6-fd4bde6c9fc6)   
+  
+    - Metric resolution (StorageResolution API parameter – two possible value):
+    • Standard: 1 minute (60 seconds)
+    • High Resolution: 1/5/10/30 second(s) – Higher cost
+    - Note: Accepts metric data points two weeks in the past and two hours in the future (make sure to configure your EC2 instance time correctly)
+  - Anamoly detection can be enabled on metrics
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/73e0c010-5c31-4a06-9aec-3f4a653aca03)
+- Logs
+  - log groups: A log stream is a sequence of log events that share the same source.
+  - log streams: Each separate source of logs in CloudWatch Logs makes up a separate log stream.
+  - Can define log expiration policies (never expire, 1 day to 10 years…)
+  - log sources: SDK, CloudWatch Logs Agent, CloudWatch Unified Agent, Elastic Beanstalk, ECS, LAMBDA, VPC FLOW LOGS, API GATEWAY, ROUTE 53 DNS QUERIES, CLOUDTRAIL ETC...
+  - CLoudwatch log insights
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4651af8a-6811-4b43-8dda-1c27b053ee4b)
+    - CloudWatch Logs Insights enables you to interactively search and analyze your log data in Amazon CloudWatch Logs. You can perform queries to help you more efficiently and effectively respond to operational issues.
+    - Can query multiple Log Groups in different AWS accounts
+    - purpose-built query language
+  - Exporting log data to Amazon S3
+    - Export log data from your log groups to an Amazon S3 bucket and use this data in custom processing and analysis, or to load onto other systems
+    - Log data can take up to 12 hours to become available for export
+    - The API call is ```CreateExportTask```
+    - Not real-time
+  - Subscriptions to cloudwatch events
+    - You can use subscriptions to get access to a real-time feed of log events from CloudWatch Logs and have it delivered to other services such as an Amazon Kinesis stream, an Amazon Kinesis Data Firehose stream, or AWS Lambda for custom processing, analysis, or loading to other systems
+    - A subscription filter defines the filter pattern to use for filtering which log events get delivered to your AWS resource, as well as information about where to send matching log events to.
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ed9b01e0-b9a6-4098-8e32-e3be38772748)
+    - Cross data subscriptions
+      - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/40d3780c-50bd-4111-a9fb-55da070e280c)
+  - Log aggregation
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8f89ebf9-ad81-47b3-878c-75b857ea391e)
+  - CloudWatch Unified Agent
+    - By default, no logs from your EC2 machine will go to CloudWatch
+    - You need to run a CloudWatch agent on EC2 to push the log files you want
+    - Collect additional system-level metrics such as CPU, Disk memory, RAM, processes, etc…
+  - Metric filter
+    - You can search and filter the log data coming into CloudWatch Logs by creating one or more metric filters. Metric filters define the terms and patterns to look for in log data as it is sent to CloudWatch Logs
+    -  For example, you can create a metric filter that counts the number of times the word ERROR occurs in your log events.
+    -  Filters do not retroactively filter data. Filters only publish the metric data points for events that happen after the filter was created.
+    -  Ability to specify up to 3 Dimensions for the Metric Filter
+    -  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e7cd8476-6f4f-4646-956e-d3593fa2f4b0)
+  - Alarms
+    - Alarms are used to trigger notifications for any metric
+    - Alarm States: ```OK, INSUFFICIENT_DATA, ALARM```
+    - Period: Length of time in seconds to evaluate the metric
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a435010b-7c68-4e07-a2e9-211074964566)
+  - Composite alarms:
+    - Composite Alarms are monitoring the states of multiple other alarms
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/61d28392-0e01-49ef-a542-e749630ca480)
+  - Alarms can be created based on CloudWatch Logs Metrics Filters
+- _CloudWatch Synthetics Canary_
+  - use Amazon CloudWatch Synthetics to create canaries, configurable scripts that run on a schedule, to monitor your endpoints and APIs. Canaries follow the same routes and perform the same actions as a customer, which makes it possible for you to continually verify your customer experience even when you don't have any customer traffic on your applications.
+  - Scripts written in Node.js or Python
+  - Programmatic access to a headless Google Chrome browser
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/75d5a42f-1185-448d-9b75-f8402252237c)
+  - Canaries check the availability and latency of your endpoints and can store load time data and screenshots of the UI. They monitor your REST APIs, URLs, and website content, and they can check for unauthorized changes from phishing, code injection and cross-site scripting.
+  - Some blueprints provided:
+    - ```Heartbeat Monitor```: load URL, store screenshot and an HTTP archive file
+    - ```API Canary```: basic Read and Write functions of a REST API.
+    - ```Broken Link Checker```: check all links inside the URL that you are testing
+    - ```Visual Monitoring```: compare a screenshot taken during a canary run with a baseline screenshot
+    - ```Canary Recorder```: used with CloudWatch Synthetics Recorder (record your actions on a website and automatically generates a script for that)
+    - ```GUI Workflow Builder```: verifies that actions can be taken on your webpage.  For example, if you have a webpage with a login form, the canary can populate the user and password fields and submit the form to verify that the webpage is working correctly.
+
+## Cloudwatch events/EventBridge
+- Schedule: Cron jobs (scheduled scripts)
+- Event Pattern: Event rules to react to a service doing something
+- Trigger Lambda functions, send SQS/SNS messages…
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/aa57b631-4e4c-4c7d-8435-38a6eec14088)
+- You can archive events (all/filter) sent to an event bus (indefinitely or set period)
+- Ability to replay archived events
+- Event buses can be accessed by other AWS accounts using Resource-based Policies
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/018193a1-0c54-47f3-8d74-f63db790fd0d)
+- The Schema Registry allows you to generate code for your application, that will know in advance how data is structured in the event bus (versioned)
+- Multi account aggregation
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/831dc8e6-20f1-4ded-b7ad-ce476e50c95f)  
+
+
 ## X-RAY
+- For any traced request to your application, you can see detailed information not only about the request and response, but also about calls that your application makes to downstream AWS resources, microservices, databases, and web APIs.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9f3fee4d-6529-41de-9d5e-d65f6728dabd)
+-  Instrumenting your application involves sending trace data for incoming and outbound requests and other events within your application, along with metadata about each request
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9370b831-486a-4208-8490-a4c02c9c88cd)
+-  Instead of sending trace data directly to X-Ray, each client SDK sends JSON segment documents to a daemon process listening for UDP traffic 2000.
+-  The X-Ray daemon buffers segments in a queue and uploads them to X-Ray in batches.
+-  X-Ray uses trace data from the AWS resources that power your cloud applications to generate a detailed service map.
+-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6aef950a-d6af-4c2d-b9cf-07d73ab69054)   
+- Enabling it
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3740429b-96fd-4598-b5e4-594d9c81dfd6)
+- _Segments_:
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c98dd189-6a55-440c-8d5d-8ae32ed83e3c)
+- _Subsegments_:
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1ecf52a1-9ae8-4fb2-ab4b-4ba8f74ad1f7)   
+- _Sampling_
+  - To ensure efficient tracing and provide a representative sample of the requests that your application serves, the X-Ray SDK applies a sampling algorithm to determine which requests get traced. By default, the X-Ray SDK records the first request each second, and five percent of any additional requests.
+  - You can modify sampling rules without changing your code
+- _Trace_
+  - A trace ID tracks the path of a request through your application. A trace collects all the segments generated by a single request.
+- _Annotations_
+  - simple key-value pairs that are indexed for use with filter expressions.
+- _Metadata_
+  - key-value pairs with values of any type, including objects and lists, but that are not indexed.
+
+- X-Ray APIS
+  - ```PutTraceSegments```: Uploads segment documents to AWS X-Ray
+  - ```PutTelemetryRecords```: Used by the AWS X-Ray daemon to upload telemetry.
+  - ```GetSamplingRules```: Retrieve all sampling rules (to know what/when to send)
+- The X-Ray daemon needs to have an IAM policy authorizing the correct API calls to ```arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess``` function correctly
+  - ```GetServiceGraph```: main graph
+  - ```BatchGetTraces```: Retrieves a list of traces specified by ID. Each trace is a collection of segment documents that originates from a single request
+  - ```GetTraceSummaries```: Retrieves IDs and annotations for traces available for a specified time frame using an optional filter.
+  - ```GetTraceGraph```: Retrieves a service graph for one or more specific trace IDs
+
+- X-RAY WITH ELASTIC BEANSTALK
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f33ffbd3-3c10-4060-a8e1-b1bd5fa70b25)
+  - (in .ebextensions/xray-daemon.config)
+
+- X-RAY WITH ECS
+  - create a Docker image that runs the X-Ray daemon, upload it to a Docker image repository, and then deploy it to your Amazon ECS cluster. You can use port mappings and network mode settings in your task definition file to allow your application to communicate with the daemon container.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0e151105-10b9-4ee6-8c81-c08338f984c0)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/807af3ad-7e63-46c3-9939-021200995c1c)  
+
+- X-RAY WITH EC2
+  - Use a user data script to run the daemon automatically when you launch the instance.
+
+- AWS DISTRO FOR OPENTELEMETRY
+  - Migrate from X-Ray to AWS Distro for Temeletry if you want to standardize with open-source APIs from Telemetry or send traces to multiple destinations simultaneously
+
 
 ## CLOUTRAIL 
+
+- Actions taken by a user, role, or an AWS service are recorded as events in CloudTrail.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9126636d-939c-43a6-abc7-444c3b629527)
+- Event history, Cloudtrail trails, cloudtrail Lake
+- Management events:
+  - Management events provide information about management operations that are performed on resources in your AWS account. These are also known as control plane operations.
+  - Default behaviour to log these
+  - Configuring security (IAM AttachRolePolicy), Configuring rules for routing data (Amazon EC2 CreateSubnet), Setting up logging (AWS CloudTrail CreateTrail)
+- Data events:
+  - By default, data events are not logged (because high volume operations)
+  - Amazon S3 object-level activity (ex: GetObject, DeleteObject, PutObject): can separate Read and Write Events
+  - AWS Lambda function execution activity (the Invoke API)
+
+- Enable CloudTrail Insights to detect unusual activity in your account, continuously analyzes write events to detect unusual patterns
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c2fef6df-e3f8-4505-b034-fd7d8ee647e6)
+- CloudTrail Events Retention
+  - 90 days retention period
+  - To keep events beyond this period, log them to S3 and use Athena
+
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d258c639-669b-4ec2-9d88-8494a91b532f)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2657dbf4-0522-46ab-9219-339b66119bf7)
