@@ -2849,11 +2849,9 @@ configured
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a10819d9-b4a2-4382-99ca-f1f0d7b3945c)  
   
 
-
-
-
 ## AWS CI/CD 
 
+- 
 
 
 # Troubleshooting and Optimization
