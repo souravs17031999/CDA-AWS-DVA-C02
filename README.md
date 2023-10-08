@@ -3221,3 +3221,30 @@ configured
 
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d258c639-669b-4ec2-9d88-8494a91b532f)
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2657dbf4-0522-46ab-9219-339b66119bf7)
+
+# Other services 
+- _AWS SES (SIMPLE EMAIL SERVICE)_
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ee34c43e-2b90-4d78-91b5-4f0b4cef0f82)
+  - Amazon Simple Email Service (SES) is an email platform that provides an easy, cost-effective way for you to send and receive email using your own email addresses and domains.
+
+- _Amazon OpenSearch Service_
+  - OpenSearch is a fully open-source search and analytics engine for use cases such as log analytics, real-time application monitoring, and clickstream analysis
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3df3a539-cbc9-453d-b5ee-e4252aaa31d9)  
+
+- _AWS ATHENA_
+  - Amazon Athena is an interactive query service that makes it easy to analyze data directly in Amazon Simple Storage Service (Amazon S3) using standard SQL (SERVERLESS)
+
+- _AMAZON MSK_
+  - Amazon Managed Streaming for Apache Kafka (Amazon MSK) is a fully managed service that enables you to build and run applications that use Apache Kafka to process streaming data
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7cc7feff-343f-41dc-9897-1a6229adafee)
+
+- _AMAZON MACIE_
+  - Amazon Macie is a data security service that discovers sensitive data by using machine learning and pattern matching, provides visibility into data security risks, and enables automated protection against those risks.
+
+- _APPCONFIG_
+  - AWS AppConfig feature flags and dynamic configurations help software builders quickly and securely adjust application behavior in production environments without full code deployments.
+  - VALIDATORS, DEPLOYMENT STRATEGIES, ROLLBACKS
+
+- _CLOUDWATCH EVIDENTLY_
+  - You can use Amazon CloudWatch Evidently to safely validate new features by serving them to a specified percentage of your users while you roll out the feature
+  - You can also conduct A/B experiments to make feature design decisions based on evidence and data. 
