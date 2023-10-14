@@ -3247,4 +3247,103 @@ configured
 
 - _CLOUDWATCH EVIDENTLY_
   - You can use Amazon CloudWatch Evidently to safely validate new features by serving them to a specified percentage of your users while you roll out the feature
-  - You can also conduct A/B experiments to make feature design decisions based on evidence and data. 
+  - You can also conduct A/B experiments to make feature design decisions based on evidence and data.   
+
+######################################################################################################################    
+
+# Patterns and Whitepapers
+
+## Eventing and stateless systems
+- Event driven
+  - CQRS
+  - Event sourcing
+
+- Loose coupling
+- Point to point messaging (message queues)- SQS
+- Pub/Sub messaging - SNS
+- Event Bus - SNS + AMAZON EVENTBRIDGE
+- Orchestration - Amazon Step functions
+- Choreography - EVentbridge
+- Event streaming - Kinesis data streams, AMAZON MSK
+- FAN OUT
+- ORDERING - SQS FIFO
+- SCHEMA REGISTRY
+- IDEMPOTENCY
+- EVENTUAL CONSISTENCY
+
+## Developement of microservices on AWS
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4e420d9c-5cf3-42d8-a2e1-462a5444abeb)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/67688590-f99f-4d28-89e4-c3a13cee332f)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c198bd1d-d071-4d03-a6f0-80eb7d792fa7)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0130ca93-8260-4126-bb26-782f77988c37)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ac540baf-76f0-4d8a-a762-b65fe7f5511c)  
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/06e6111d-7ea0-4ea9-af3f-e0b62cc6664e)   
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a1ede5ba-dd76-4bf9-ae27-200ac30ac36c)   
+
+
+## Deployment options and Blue Green deployments 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5cb3eb4b-192a-4a97-a99a-81ff812c9161)
+- To Acheive Blue/Green deployment:
+  - Auto Scaling Groups behind ELB
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9cc8407d-b6fe-4638-86ab-0d129d472450)
+  - DNS route 53
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b0c2bbea-8f28-4cf7-904f-950b1180014c)
+  - Swap the environment of an Elastic Beanstalk application
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4cf08804-f0a8-4974-afe2-9c86bce6b972)  
+
+## RUnning CONTANERIZED SERVICES
+- 12 Factors of the microservices
+  I. Codebase
+One codebase tracked in revision control, many deploys
+II. Dependencies
+Explicitly declare and isolate dependencies
+III. Config
+Store config in the environment
+IV. Backing services
+Treat backing services as attached resources
+V. Build, release, run
+Strictly separate build and run stages
+VI. Processes
+Execute the app as one or more stateless processes
+VII. Port binding
+Export services via port binding
+VIII. Concurrency
+Scale out via the process model
+IX. Disposability
+Maximize robustness with fast startup and graceful shutdown
+X. Dev/prod parity
+Keep development, staging, and production as similar as possible
+XI. Logs
+Treat logs as event streams
+XII. Admin processes
+Run admin/management tasks as one-off processes  
+
+## AWS WELL ARCHITECTED FRAMEWORK - SERVERLESS LENS
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bdabc2b7-23ea-49e9-b2b4-64d1b6ae19db)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0971ced8-1420-4f30-8d7f-45a06838e2da)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ff08fefe-2e67-4e19-afb5-ca20fffb0952)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4be3e499-a57f-4749-84d7-23a5a1fb87c1)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ad8f3a6f-2c3e-46fa-bc82-9d8e9305aed6)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/733f5777-4ed8-4d42-8aca-ca4cd742321a)
+- Operational pillar
+  - metrics, logging, distributed tracing, CI/CD deployments
+  - AWS Systems Manager Parameter Store, AWS Serverless Application Model, CloudWatch, AWS CodePipeline, AWS X-Ray, Lambda, and API Gateway.  
+- Security pillar
+  - AWS IAM, cognito user pools, Lambda authorizer, Cloudwatch logs, Cloudtrail events, incident response, VPC 
+- Reliability pillar
+  - Throttling, concurrency, Failure management, retries
+  - AWS Marketplace, Trusted Advisor, CloudWatch Logs, CloudWatch, API Gateway, Lambda, X-Ray, Step Functions, Amazon SQS, and Amazon SNS
+- Performance pillar
+  - Performance tests, load tests, Amazon DynamoDB Accelerator, Amazon API Gateway, AWS Step Functions, Amazon VPC, NAT gateway and AWS Lambda.
+- Cost optimization pillar
+- Sustainibility pillar 
+
+
+
+
+
+
+
+
+
+
