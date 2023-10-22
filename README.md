@@ -240,16 +240,33 @@ AWS Certified Developer - Associate
     • If asynchronous invocation => retry automatically and then go to DLQ
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7ba37227-5039-4fa7-96d4-1682c7f1388a)
   - Cold Start:
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e319f34d-03ad-4289-ae0b-45a9e48b040f)  
+
     • New instance => code is loaded and code outside the handler run (init)
     • If the init is large (code, dependencies, SDK…) this process can take some time.
     • First request served by new instances has higher latency than the rest
+    - To improve resource management and performance, the Lambda service retains the execution environment for a non-deterministic period of time. During this time, if another request arrives for the same function, the service may reuse the environment.  
   - Provisioned concurrency:
     - Concurrency is allocated before the function is invoked (in advance)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d16baf57-9b37-4ddc-ba9f-92caff5320db)  
+
     - So the cold start never happens and all invocations have low latency
+    - Understanding invocation patterns: After the invocation has ended, the execution environment is retained for a period of time. If another request arrives, the environment is reused to handle the subsequent request.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c336b4ad-6047-4ad4-8eff-458267d6991e)   
+
+  - Layers to reuse common libraries and can be referenced in multiple published versions of the function code 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f773c284-a3f3-44e2-ace0-e22946787103)  
+
+  - For asynchronous invocations, an internal queue exists between the caller and the Lambda service. Lambda processes messages from this queue as quickly as possible and scales up automatically as needed. 
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5c631f78-c45b-466c-8270-2ce14de63506)
+
+- Walkthrough :
+  - Problem
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/99e7f721-76dd-48fc-a6c0-21abc7f7fa2f)
+  - Solution
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1208eb55-b319-46a0-a9d8-64038e8da3d0)  
 
 
-  
-  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5c631f78-c45b-466c-8270-2ce14de63506) 
 
 **How does it works**
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1868d3ec-718e-4d0e-ac80-4f7d7e072e6f)
@@ -343,6 +360,9 @@ AWS Certified Developer - Associate
 
     -   If you're using Amazon SQS as an event source, configure a dead-letter queue on the Amazon SQS queue itself and not on the Lambda function.
 
+- Invokations
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6822e76a-a190-41ca-834f-474b1ab8a73b)  
+
 **Event Source Mappings**
 - An event source mapping is a Lambda resource that reads from an event source and invokes a Lambda function i.e. cases when services can't directly invoke lambda functions.
 - Ex of such services: Amazon DynamoDB, Amazon Kinesis, Amazon MQ, Amazon Managed Streaming for Apache Kafka (Amazon MSK), Self-managed Apache Kafka, Amazon Simple Queue Service (Amazon SQS), Amazon DocumentDB (with MongoDB compatibility) (Amazon DocumentDB)
@@ -405,6 +425,7 @@ AWS Certified Developer - Associate
 - LAMBDA EXECUTION ROLE: Grants the Lambda function permissions to AWS services / resources
   ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ad296769-f704-4822-9931-d57802bc1141)
 - Use resource-based policies to give other accounts and AWS services permission to use your Lambda resources.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/4beb809f-dd6f-4978-bcf6-7cbc172d2a8c)  
 
 **ENVIRONMENT VARIABLES**
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7962ebeb-656f-4007-9004-d7ced36e2d6b)
@@ -563,6 +584,33 @@ AWS Certified Developer - Associate
 - ```AmazonCodeGuruProfilerAgentAccess``` policy to your function  
 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/514b6aa1-1c83-4d37-899e-6eb06c1d42c0)   
+
+**TroubleShooting and Debugging Lambda**
+- API Gateway returns a 500 error code. If the Lambda function runs but returns an error, or returns a response in the wrong format, API Gateway returns a 502 error code.
+- What Could Go Wrong -
+  - Unexpected event payloads (malformed JSON event, payload max size is 256 KB exceeded)
+  - Running an unintended function version or alias (unintentionally pointing the caller to wrong Alias/version, can be determined from cloudwatch logs)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5cf6b043-6027-4597-84a2-d6904cc99878)
+  - Triggering infinite loops (source triggers the lambda which again interact with source to again trigger the lambda invokation and so on ..., If you must publish data back to the consuming resource, ensure that the new data does not trigger the same event, or the Lambda function can filter events)
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cf8170a2-91e8-4aa3-9988-7797acc88d5e)
+  - Downstream unavailability (implement server timeouts and alarms to differentiate between 3rd party unavailabliity of services and lambda unavaiablility/errors)
+  - CPU and Memory configurations (sign- functions running slower than expected, CPU settings indirectly bounded to Memory settings)
+  - Memory leakage between invocations (warm starts)
+  - Asynchronous results returned to a later invocation (callbacks changed to async/await)
+  - Troubleshooting Queue processing
+    - Identifying and managing throttling
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f626ea8e-211f-42aa-b846-bca8065601fb)
+    - Errors in the processing function
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/73594503-05a2-404d-a17f-494a2ab5d6f5)
+    ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0723376d-c0ba-424c-979a-6c2b0b8dd419)
+    - Identifying and handling backpressure (SQS monitoring shows the age of the earliest message growing linearly, along with the approximate number of messages visible.)
+
+- Metrics from cloudwatch
+  - Invokations, Durations, Errors, Throttles, DeadLetterQueues, IteratorAge (such as Kinesis or DynamoDB streams, this value indicates when events are being produced faster than they are being consumed by Lambda), ConcurrentExecutions, AsyncEventsReceived, AsyncEventAge, AsyncEventsDropped
+  - 
+
+
+
 
 ## AWS STEP FUNCTIONS 
 - AWS Step Functions is a serverless orchestration service, Through Step Functions' graphical console, you see your application’s workflow as a series of event-driven steps.
