@@ -103,6 +103,23 @@ AWS Certified Developer - Associate
 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b7cd1997-0311-4fc0-b5bb-556717623ef0)  
 
+
+- Elastic network interface – elastic network interface is a logical networking component in a VPC that represents a virtual network card.
+
+- Subnet – A range of IP addresses in your VPC. You can add AWS resources to a specified subnet. Use a public subnet for resources that must connect to the internet, and a private subnet for resources that don't connect to the internet.
+
+- Security group – use security groups to control access to the AWS resources in each subnet.
+
+- Access control list (ACL) – use a network ACL to provide additional security in a subnet. The default subnet ACL allows all inbound and outbound traffic.
+
+- Route table – contains a set of routes that AWS uses to direct the network traffic for your VPC. You can explicitly associate a subnet with a particular route table. By default, the subnet is associated with the main route table.
+
+- Route – each route in a route table specifies a range of IP addresses and the destination where Lambda sends the traffic for that range. The route also specifies a target, which is the gateway, network interface, or connection through which to send the traffic.
+
+- NAT gateway – An AWS Network Address Translation (NAT) service that controls access from a private VPC private subnet to the Internet.
+
+- VPC endpoints – You can use an Amazon VPC endpoint to create private connectivity to services hosted in AWS, without requiring access over the internet or through a NAT device, VPN connection, or AWS Direct Connect connection. For more information, see AWS PrivateLink and VPC endpoints.
+
 #### RDS
 - MULTI-AZ DEPLOYMENTS
 
