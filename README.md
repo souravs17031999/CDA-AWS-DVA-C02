@@ -624,10 +624,6 @@ AWS Certified Developer - Associate
 
 - Metrics from cloudwatch
   - Invokations, Durations, Errors, Throttles, DeadLetterQueues, IteratorAge (such as Kinesis or DynamoDB streams, this value indicates when events are being produced faster than they are being consumed by Lambda), ConcurrentExecutions, AsyncEventsReceived, AsyncEventAge, AsyncEventsDropped
-  - 
-
-
-
 
 ## AWS STEP FUNCTIONS 
 - AWS Step Functions is a serverless orchestration service, Through Step Functions' graphical console, you see your application’s workflow as a series of event-driven steps.
@@ -1026,6 +1022,21 @@ Durability level	Availability zones to provide automatic failover without interr
 
 **DynamoDB with S3 integration**
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e0477379-cc45-4afe-a2d3-9a1cca7a918b)   
+
+**DYNAMODB WITH LAMBDA**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f3353132-0ac0-43dc-89a5-219a76b864d3)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6e031da9-4404-4740-9a25-7e8de91bc573) 
+
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f73ccfc9-f445-4fb9-9fcb-549e63b7eb1f)
+
+
+**DYNAMODB FAN-OUT PATTERN**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/01cc7a0c-7c08-4c27-8fcc-66a9e8423c57)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3d9a141e-4338-489f-88a4-44d30d152444)
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d36db60e-331c-4787-a4b2-ac805d53f3bf)  
+
+
+
 
 **DynamoDB security**
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2048c6d4-ce09-436f-89b1-bba415c593b3)
