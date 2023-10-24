@@ -1651,6 +1651,26 @@ you’ve setup through API Gateway
     - iat – Must be before the current time in UTC.
     - scope or scp – The token must include at least one of the scopes in the route's authorizationScopes.
 
+**Monitoring and Logging**
+- Amazon API Gateway is integrated with AWS CloudTrail, a service that provides a record of actions taken by a user, a role, or an AWS service in API Gateway.
+-  AWS Config to record configuration changes made to your API Gateway API resources and send notifications based on resource changes. Maintaining a configuration change history for API Gateway resources is useful for operational troubleshooting, audit, and compliance use cases.
+-  Use CloudWatch Logs or Amazon Kinesis Data Firehose to log requests to your APIs.
+-  Using CloudWatch alarms, you watch a single metric over a time period that you specify.
+-  X-RAY enabled tracing
+- `CacheHitCount & CacheMissCount`: efficiency of the cache
+- `Count`: The total number API requests in a given period.
+- `IntegrationLatency`: The time between when API Gateway relays a request to the backend and when it receives a response from the backend.
+- `Latency`: The time between when API Gateway receives a request from a client and when it returns a response to the client. The latency includes the integration latency and other API Gateway overhead.
+- `4XXError` (client-side) & `5XXError` (server-side)
+
+**Troubleshooting and Debugging**
+- Lambda integration errors
+  - Permission errors (can be viewed `$context.integrationErrorMessage` logging variable to your log format)
+- JWT Authorizers
+  - For ex. Unauthorized
+  - Check the `www-authenticate` header in the response from the API.
+
+
 ## SERVERLESS APPLICATION MODEL (SAM)
 
 - The AWS Serverless Application Model (AWS SAM) is a toolkit that improves the developer experience of building and running serverless applications on AWS. AWS SAM consists of two primary parts:
