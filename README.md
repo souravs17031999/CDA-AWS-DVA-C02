@@ -1109,6 +1109,16 @@ Durability level	Availability zones to provide automatic failover without interr
 **Dynamo DB as session state**
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/82dad4a7-e360-44c7-a1db-4544a17dde27)   
 
+**DynamoDB write sharding**
+- Usecases where we want to avoid hot-key partitioning for ex. all the partition keys are same (in GSI etc.. or most of the traffic is biased towards some particular key)
+- we would add random suffix/calculated suffix (so that it can be recomputed while querying) to partition the data evenly and avoid hot key partition and shard on the new generated keys
+- For ex. ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/836f8e23-2c21-42fc-98d0-e570b2d3673f)
+- Converted to
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a2d1279b-0c32-4c81-905c-363d5f6137b5)
+- Scatter-Gather pattern to fetch aggregate queries
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/1c5a675c-6552-4719-a682-3a5c6401bf12)   
+
+
 **DynamoDB with S3 integration**
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e0477379-cc45-4afe-a2d3-9a1cca7a918b)   
 
@@ -1123,8 +1133,6 @@ Durability level	Availability zones to provide automatic failover without interr
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/01cc7a0c-7c08-4c27-8fcc-66a9e8423c57)
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3d9a141e-4338-489f-88a4-44d30d152444)
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d36db60e-331c-4787-a4b2-ac805d53f3bf)  
-
-
 
 
 **DynamoDB security**
