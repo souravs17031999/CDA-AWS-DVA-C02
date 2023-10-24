@@ -1608,11 +1608,11 @@ you’ve setup through API Gateway
 
 **Security (IAM PERMISSIONS)**
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2e5d4238-9883-4c74-9fb1-36e0a7258063)
-- With IAM identity-based policies, you can specify which actions and resources are allowed or denied as well as the conditions under which actions are allowed or denied.
+- With IAM **identity-based policies**, you can specify which actions and resources are allowed or denied as well as the conditions under which actions are allowed or denied.
 - The following example shows an identity-based policy that allows a user to create or update only private REST APIs.
  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7c33f369-4cbd-4269-a33f-c6642a803c35)
 - Authentication = IAM | Authorization = IAM Policy
-- Resource based policies
+- **Resource based policies**
   - Ex. resource policy grants API access in one AWS account to two roles in a different AWS account via Signature Version 4 (SigV4) protocols
     ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/27a75c12-7adb-4dd5-835e-0461f94dd9c2)
   - Ex. resource policy denies (blocks) incoming traffic to an API from two specified source IP address blocks.
@@ -1631,6 +1631,7 @@ you’ve setup through API Gateway
 
 
 **Security (LAMBDA AUTHORIZER)**
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/342e0fca-d27b-4a55-8d54-f6b629ac9c7b)  
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/067ac85e-7b48-4250-bcba-e903cc058497)
 - Authentication = External | Authorization = Lambda function
 - Token-based authorizer (bearer token) – ex JWT (JSON Web Token) or Oauth
