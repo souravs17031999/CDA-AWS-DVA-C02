@@ -785,7 +785,7 @@ AWS Certified Developer - Associate
 
 **Secondary Indexes**
 - A secondary index lets you query the data in the table using an alternate key, in addition to queries against the primary key. 
-  - _Global secondary index_ – An index with a partition key and sort key that can be different from those on the table. A global secondary index is considered "global" because queries on the index can span all of the data in the base table, across all partitions.
+  - **_Global secondary index_** – An index with a partition key and sort key that can be different from those on the table. A global secondary index is considered "global" because queries on the index can span all of the data in the base table, across all partitions.
   - Can be added/modified after table creation
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9f94a1ad-8f25-4bd6-94fc-d69a7b38fc7c)
   - In the Above table, Scenario: Now suppose that you wanted to write a leaderboard application to display top scores for each game. A query that specified the key attributes (UserId and GameTitle) would be very efficient. However, if the application needed to retrieve data from GameScores based on GameTitle only, it would need to use a ```Scan``` operation, making it slow. To speed up queries on non-key attributes, you can create a global secondary index.
@@ -799,17 +799,51 @@ AWS Certified Developer - Associate
   - AWS account is charged for storage of the item in the base table and also for storage of attributes in any global secondary indexes on that table.
   - ```KEYS_ONLY, INCLUDE, ALL```
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fee4bae3-5563-4b4a-8d84-7291c42de886)  
+  - A global secondary index only tracks data items where its key attributes actually exist.
+  - For ex. consider the following table with GSI named as `GameTitleIndex`
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9a37bfba-e22e-4a22-b40f-dc31d8df3401)
+  - `Query` is issued against this Table 
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0c2b4854-0971-442e-a3e3-43e3655c7121)
+  - Here, GameTitle partition key to locate the index items for Meteor Blasters, DynamoDB uses the index to access all of the user IDs and top scores for this game. The results are returned, sorted in descending order because the ScanIndexForward parameter is set to false.
 
 
-  - _Local secondary index_ – An index that has the same partition key as the table, but a different sort key. A local secondary index is "local" in the sense that every partition of a local secondary index is scoped to a base table partition that has the same partition key value.
+
+  - **_Local secondary index_** – An index that has the same partition key as the table, but a different sort key. A local secondary index is "local" in the sense that every partition of a local secondary index is scoped to a base table partition that has the same partition key value.
   - Must be defined at table creation time
   - Each table in DynamoDB has a quota of 20 global secondary indexes (default quota) and 5 local secondary indexes.
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c8b8037f-c231-4bce-9d40-d0d30a23e21a)
   - given a particular ForumName, a Query operation could immediately locate all of the threads for that forum. Within a group of items with the same partition key value, the items are sorted by sort key value. If the sort key (Subject) is also provided in the query
-  - Sceanrio: Which forum threads get the most views and replies, Which thread in a particular forum has the largest number of messages?, How many threads were posted in a particular forum within a particular time period?
+  - Scenario: Which forum threads get the most views and replies, Which thread in a particular forum has the largest number of messages?, How many threads were posted in a particular forum within a particular time period?
   - you can specify one or more local secondary indexes on non-key attributes, such as Replies or LastPostDateTime.
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/58d235f2-be84-4df3-a88d-eead5d24288d)
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/95a84d7c-3802-4ba9-9dab-720532f44665)
+  - Conditions for LSI
+    - The partition key is the same as that of its base table.
+    - The sort key consists of exactly one scalar attribute.
+    - The sort key of the base table is projected into the index, where it acts as a non-key attribute.
+  - If you need to access just a few attributes with the lowest possible latency, consider projecting only those attributes into a local secondary index.
+  - If your application frequently accesses some non-key attributes, you should consider projecting those attributes into a local secondary index.
+  - EX. consider this LSI index named as `LastPostIndex`
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/55f4e42b-2385-484a-adc9-ff469b716a49)
+  - Following `Query` is issued
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a222ef57-24c1-4aee-ab1e-78d0ec76a894)
+  - Here, for ex. `Replies` is already projected which can be returned easily, `Tags` is not projected in LSI, so dynamoDB issues fetch request to get those from base table.
+
+
+**Filter expression usecases**
+- Reducing response payload size (since max dynamoDB transfers 1MB in a single request)
+- Easier application filtering (instead of clinet side filtering, filter from server side in the Query request)
+- Better validation around time-to-live (TTL) expiry (since dyanmodDB removes data as per TTL even after till 48hrs)
+- Properly filter data using
+  - Partition Key
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f8ab2b5e-1e15-4254-877f-a1c28d1f642e)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8b577acd-8d10-4033-8d36-5637dc69a547)
+  - Sparse Index
+  - based on the fact that dynamoDB only copies data into GSI if the key attributes are present in that item
+  - Apply business logic in the application to include that key attribute in the item only when some condition is satisified
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f6ca13e2-f3b7-4448-b5cc-98ff268940a9)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2b7bfc06-2338-4620-809a-1d5a6d8057e8)  
+
 
 **DynamoDB table creation**
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/aebcf53e-60b2-4734-8499-67152c8e316e)   
@@ -876,6 +910,17 @@ Global Indexes
 • begins_with (for string)
 • ProductCategory IN (:cat1, :cat2) and Price between :low and :high
 • size (string length)   
+     - Examples and caveates
+       - ```attribute_not_exists(pk) AND attribute_not_exists(sk)``` : the second statement is extraneous. Recall that DynamoDB will first identify an item to compare against, then run the Condition Expression. If DynamoDB finds an item, it will have both the pk and the sk (assuming that's your primary key structure).
+       - Unintended effects - it lost the unique user constraint
+       - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8c591a9f-1aa4-46e6-bee8-fa0e4a63f04d)
+       - Enforcing business rules
+       - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fd7acef6-e75e-46f9-8a29-42712e4cbb27)
+       - Aggregates rules
+       - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6ab24598-e2eb-4590-9df6-6a0cb9373b75)  
+
+
+
 
   - ```DeleteItem```
     - Delete an individual item
@@ -918,6 +963,46 @@ Global Indexes
   - Complex condition using logical operators 
     ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f2e40706-a26d-4aff-af66-f6a9203eb534)   
 
+
+**Expression attribute names and values**
+- Expression attribute names:
+  - placeholder that you use in an Amazon DynamoDB expression as an alternative to an actual attribute name. An expression attribute name must begin with a pound sign (#)
+  - basic example 
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/09d30bc2-786a-41ee-9c00-c198cdb04eac)
+  - special characters
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/43928a77-3ae9-476f-84de-a60fe558ed5e)
+  - nested attributes
+  ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ad85a9aa-ecdf-4741-8efe-aab17727084d)   
+
+- Expression attribute values:
+  - substitutes for the actual values that you want to compare—values that you might not know until runtime. An expression attribute value must begin with a colon (:) and be followed by one or more alphanumeric characters.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f3615e0f-062a-4d08-b54c-121c6e1d32f1)
+  - Used in key condition expressions, condition expressions, update expressions, and filter expressions.
+
+
+**Eventual consistency**
+- eventual consistency is almost always a read problem but not a write problem.
+- Tradeoffs between latency and consistency (durability)
+- Main table consistency
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bd988c4e-0145-43c3-9f01-0651c187d6ca)
+  - As soon as one of the replicas responds with a successful write, the primary node will return a successful response to the client.
+  - By ensuring that a majority of the nodes have committed the write, DynamoDB is increasing the durability of the write.
+  - first, while a stale read is possible on your main table, it's fairly unlikely (66% chance you'll hit one of the "strongly consistent" nodes anyway.)
+  - Same concept applies to LSI
+- GSI consistency
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/07bb5355-208f-4a90-bb53-2182abf37c26)
+  - DynamoDB creates completely separate partition infrastructure to handle your global secondary index
+  - global secondary index can have a different partition key than your main table. If DynamoDB didn't reindex your data, then a query to a global secondary index would require querying every single partition in your table to answer the query.
+  - DynamoDB uses asynchronous replication to global secondary indexes. When a write comes in, it is not only committed to two of the three main table nodes, but it also adds a record of the operation to an internal queue.
+  - In the background, a service is processing that queue to update the global secondary indexes.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e60236d7-0419-44c4-a798-a126f92062fd)
+  - They optimize heavily for write latency at the expense of consistency.
+- Global tables
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b1af4248-4ed0-419d-87ed-4e643366e1c9)
+  - the replication latency to Global Tables is likely to be longer than that to global secondary indexes. Regions are significantly further apart than instances in the same datacenter, and network latency starts to dominate.
+  - using Global Tables introduces write-based consistency issues into your application. You can write to both regions, and writes will be replicated from one region to another.
+
+
 **PartiQL**
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a8066aa3-49fd-42ab-ab67-e09b2e49ba35)
 - a SQL-compatible query language, to select, insert, update, and delete data in Amazon DynamoDB. Using PartiQL, you can easily interact with DynamoDB tables and run ad hoc queries
@@ -927,6 +1012,10 @@ Global Indexes
 - Optimistic locking is a strategy to ensure that the client-side item that you are updating (or deleting) is the same as the item in Amazon DynamoDB. If you use this strategy, your database writes are protected from being overwritten by the writes of others
 - each item has an attribute that acts as a version number. If you retrieve an item from a table, the application records the version number of that item. You can update the item, but only if the version number on the server side has not changed.
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/da46a68e-b675-4a9c-8a1d-47338995d1c4)
+- The version number associated with the record must also be sent when clients request data.
+- Whenever the client modifies the data item, the version number present on the client side must be the same as the item's version number present in the table item.
+- If it is the same, it means that no other user has changed the record, allowing the write to go through.
+- However, if the version numbers are different, it's likely that another user has already updated the record, causing DynamoDB to reject your write by throwing the exception - `ConditionalCheckFailedException`. You can retrieve the item again (with newly updated data) and retry your update when this happens.
 
 **DAX (DynamoDB Accelerator)**   
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/fa239a53-1267-42ac-b1dc-45fd2bf5e036)
