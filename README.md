@@ -1136,10 +1136,48 @@ Durability level	Availability zones to provide automatic failover without interr
 
 
 **DynamoDB security**
+- Identity based policies
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/32b8cfb7-f7ab-436a-964f-f4ba0c7c5036)  
+  - To implement this kind of fine-grained access control, you write an IAM permissions policy that specifies conditions for accessing security credentials and the associated permissions. You then apply the policy to users, groups, or roles that you create using the IAM console. Your IAM policy can restrict access to individual items in a table, access to the attributes in those items, or both at the same time.
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8fc6d547-91c8-4bf9-b027-541eb52b8f35)
+  - Ex. of AWS managed policies: `AmazonDynamoDBReadOnlyAccess`, `AmazonDynamoDBFullAccess`
+  - Ex. Grant all permissions on dynamodb table
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7ab26cdd-62b6-459a-b329-394782d96c77)
+  - For ex. DAX cluster IAM policy
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9f6ed602-5195-441e-bf3e-d033e3eef9ea)
+  - **Note**: DAX does not enforce user-level separation on data in DynamoDB. Instead, users inherit the permissions of the DAX cluster's IAM policy when they access that cluster. Thus, when accessing DynamoDB tables via DAX, the only access controls that are in effect are the permissions in the DAX cluster's IAM policy.
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f169a5a8-d2e4-4a42-9fb7-8ce6aa47804b)
+  - In addition to controlling access to DynamoDB API actions, you can also control access to individual data items and attributes
+    - Using `conditions` in IAM policies
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/bb54e2dd-94b8-4a06-999d-6af82d0d51d2)
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/23659367-a97b-4ce6-b53c-67b908795239)
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/b7f3cf24-16cf-4e6c-8ee7-2c5c4c35701a)
+    - Grant permissions that limit access to items with a specific partition key value
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5b39ff4d-11c2-4ae8-a93a-f3afca217b97)
+    - Grant permissions to query only projected attributes in an index
+    - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a1632a69-9427-444b-b9fc-644509285648)
+
+- For higher level of scaling like gaming APPS etc..., where users already have 3rd party OAuth accounts like google, facebook etc, we can leverage it as it's difficult to scale IAM policies individually
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2048c6d4-ce09-436f-89b1-bba415c593b3)
-- In addition to controlling access to DynamoDB API actions, you can also control access to individual data items and attributes
-- To implement this kind of fine-grained access control, you write an IAM permissions policy that specifies conditions for accessing security credentials and the associated permissions. You then apply the policy to users, groups, or roles that you create using the IAM console. Your IAM policy can restrict access to individual items in a table, access to the attributes in those items, or both at the same time.
-- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8fc6d547-91c8-4bf9-b027-541eb52b8f35)   
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7bcbaf75-62b1-4ed4-bd96-5fad1d61721c)  
+
+**Monitoring**
+- Cloudwatch and Cloudtrail integrated
+- For DAX: `FaultRequestCount` (internal server error 500), `ErrorRequestCount` (client side 400), item cache miss `(ItemCacheMisses)`, query/scan cache miss `(ScanCacheMisses, QueryCacheMisses)`
+- For DynamoDB: `TimeToLiveDeletedItemCount`, `ThrottledRequests`, `ConsumedReadCapacityUnits`, `ConsumedWriteCapacityUnits`
+
+**Troubleshooting and Debugging**
+- Latency issues
+  - `SuccessfulRequestLatency`: measures latency which is internal to the DynamoDB service - client side activity and network trip times are not included.
+  - Use eventually consistent if strong consistency not required
+  - Use DAX caching for high read intensive workloads
+  - Reuse existing DynamoDB endpoint connections instead of creating new ones (keep-alive for 30 seconds)
+
+- Throttling
+  - `ProvisionedThroughputExceededException` exceptions
+  - retry throttled requests using exponential backoff.
+  - switching to on-demand mode
+  - ` Amazon CloudWatch Contributor Insights` to find hot partitions and avoid issues 
 
 ## AWS S3 
 
