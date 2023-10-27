@@ -1817,7 +1817,7 @@ you’ve setup through API Gateway
 
 
 **SQS SECURITY**
-- IAM POLICY SYSTEM
+- IAM POLICY SYSTEM (identity based policies)
   - Attach a permission policy to a user or a group in your account, Attach a permission policy to a user in another AWS account, Attach a permission policy to a role (grant cross-account permissions) 
 - SQS ACCESS POLICIES
   - Grant one permission to one AWS account
@@ -1825,7 +1825,9 @@ you’ve setup through API Gateway
   - Grant all permissions to two AWS accounts
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0aab93ca-3ee8-4d9f-a542-f2d1093c6dcc)
   - Grant a permission to all users
-  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a07e00ee-0eb8-49df-99dd-75693b9a6609)  
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a07e00ee-0eb8-49df-99dd-75693b9a6609)
+  - S3 bucket notifications to SQS
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7d51844d-474b-4f20-a746-c8159daab535)  
 
 
 **IMPORTANT APIS**
@@ -1844,6 +1846,18 @@ you’ve setup through API Gateway
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c3bc3be8-0280-4f18-9291-aad2fe9353e3)  
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5aa44b98-0716-466c-ba6a-12b13c9c3a02)   
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/2aac1bb7-ba8f-426d-9ccd-1d89bbcd651c)   
+
+**Troubleshooting, Monitoring and Debugging**
+- Amazon SQS is integrated with AWS CloudTrail, a service that provides a record of the Amazon SQS calls that a user, role, or AWS service makes.
+- CloudTrail captures API calls related to Amazon SQS queues as events, including calls from the Amazon SQS console and code calls from Amazon SQS APIs.
+- CloudWatch considers a queue to be active for up to six hours if it contains any messages or if any action accesses it.
+- ex. `ApproximateNumberOfMessagesDelayed`, `ApproximateNumberOfMessagesNotVisible`, `ApproximateNumberOfMessagesVisible`, `ApproximateAgeOfOldestMessage` etc...
+- EventBridge lets you set a variety of targets—such as Amazon SQS standard and FIFO queues—which receive events in JSON format
+- X-Ray tracing header `X-Amzn-Trace-Id`  
+- Issues
+  - permission issues (can be fixed by updating IAM policies)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9a5f9983-c4e8-4c61-9c7d-355ea2d1d3b1)
+
 
 ### SNS (SIMPLE NOTIFICATION SERVICE)
 
@@ -1889,10 +1903,25 @@ you’ve setup through API Gateway
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f0c1b366-c27e-4398-924d-6a5b058fe51d)  
 
 **SNS SECURITY**
+- IAM policies (Identity based policies)
+- SNS policies
+- ARN includes topic to restrict actions 
 - RAW MESSAGE DELIVERY:
   - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/32398b0c-dd25-4b0d-86fc-e4e8adb4b5aa)
 - CROSS ACCOUNT DELIVERY
-- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e98a6bd0-e08d-4c89-8706-daee9bc3d997)   
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e98a6bd0-e08d-4c89-8706-daee9bc3d997)
+- You can use these temporary security credentials in making requests to Amazon SNS.
+- The API libraries compute the necessary signature value using those credentials to authenticate your request. If you send requests using expired credentials Amazon SNS denies the request.
+
+**Troubleshooting, Monitoring and Debugging**
+- CloudTrail captures API calls for Amazon SNS as events. The calls captured include calls from the Amazon SNS console and code calls to the Amazon SNS API operations.
+- CloudWatch and alarms/notifications
+- ex. `NumberOfNotificationsFailed`, `NumberOfNotificationsDelivered` etc...
+- X-Ray tracing can be enabled  
+- Issues
+  - permission issues (can be fixed by updating IAM policies)
+  - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ac561380-1ad6-4fb2-a3c7-aaeb3e20e32e)
+
 
 ### KINESIS
 
