@@ -2021,6 +2021,10 @@ you’ve setup through API Gateway
 **SQS VS SNS VS KINESIS**
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/14b8216d-e0d9-4e1c-9677-a84f178b900b)   
 
+**Security**
+- IAM policies to control access
+- Ex. ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/9309d269-9ec7-4efb-a3b4-4a57d1403bbb)   
+
 
 # Security
 
