@@ -3404,8 +3404,28 @@ configured
 - Event Pattern: Event rules to react to a service doing something
 - Trigger Lambda functions, send SQS/SNS messages…
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/aa57b631-4e4c-4c7d-8435-38a6eec14088)
+
+**How does eventbus works**
+- An event bus is a router that receives events and delivers them to zero or more destinations,or targets.
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/371f6120-8e52-4468-a98a-17f8868a4fd4)
+- At its simplest, an EventBridge event is a JSON object sent to an event bus or pipe.
+- EventBridge then evaluates the event against each rule defined for that event bus.
+- For each event that matches a rule, EventBridge then sends the event to the targets specified for that rule. Optionally, as part of the rule, you can also specify how EventBridge should transform the event prior to sending it to the target(s).
+- An event might match multiple rules, and each rule can specify up to five targets.
+- Event structure 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f14bd154-abea-493d-9313-bc6552314fad)  
+
+**Eventbridge rules**
+- An event pattern, which contains one or more filters to match events. Event patterns can include filters that match on: Event metadata, Event data, Event content
+- A schedule to invoke the target(s) at regular intervals (regular rate/specific times)
+- By default, you can configure up to 300 rules per event bus.
+
+
 - You can archive events (all/filter) sent to an event bus (indefinitely or set period)
 - Ability to replay archived events
+
+**Security**
+
 - Event buses can be accessed by other AWS accounts using Resource-based Policies
 - ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/018193a1-0c54-47f3-8d74-f63db790fd0d)
 - The Schema Registry allows you to generate code for your application, that will know in advance how data is structured in the event bus (versioned)
