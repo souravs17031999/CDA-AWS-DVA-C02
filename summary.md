@@ -11,6 +11,7 @@
 ![LAMBDA drawio (1) drawio (5)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/07b7fe5f-206b-4ef8-96ac-b39f369ea451)
 
 **S3**
+![LAMBDA drawio (1) drawio (8)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c1b5169a-a7c5-467b-83ca-9f1cc9b7f4fd)
 
 **CLOUDWATCH EVENTS/EVENTBRIDGE**
 ![LAMBDA drawio (1) drawio (7)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a0ae30cc-1def-4470-a54a-29c86ea36490)
