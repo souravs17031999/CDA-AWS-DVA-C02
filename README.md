@@ -1203,7 +1203,24 @@ Durability level	Availability zones to provide automatic failover without interr
 - How Authorizor works:
   - Converts all the relevant access policies (user policy, bucket policy, ACLs) at run time into a set of policies for evaluation.
   - Amazon S3 evaluates a subset of policies in a specific context, based on the context authority: ```User context, Bucket context, Object context```
-    
+
+- Request Authorization
+- Bucket operation requested by bucket owner 
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/791266f8-99aa-4282-8171-b9b54790c66f)
+- Bucket operation requested by an AWS account that is not the bucket owner
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cf557e57-27de-4955-8c5b-805d40d578f1)
+- Bucket operation requested by an IAM principal whose parent AWS account is also the bucket owner
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/882ad010-4385-4067-bf9c-d4fd26432793)
+- Bucket operation requested by an IAM principal whose parent AWS account is not the bucket owner
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/84d13231-846e-458a-a4e6-a83609362c7e)
+- Object operation request
+- ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5ffce03c-4af8-4bae-88d9-b82dacd94f39)
+
+
+
+
+
+
 - Ex. JSON policies 
 ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a5b93ecf-05df-4421-9c1b-cd82cf6d34da)   
 
