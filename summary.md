@@ -13,12 +13,6 @@
 **S3**
 ![LAMBDA drawio (1) drawio (9)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c78495b5-eb7b-4677-a98d-c308ea86dccb)
 
-**ElasticCache**
-
-**AWS STEP FUNCTIONS**
-
-**SAM AND CDK**
-
 **CLOUDWATCH EVENTS/EVENTBRIDGE**
 ![LAMBDA drawio (1) drawio (7)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a0ae30cc-1def-4470-a54a-29c86ea36490)
 
@@ -34,10 +28,9 @@
 **Secrets Manager and SSM parameter stores**
 ![LAMBDA drawio (1) drawio (20)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/701c14a6-aaf8-466c-b679-da8f862f2b2d)
 
-**Other Services/Analytics**
-![LAMBDA drawio (1) drawio (21)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7dc4189e-8532-4d6a-b974-71e8afc5ac9b)
-
 **CLOUDFORMATION**
+
+**SAM AND CDK**
 
 **CloudWatch, CloudTrail and X-Ray**
 ![LAMBDA drawio (1) drawio (22)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/127723f3-cb6a-4ee4-bd0a-679fa0cb4826)
@@ -45,3 +38,6 @@
 **Networking (VPC, ROUTE53, ELB)**
 
 **EC2**
+
+**Other Services/Analytics**
+![LAMBDA drawio (1) drawio (21)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7dc4189e-8532-4d6a-b974-71e8afc5ac9b)
