@@ -2,7 +2,7 @@
 ![LAMBDA drawio (1) drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ce4009c6-b830-4974-a727-48348f3ea035)  
 
 **AWS DYNAMO DB**
-![LAMBDA drawio (1) drawio (1)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/069b8e21-cd79-45fa-ad20-a21c6588f516)
+![LAMBDA drawio (1) drawio (18)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c35fa2ba-37f5-47d8-a0cf-eb31df02086e)
 
 **API GATEWAY**
 ![LAMBDA drawio (1) drawio (15)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d0f9052a-bac2-4164-8496-40d0c5c76a26)
