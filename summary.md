@@ -17,7 +17,7 @@
 ![LAMBDA drawio (1) drawio (7)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a0ae30cc-1def-4470-a54a-29c86ea36490)
 
 **AWS CI/CD PIPELINES**
-![LAMBDA drawio (1) drawio (11)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c00879d2-9848-4058-b1be-5eb41d248121)
+![LAMBDA drawio (1) drawio (12)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/53bc81e9-4697-4255-9fed-696dc5a3324e)
 
 **IAM**
 
