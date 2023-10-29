@@ -20,6 +20,7 @@
 ![LAMBDA drawio (1) drawio (12)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/53bc81e9-4697-4255-9fed-696dc5a3324e)
 
 **IAM**
+![LAMBDA drawio (1) drawio (13)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8877f82b-689c-46f4-b771-3e7e9d55b1b4)
 
 **KMS**
 
