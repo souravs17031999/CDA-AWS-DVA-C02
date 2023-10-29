@@ -15,6 +15,10 @@
 
 **ElasticCache**
 
+**AWS STEP FUNCTIONS**
+
+**SAM AND CDK**
+
 **CLOUDWATCH EVENTS/EVENTBRIDGE**
 ![LAMBDA drawio (1) drawio (7)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a0ae30cc-1def-4470-a54a-29c86ea36490)
 
