@@ -3,7 +3,7 @@ AWS Certified Developer - Associate
 
 # Development with AWS Services
 
-## AWS FUNDAMENTALS 
+## AWS FUNDAMENTALS (ref [CCP-AWS-CLFC01](https://github.com/souravs17031999/CCP-AWS-CLFC01) for more detailed)
 
 #### EC2
 
