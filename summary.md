@@ -29,6 +29,7 @@
 ![LAMBDA drawio (1) drawio (16)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/08766da9-550e-452f-afad-9654a990eded)
 
 **KMS**
+![LAMBDA drawio (1) drawio (19)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d58d031a-67d8-4e62-af1a-a697c938a119)
 
 **Secrets Manager and SSM parameter stores**
 
