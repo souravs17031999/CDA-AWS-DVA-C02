@@ -28,9 +28,8 @@
 **Secrets Manager and SSM parameter stores**
 ![LAMBDA drawio (1) drawio (20)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/701c14a6-aaf8-466c-b679-da8f862f2b2d)
 
-**CLOUDFORMATION**
+**CLOUDFORMATION, SAM and CDK**
 
-**SAM AND CDK**
 
 **CloudWatch, CloudTrail and X-Ray**
 ![LAMBDA drawio (1) drawio (22)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/127723f3-cb6a-4ee4-bd0a-679fa0cb4826)
