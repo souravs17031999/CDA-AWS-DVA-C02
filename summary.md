@@ -8,7 +8,7 @@
 ![LAMBDA drawio (1) drawio (15)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d0f9052a-bac2-4164-8496-40d0c5c76a26)
 
 **SQS/SNS/KINESIS**
-![LAMBDA drawio (1) drawio (5)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/07b7fe5f-206b-4ef8-96ac-b39f369ea451)
+![LAMBDA drawio (1) drawio (17)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/77acaa98-fda7-4345-85aa-c45e3c33f242)
 
 **S3**
 ![LAMBDA drawio (1) drawio (9)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c78495b5-eb7b-4677-a98d-c308ea86dccb)
