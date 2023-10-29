@@ -29,14 +29,13 @@
 ![LAMBDA drawio (1) drawio (20)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/701c14a6-aaf8-466c-b679-da8f862f2b2d)
 
 **CLOUDFORMATION, SAM and CDK**
-
+![LAMBDA drawio (1) drawio (28)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e6c02aa7-9a86-4878-b72a-9bc94dd37378)
 
 **CloudWatch, CloudTrail and X-Ray**
 ![LAMBDA drawio (1) drawio (22)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/127723f3-cb6a-4ee4-bd0a-679fa0cb4826)
 
 **Networking (VPC, ROUTE53, ELB)**
 ![LAMBDA drawio (1) drawio (27)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cd0355f9-2450-4e47-90b9-694535d7f964)
-
 
 **EC2**
 ![LAMBDA drawio (1) drawio (26)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7e951d07-a77e-4b82-82c5-d25925de14ef)
