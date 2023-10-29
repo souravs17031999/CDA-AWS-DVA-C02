@@ -37,7 +37,9 @@
 
 **Networking (VPC, ROUTE53, ELB)**
 
+
 **EC2**
+![LAMBDA drawio (1) drawio (26)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7e951d07-a77e-4b82-82c5-d25925de14ef)
 
 **Other Services/Analytics**
 ![LAMBDA drawio (1) drawio (25)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f1d966e3-569e-42c8-81b9-59926d526cb8)
