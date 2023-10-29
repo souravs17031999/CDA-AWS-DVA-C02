@@ -40,4 +40,4 @@
 **EC2**
 
 **Other Services/Analytics**
-![LAMBDA drawio (1) drawio (23)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6dcd30e3-83c4-4d6e-892b-4bb07883f5bf)
+![LAMBDA drawio (1) drawio (25)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f1d966e3-569e-42c8-81b9-59926d526cb8)
