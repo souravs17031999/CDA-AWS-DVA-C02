@@ -13,6 +13,8 @@
 **S3**
 ![LAMBDA drawio (1) drawio (9)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c78495b5-eb7b-4677-a98d-c308ea86dccb)
 
+**ElasticCache**
+
 **CLOUDWATCH EVENTS/EVENTBRIDGE**
 ![LAMBDA drawio (1) drawio (7)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a0ae30cc-1def-4470-a54a-29c86ea36490)
 
@@ -24,4 +26,12 @@
 
 **KMS**
 
+**Secrets Manager and SSM parameter stores**
+
 **CLOUDFORMATION**
+
+**CloudWatch logs and X-Ray**
+
+**Networking (VPC, ROUTE53, ELB)**
+
+**EC2**
