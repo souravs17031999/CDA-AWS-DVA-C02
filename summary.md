@@ -40,6 +40,7 @@
 **CLOUDFORMATION**
 
 **CloudWatch, CloudTrail and X-Ray**
+![LAMBDA drawio (1) drawio (22)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/127723f3-cb6a-4ee4-bd0a-679fa0cb4826)
 
 **Networking (VPC, ROUTE53, ELB)**
 
