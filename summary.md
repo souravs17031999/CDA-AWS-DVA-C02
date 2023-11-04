@@ -32,7 +32,7 @@
 ![LAMBDA drawio (1) drawio (28)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e6c02aa7-9a86-4878-b72a-9bc94dd37378)
 
 **CloudWatch, CloudTrail and X-Ray**
-![a drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f5fc78ad-ad2d-4379-b170-dc2f44ed7259)
+![279568132-f5fc78ad-ad2d-4379-b170-dc2f44ed7259 drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f516763b-69b6-4095-a7de-eb9fafc0f67a)
 
 **Networking (VPC, ROUTE53, ELB)**
 ![LAMBDA drawio (1) drawio (27)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cd0355f9-2450-4e47-90b9-694535d7f964)
