@@ -1,5 +1,5 @@
 **AWS LAMBDA**
-![Untitled Diagram drawio (1)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/0715f094-89c4-4b46-9145-d483f211cce9)
+![Untitled Diagram drawio (2)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e390acaf-45bd-47df-b3bf-241dde83fef5)
 
 **AWS DYNAMO DB**
 ![LAMBDA drawio (1) drawio (18)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c35fa2ba-37f5-47d8-a0cf-eb31df02086e)
