@@ -23,7 +23,7 @@
 ![LAMBDA drawio (1) drawio (16)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/08766da9-550e-452f-afad-9654a990eded)
 
 **KMS**
-![LAMBDA drawio (1) drawio (19)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d58d031a-67d8-4e62-af1a-a697c938a119)
+![Untitled Diagram drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d1c7bd80-b535-4460-b11d-d8242aeb4895)
 
 **Secrets Manager and SSM parameter stores**
 ![LAMBDA drawio (1) drawio (20)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/701c14a6-aaf8-466c-b679-da8f862f2b2d)
