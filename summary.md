@@ -35,7 +35,7 @@
 ![279568132-f5fc78ad-ad2d-4379-b170-dc2f44ed7259 drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f516763b-69b6-4095-a7de-eb9fafc0f67a)
 
 **Networking (VPC, ROUTE53, ELB)**
-![LAMBDA drawio (1) drawio (27)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/cd0355f9-2450-4e47-90b9-694535d7f964)
+![280514773-1f4e0bbe-33e6-4263-87d5-8cbe985e129f drawio (3)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/a672b62d-e4d0-4002-a05e-81000fd6cd37)
 
 **EC2**
 ![280514773-1f4e0bbe-33e6-4263-87d5-8cbe985e129f drawio (2)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/8d6bf962-b797-4657-ae49-2c2d8f4697f9)
