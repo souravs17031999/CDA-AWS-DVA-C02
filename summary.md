@@ -26,7 +26,7 @@
 ![Untitled Diagram drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d1c7bd80-b535-4460-b11d-d8242aeb4895)
 
 **Secrets Manager and SSM parameter stores**
-![LAMBDA drawio (1) drawio (20)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/701c14a6-aaf8-466c-b679-da8f862f2b2d)
+![280514773-1f4e0bbe-33e6-4263-87d5-8cbe985e129f drawio (4)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5d7757f7-1456-4edd-b05a-d58541faa717)
 
 **CLOUDFORMATION, SAM and CDK**
 ![LAMBDA drawio (1) drawio (28)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e6c02aa7-9a86-4878-b72a-9bc94dd37378)
