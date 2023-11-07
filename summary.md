@@ -38,7 +38,7 @@
 ![280547380-91ae1f99-1150-474e-8a8a-2f8c3ced6641 drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/594cadc2-1ce7-4485-ae19-e7a4aab121de)
 
 **EC2**
-![280547380-91ae1f99-1150-474e-8a8a-2f8c3ced6641 drawio (5)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c10e4cb8-e146-4c8e-988b-30c06010ec17)
+![280547380-91ae1f99-1150-474e-8a8a-2f8c3ced6641 drawio (6)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/c39bd17d-467d-4f32-a800-23eee97f1043)
 
 **Other Services/Analytics**
 ![LAMBDA drawio (1) drawio (25)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f1d966e3-569e-42c8-81b9-59926d526cb8)
