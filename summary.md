@@ -29,7 +29,7 @@
 ![280514773-1f4e0bbe-33e6-4263-87d5-8cbe985e129f drawio (4)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/5d7757f7-1456-4edd-b05a-d58541faa717)
 
 **CLOUDFORMATION, SAM and CDK**
-![280514773-1f4e0bbe-33e6-4263-87d5-8cbe985e129f drawio (9)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/331c2470-8e9d-429e-ba36-9768620c24f1)
+![280547380-91ae1f99-1150-474e-8a8a-2f8c3ced6641 drawio (3)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/56b1acf1-b10a-4247-9c3e-8b3a7a963da2)
 
 **CloudWatch, CloudTrail and X-Ray**
 ![279568132-f5fc78ad-ad2d-4379-b170-dc2f44ed7259 drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f516763b-69b6-4095-a7de-eb9fafc0f67a)
