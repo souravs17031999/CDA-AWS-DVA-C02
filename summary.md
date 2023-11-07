@@ -20,7 +20,7 @@
 ![279568132-f5fc78ad-ad2d-4379-b170-dc2f44ed7259 drawio (2)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/e1b964e0-4afe-483e-945b-acdfddbeec31)
 
 **IAM**
-![LAMBDA drawio (1) drawio (16)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/08766da9-550e-452f-afad-9654a990eded)
+![280547380-91ae1f99-1150-474e-8a8a-2f8c3ced6641 drawio (1)](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/274bdc43-91ee-4070-b068-cb7ab4f33143)
 
 **KMS**
 ![Untitled Diagram drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d1c7bd80-b535-4460-b11d-d8242aeb4895)
