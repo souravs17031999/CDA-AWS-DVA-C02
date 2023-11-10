@@ -963,6 +963,7 @@ Global Indexes
   - Complex condition using logical operators 
     ![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/f2e40706-a26d-4aff-af66-f6a9203eb534)   
 
+![image](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/549df14a-ed79-4e64-92bb-2ea773847096)
 
 **Expression attribute names and values**
 - Expression attribute names:
