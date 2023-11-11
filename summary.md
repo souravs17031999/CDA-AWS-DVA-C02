@@ -1,5 +1,5 @@
 **AWS LAMBDA**
-![282152599-219f539f-da68-4bdb-ab8f-99427fdba81f drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/6d017a05-8d38-46f7-a8db-2e060ba321fb)
+![282215834-6d017a05-8d38-46f7-a8db-2e060ba321fb drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/7ffc1a95-592d-48aa-a2fc-378503296cb7)
 
 **AWS DYNAMO DB**
 ![280547380-91ae1f99-1150-474e-8a8a-2f8c3ced6641 drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d19bffa0-9de9-4388-a680-9561bbd27cb3)
