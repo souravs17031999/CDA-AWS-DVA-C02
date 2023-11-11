@@ -5,7 +5,7 @@
 ![280547380-91ae1f99-1150-474e-8a8a-2f8c3ced6641 drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/d19bffa0-9de9-4388-a680-9561bbd27cb3)
 
 **API GATEWAY**
-![278855210-d0f9052a-bac2-4164-8496-40d0c5c76a26 drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/3fe1be6d-0bba-4fe8-af3c-6eb6275eff1a)
+![282152739-3fe1be6d-0bba-4fe8-af3c-6eb6275eff1a drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/41840669-e0a1-4798-91d6-e3859f121874)
 
 **SQS/SNS/KINESIS**
 ![278861129-77acaa98-fda7-4345-85aa-c45e3c33f242 drawio](https://github.com/souravs17031999/CDA-AWS-DVA-C02/assets/33771969/ffdeef3f-9b86-4e06-86e9-257f6b5cdc90)
